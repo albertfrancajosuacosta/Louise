@@ -4,6 +4,8 @@ Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suport
 
 Louise é construído utilizada as seguintes bibliotecas
 
+ [TypeScript]
+
 1. Estatística
 
     - Scipy: https://docs.scipy.org/doc/scipy/index.html
@@ -19,7 +21,10 @@ Louise é construído utilizada as seguintes bibliotecas
 ## Contato
 
 Albert França Josuá Costa
-albertfrancajosuacosta@gmail.com
+
+Email: albertfrancajosuacosta@gmail.com
+
+Linkedin: https://www.linkedin.com/in/albert-josu%C3%A1-9aa550239/
 
 Início 30/04/2024
 
