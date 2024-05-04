@@ -20,9 +20,9 @@ Louise é construído utilizada as seguintes bibliotecas:
 
 Albert França Josuá Costa
 
-![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white): <albertfrancajosuacosta@gmail.com>
+![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white) <albertfrancajosuacosta@gmail.com>
 
-![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white): <https://www.linkedin.com/in/albert-josu%C3%A1-9aa550239/>
+![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white) <https://www.linkedin.com/in/albert-josu%C3%A1-9aa550239/>
 
 Início 30/04/2024
 
