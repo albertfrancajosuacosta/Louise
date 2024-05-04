@@ -30,12 +30,10 @@ Início 30/04/2024
 ## Funcionalidades em implantação:
 
 1. Teste de normalidade por Shapiro-Wilk
-    - Início: 30/04/2024.
-    - Fim: 03/05/2024.
+    - Início: 30/04/2024-Fim: 03/05/2024.
 
 2. Teste de normalidade por Anderson
-    - Início: 03/05/2024.
-    - Fim: 03/05/2024.
+    - Início: 03/05/2024-Fim: 03/05/2024.
 
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![SciPy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=%white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
