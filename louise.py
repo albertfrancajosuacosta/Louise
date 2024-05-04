@@ -35,10 +35,7 @@ class Louise(Tk):
         larguraTelaPrincipal = int(larguraDispositivo*0.80)
         alturaTelaPrincipal = int(alturaDispositvo*0.80)
 
-       
-        
-
-       
+    
 
         barraMenu = Menu(self)
 

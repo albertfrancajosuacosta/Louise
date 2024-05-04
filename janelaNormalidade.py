@@ -50,11 +50,11 @@ class JanelaNormalidade(Toplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1,weight=1)
 
-
+        print(self.altura)
         self.frameSuperior = Frame(self, 
-                                height=(0.10*self.altura),
+                                height=int(0.90*self.altura),
                                 highlightbackground=self.util.corBorda,
-                                highlightthickness=1
+                                highlightthickness=2
                             )
                                 
 
@@ -105,7 +105,7 @@ class JanelaNormalidade(Toplevel):
                                 height=self.util.alturaTela,
                                 width=self.util.larguraTela,
                                 highlightbackground=self.util.corBorda,
-                                highlightthickness=3
+                                highlightthickness=2
                             )
 
         self.frameCentral.configure(background=self.util.corFundoTela)
@@ -115,7 +115,7 @@ class JanelaNormalidade(Toplevel):
                                 height=self.util.alturaTela,
                                 width=self.util.larguraTela//2,
                                 highlightbackground=self.util.corBorda,
-                                highlightthickness=3
+                                highlightthickness=2
                             )
         self.frameCentralE.configure(background=self.util.corFundoTela)
         
@@ -160,7 +160,7 @@ class JanelaNormalidade(Toplevel):
                                 height=self.util.alturaTela,
                                 width=self.util.larguraTela//2,
                                 highlightbackground=self.util.corBorda,
-                                highlightthickness=3
+                                highlightthickness=2
                             )
         self.frameCentralD.configure(background=self.util.corFundoTela)
 

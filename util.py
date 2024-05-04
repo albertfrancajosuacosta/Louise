@@ -9,7 +9,7 @@ class Util:
          self.alturaTela = 900
          self.corFundoTela = "#1e3743"
          self.corLetra = "#ffffff"
-         self.corBorda = "#ffffff"
+         self.corBorda = "#b4cffa"
          self.corFundoResultado = "#D9DDDC"
 
 
