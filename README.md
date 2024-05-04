@@ -22,7 +22,7 @@ Albert França Josuá Costa
 
 Email: <albertfrancajosuacosta@gmail.com>
 
-Linkedin: <https://www.linkedin.com/in/albert-josu%C3%A1-9aa550239/>
+![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white): <https://www.linkedin.com/in/albert-josu%C3%A1-9aa550239/>
 
 Início 30/04/2024
 
