@@ -4,19 +4,19 @@ Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suport
 
 Louise é construído utilizada as seguintes bibliotecas
 
-Estatística
+1. Estatística
 
-Scipy: https://docs.scipy.org/doc/scipy/index.html
+    - Scipy: https://docs.scipy.org/doc/scipy/index.html
 
-Interface Gráfica com o Usuário
+2.  Interface Gráfica com o Usuário
 
-Tkinter: https://docs.python.org/pt-br/3/library/tkinter.html
+    - Tkinter: https://docs.python.org/pt-br/3/library/tkinter.html
 
-Manipulação de dados
+3.  Manipulação de dados
 
-Pandas: https://pandas.pydata.org/
+    - Pandas: https://pandas.pydata.org/
 
-Contato
+## Contato
 
 Albert França Josuá Costa
 albertfrancajosuacosta@gmail.com
