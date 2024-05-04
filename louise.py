@@ -1,4 +1,4 @@
-from tkinter import HORIZONTAL, NO, VERTICAL, Scrollbar, Tk
+from tkinter import HORIZONTAL, NO, VERTICAL, Scrollbar, Tk, messagebox
 from tkinter import ttk
 from tkinter import Menu
 from tkinter import Frame
@@ -59,12 +59,17 @@ class Louise(Tk):
         barraMenu.add_cascade(label='Testes',menu=menuTestes)
 
         barraMenu.add_command(label='Sobre',
-                              command=lambda: print('Sobre'))
+                              command=lambda: self.showSobre())
         
         barraMenu.add_command(label='Sair', 
                               command=self.destroy)
 
         self.config(menu=barraMenu)
+
+
+    def showSobre(self):
+            messagebox.showinfo("Sobre Louise", "Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com") 
+            
 
 
 

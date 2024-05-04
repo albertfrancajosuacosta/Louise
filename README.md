@@ -1,6 +1,6 @@
 # Louise
 
-Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte a interface gráfica para a realização de teste de hipótese.
+Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.
 
 
 Contato
