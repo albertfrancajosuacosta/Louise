@@ -35,5 +35,23 @@ Início 30/04/2024
 2. Teste de normalidade por Anderson
     - Início: 03/05/2024-Fim: 03/05/2024.
 
+3. Teste de hipótese paramétrico 2 grupos (Teste T) - Não iniciado.
+    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+
+4. Teste de hipótese não-paramétrico 2  grupos (Mann-Whitney) - Não iniciado.
+    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+
+5. Teste de hipótese não-paramétrico 2  grupos (Wilcoxon) - Não iniciado.
+    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+
+6. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
+    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+
+7. Teste de hipótese paramétrico > 2  grupos (Kruskall-Wallis) - Não iniciado.
+    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+
+8. Teste de hipótese paramétrico > 2  grupos (Friedman) - Não iniciado.
+    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![SciPy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=%white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
