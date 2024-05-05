@@ -41,22 +41,50 @@ class Louise(Tk):
 
 
         menuTestes = Menu(barraMenu,tearoff=False)
+
+
         menuTestes.add_command(
             label='Normalidade',
-            accelerator="Crtl+N",
+            #accelerator="Crtl+N",
             activebackground="#324aa8",
             command= lambda: JanelaNormalidade(larguraMae=larguraTelaPrincipal, alturaMae=alturaTelaPrincipal)
 
         )
 
-        menuTestes.add_command(
+        subMenuHipotese = Menu(menuTestes, tearoff=0)
+
+        
+        
+
+        subMenuHipoteseP = Menu(subMenuHipotese, tearoff=False)
+        subMenuHipoteseP.add_command(label='2 grupos', command=lambda: print('P 2 grupos'))
+        subMenuHipoteseP.add_command(label='> 2 grupos', command=lambda: print('P > 2 grupos'))
+
+        subMenuHipotese.add_cascade(label="Paramétrico",
+                                menu=subMenuHipoteseP)
+        
+
+        subMenuHipoteseNP = Menu(subMenuHipotese, tearoff=False)
+        subMenuHipoteseNP.add_command(label='2 grupos', command=lambda: print('NP 2 grupos'))
+        subMenuHipoteseNP.add_command(label='> 2 grupos', command=lambda: print('NP > 2 grupos'))
+
+        subMenuHipotese.add_cascade(label="Não Paramétrico",
+                                menu=subMenuHipoteseNP)
+
+        
+
+        
+        menuTestes.add_cascade(
             label='Hipótese',
-            accelerator="Crtl+H",
             activebackground="#324aa8",
-            command=lambda: print('Hipótese')
+            menu=subMenuHipotese
         )
 
+
+        
         barraMenu.add_cascade(label='Testes',menu=menuTestes)
+
+
 
         barraMenu.add_command(label='Sobre',
                               command=lambda: self.showSobre())
