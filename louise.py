@@ -75,7 +75,7 @@ class Louise(Tk):
 
         
         menuTestes.add_cascade(
-            label='Hipótese',
+            label='Hipóteses',
             activebackground="#324aa8",
             menu=subMenuHipotese
         )
