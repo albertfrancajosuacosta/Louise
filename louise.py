@@ -58,18 +58,18 @@ class Louise(Tk):
 
         subMenuHipoteseP = Menu(subMenuHipotese, tearoff=False)
         subMenuHipoteseP.add_command(label='2 grupos', command=lambda: print('P 2 grupos'))
-        subMenuHipoteseP.add_command(label='> 2 grupos', command=lambda: print('P > 2 grupos'))
+        #subMenuHipoteseP.add_command(label='> 2 grupos', command=lambda: print('P > 2 grupos'))
 
         subMenuHipotese.add_cascade(label="Paramétrico",
                                 menu=subMenuHipoteseP)
         
 
-        subMenuHipoteseNP = Menu(subMenuHipotese, tearoff=False)
-        subMenuHipoteseNP.add_command(label='2 grupos', command=lambda: print('NP 2 grupos'))
-        subMenuHipoteseNP.add_command(label='> 2 grupos', command=lambda: print('NP > 2 grupos'))
+        #subMenuHipoteseNP = Menu(subMenuHipotese, tearoff=False)
+        #subMenuHipoteseNP.add_command(label='2 grupos', command=lambda: print('NP 2 grupos'))
+        #subMenuHipoteseNP.add_command(label='> 2 grupos', command=lambda: print('NP > 2 grupos'))
 
-        subMenuHipotese.add_cascade(label="Não Paramétrico",
-                                menu=subMenuHipoteseNP)
+        #subMenuHipotese.add_cascade(label="Não Paramétrico",
+        #                        menu=subMenuHipoteseNP)
 
         
 
