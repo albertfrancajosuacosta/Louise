@@ -50,7 +50,7 @@ class JanelaNormalidade(Toplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1,weight=1)
 
-        print(self.altura)
+        
         self.frameSuperior = Frame(self, 
                                 height=int(0.90*self.altura),
                                 highlightbackground=self.util.corBorda,
@@ -234,108 +234,105 @@ class JanelaNormalidade(Toplevel):
         self.frameCentral.grid(row=1,sticky="nenwswse")
 
       
-       
-        
-
+    
 
     def testar(self):
-      
-        self.textoResultado.limpar()
+            
+        if self.labelCaminhoArquivo.cget("text") == "":
+            showwarning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
+            self.botaoArquivo.focus_set()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "":
+            showwarning(title="Aviso", message="É necessário selecionar o teste primeiro.")
+            self.comboBoxTipoTesteNormalidade.focus_set()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Shapiro-Wilk":
+            self.shapiroWilk()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
+            self.anderson()
         
 
-        if self.tipoTesteNormalidadeEscolhido.get() == 'Shapiro-Wilk':
-            
-           
-             te = TesteEstatistico(signi=0.05)
+    def shapiroWilk(self):
+        self.textoResultado.limpar()
+        te = TesteEstatistico(signi=0.05)
+        estatistica, p_value =  te.shaporiWilk(self.planilha)
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             estatistica, p_value =  te.shaporiWilk(self.planilha)
-             print(te.shaporiWilk(self.planilha))
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
-             self.textoResultado.habitarDesabilitar("disabled")
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
+        self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
+        self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "Hipóteses: \n", "bold")
-             self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
-             self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
-             self.textoResultado.habitarDesabilitar("disabled")
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
+        self.textoResultado.insert("end", str(estatistica)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "Estatística do teste\n", "bold")
-             self.textoResultado.insert("end", str(estatistica)+"\n")
-             self.textoResultado.habitarDesabilitar("disabled")
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "p-valor\n", "bold")
+        self.textoResultado.insert("end", str(p_value)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "p-valor\n", "bold")
-             self.textoResultado.insert("end", str(p_value)+"\n")
-             self.textoResultado.habitarDesabilitar("disabled")
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "\n\n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "\n\n")
-             self.textoResultado.habitarDesabilitar("disabled")
+        if(p_value<te.nivelSignificancia):
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+        else:
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+    
 
-             if(p_value<te.nivelSignificancia):
-                self.textoResultado.habitarDesabilitar("normal")
-                self.textoResultado.insert("end", "Reijeita H0 \n","bold")
-                self.textoResultado.habitarDesabilitar("disabled")
-             else:
-                self.textoResultado.habitarDesabilitar("normal")
-                self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
-                self.textoResultado.habitarDesabilitar("disabled")
+    def anderson(self):
+        self.textoResultado.limpar()
+        te = TesteEstatistico(signi=0.05)
+        [est, criticoValor, significanciaNivel] =  te.anderson(self.planilha,teste='norm')
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-        if self.tipoTesteNormalidadeEscolhido.get() == 'Anderson':
-            
-            
-             te = TesteEstatistico(signi=0.05)
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
+        self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
+        self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             [est, criticoValor, significanciaNivel] =  te.anderson(self.planilha,teste='norm')
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
+        self.textoResultado.insert("end", str(est)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Valor Crítico\n", "bold")
+        self.textoResultado.insert("end", str(criticoValor)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
-             self.textoResultado.habitarDesabilitar("disabled")
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Nível de Significância\n", "bold")
+        self.textoResultado.insert("end", str(significanciaNivel)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "Hipóteses: \n", "bold")
-             self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
-             self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
-             self.textoResultado.habitarDesabilitar("disabled")
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "\n\n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "Estatística do teste\n", "bold")
-             self.textoResultado.insert("end", str(est)+"\n")
-             self.textoResultado.habitarDesabilitar("disabled")
-
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "Valor Crítico\n", "bold")
-             self.textoResultado.insert("end", str(criticoValor)+"\n")
-             self.textoResultado.habitarDesabilitar("disabled")
-
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "Nível de Significância\n", "bold")
-             self.textoResultado.insert("end", str(significanciaNivel)+"\n")
-             self.textoResultado.habitarDesabilitar("disabled")
-
-             self.textoResultado.habitarDesabilitar("normal")
-             self.textoResultado.insert("end", "\n\n")
-             self.textoResultado.habitarDesabilitar("disabled")
-
-             if(criticoValor<est):
-                self.textoResultado.habitarDesabilitar("normal")
-                self.textoResultado.insert("end", "Reijeita H0 \n","bold")
-                self.textoResultado.habitarDesabilitar("disabled")
-             else:
-                self.textoResultado.habitarDesabilitar("normal")
-                self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
-                self.textoResultado.habitarDesabilitar("disabled")
+        if(criticoValor<est):
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+        else:
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
                 
                  
-
-
-        
-
-
     def procurarArquivo(self):
+        self.focus_set()
 
         #showinfo(title='Information', message=mensagem)
 
@@ -347,7 +344,6 @@ class JanelaNormalidade(Toplevel):
 
 
     def processarArquivo(self,caminho):
-
         try:
             self.planilha = pd.read_excel(caminho,index_col=None)
             self.qtdLinhasPlanilha, self.qtdColunasPlanilha = self.planilha.shape
@@ -357,8 +353,8 @@ class JanelaNormalidade(Toplevel):
             else: 
                 
                 self.carregarDados(self.planilha)
-                self.frameCentral.update()
-                self.attributes('-topmost', True)
+                self.focus_set()
+              
 
 
         except Exception as e:
