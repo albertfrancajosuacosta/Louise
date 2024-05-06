@@ -11,46 +11,24 @@ from textoFormatado import TextoFormatado
 
 class JanelaNormalidade(Toplevel):
 
-   
-    def __init__(self, larguraMae, alturaMae, master = None):
 
-
+    def definirConfiguracoes(self, larguraMae, alturaMae,rezisableLargura=True,rezisableAltura=True):
         self.largura = larguraMae
-
         self.altura = alturaMae
-
-        super().__init__(master = master)
-
         self.title("Louise - Teste de Normalidade")
-
         self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
-
-        #self.resizable(width=False, height=False)
-
-        self.util = Util()
-
+        self.resizable(width=rezisableLargura, height=rezisableAltura)
         self.planilha = None
-
         self.qtdLinhasPlanilha = None
-
         self.qtdColunasPlanilha = None
-    
         self.configure(background=self.util.corFundoTela)
-        #self.largura, self.altura = self.util.tamanhoFrame(self)
-        
         self.x, self.y = self.util.posicaoJanelaCentralizada(self,self.largura,self.altura)
-
-        #self.geometry("{}x{}+{}+{}".format(self.largura,self.altura,self.x,self.y))
-
         self.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,self.x,self.y))
-
-
-      
-
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1,weight=1)
-
         
+
+        #Frame Superior
         self.frameSuperior = Frame(self, 
                                 height=int(0.90*self.altura),
                                 highlightbackground=self.util.corBorda,
@@ -97,9 +75,7 @@ class JanelaNormalidade(Toplevel):
         
         self.frameSuperior.grid(row=0, sticky="nenw")
 
-
-    #=====================================================================================
-
+        #Frame Central
 
         self.frameCentral = Frame(self, 
                                 height=self.util.alturaTela,
@@ -110,6 +86,12 @@ class JanelaNormalidade(Toplevel):
 
         self.frameCentral.configure(background=self.util.corFundoTela)
 
+        self.frameCentral.columnconfigure(0, weight=1)
+        self.frameCentral.columnconfigure(1, weight=1)
+        self.frameCentral.rowconfigure(0,weight=1)
+
+
+        #Frame Central Esquerdo
 
         self.frameCentralE = Frame(self.frameCentral, 
                                 height=self.util.alturaTela,
@@ -147,15 +129,9 @@ class JanelaNormalidade(Toplevel):
         self.scrollbary.config(command=self.arvore.yview)
        
         self.scrollbary.grid(row=0,column=1,sticky='NSEW')
-        
 
-
-        self.frameCentral.columnconfigure(0, weight=1)
-        self.frameCentral.columnconfigure(1, weight=1)
         
-        self.frameCentral.rowconfigure(0,weight=1)
-        
-
+        #Frame Central Direito
         self.frameCentralD = Frame(self.frameCentral, 
                                 height=self.util.alturaTela,
                                 width=self.util.larguraTela//2,
@@ -232,6 +208,19 @@ class JanelaNormalidade(Toplevel):
                
 
         self.frameCentral.grid(row=1,sticky="nenwswse")
+   
+    def __init__(self, larguraMae, alturaMae, master = None):
+
+        super().__init__(master = master)
+        
+        self.util = Util()
+        self.definirConfiguracoes(larguraMae, alturaMae,rezisableLargura=True,rezisableAltura=True)
+
+        
+        
+
+
+    
 
       
     
