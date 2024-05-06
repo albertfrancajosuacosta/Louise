@@ -60,6 +60,8 @@ Louise é construído utilizada as seguintes bibliotecas:
 
 ## Licença
 
+BSD 3-Clause License
+
 Copyright (c) 2024-2025, Inc. 2024-2025, Albert França Josuá Costa.
 All rights reserved.
 
