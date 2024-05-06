@@ -9,97 +9,63 @@ from janelaNormalidade import JanelaNormalidade
 
 class Louise(Tk):
 
-    
+    def definirConfiguracoes(self,rezisableLargura=True,rezisableAltura=True):
+        
+        self.title("Louise - Teste de Hipótese")
+        self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
+        self.resizable(width=rezisableLargura, height=rezisableAltura)
+        self.larguraDispositivo, self.alturaDispositvo = self.util.tamanhoTelaDispositivo(self,1.00,1.00)
+        self.configure(background=self.util.corFundoTela)
+        #x, y = util.posicaoJanelaCentralizada(self,int(larguraDispositivo*0.80), int(alturaDispositvo*0.80))
+        self.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,0,0))
+        self.larguraTelaPrincipal = int(self.larguraDispositivo*0.80)
+        self.alturaTelaPrincipal = int(self.alturaDispositvo*0.80)
+
+
+    def definirBarraMenu(self):
+        self.barraMenu = Menu(self)
+        self.menuTestes = Menu(self.barraMenu,tearoff=False)
+        self.menuTestes.add_command(label='Normalidade',
+                                    #accelerator="Crtl+N",
+                                    activebackground="#324aa8",
+                                    command= lambda: JanelaNormalidade(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
+                                    )
+        self.subMenuHipotese = Menu(self.menuTestes, tearoff=0)
+        self.subMenuHipoteseP = Menu(self.subMenuHipotese, tearoff=False)
+        self.subMenuHipoteseP.add_command(label='2 grupos', command=lambda: print('P 2 grupos'))
+        #self.subMenuHipoteseP.add_command(label='> 2 grupos', command=lambda: print('P > 2 grupos'))
+        self.subMenuHipotese.add_cascade(label="Paramétrico",menu=self.subMenuHipoteseP)
+        
+        #self.subMenuHipoteseNP = Menu(self.subMenuHipotese, tearoff=False)
+        #self.subMenuHipoteseNP.add_command(label='2 grupos', command=lambda: print('NP 2 grupos'))
+        #self.subMenuHipoteseNP.add_command(label='> 2 grupos', command=lambda: print('NP > 2 grupos'))
+        #self.subMenuHipotese.add_cascade(label="Não Paramétrico", menu=self.subMenuHipoteseNP)
+
+        self.menuTestes.add_cascade(label='Hipóteses',
+                                    activebackground="#324aa8",
+                                    menu=self.subMenuHipotese
+                                    )
+
+        self.barraMenu.add_cascade(label='Testes',menu=self.menuTestes)
+
+        self.barraMenu.add_command(label='Sobre', command=lambda: self.showSobre())
+        
+        self.barraMenu.add_command(label='Sair',command=self.destroy)
+
+        self.config(menu=self.barraMenu)
+
     def __init__(self):
 
         super().__init__()
-
-
-        
-
-        self.title("Louise - Teste de Hipótese")
-        self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
-        #self.resizable(width=False, height=False)
-
-        util = Util()
-
-        larguraDispositivo, alturaDispositvo = util.tamanhoTelaDispositivo(self,1.00,1.00)
-
-        self.configure(background=util.corFundoTela)
-
-        #x, y = util.posicaoJanelaCentralizada(self,int(larguraDispositivo*0.80), int(alturaDispositvo*0.80))
-        
-        self.geometry("{}x{}+{}+{}".format(util.larguraTela,util.alturaTela,0,0))
-
-
-        larguraTelaPrincipal = int(larguraDispositivo*0.80)
-        alturaTelaPrincipal = int(alturaDispositvo*0.80)
-
-    
-
-        barraMenu = Menu(self)
-
-
-        menuTestes = Menu(barraMenu,tearoff=False)
-
-
-        menuTestes.add_command(
-            label='Normalidade',
-            #accelerator="Crtl+N",
-            activebackground="#324aa8",
-            command= lambda: JanelaNormalidade(larguraMae=larguraTelaPrincipal, alturaMae=alturaTelaPrincipal)
-
-        )
-
-        subMenuHipotese = Menu(menuTestes, tearoff=0)
-
-        
-        
-
-        subMenuHipoteseP = Menu(subMenuHipotese, tearoff=False)
-        subMenuHipoteseP.add_command(label='2 grupos', command=lambda: print('P 2 grupos'))
-        #subMenuHipoteseP.add_command(label='> 2 grupos', command=lambda: print('P > 2 grupos'))
-
-        subMenuHipotese.add_cascade(label="Paramétrico",
-                                menu=subMenuHipoteseP)
-        
-
-        #subMenuHipoteseNP = Menu(subMenuHipotese, tearoff=False)
-        #subMenuHipoteseNP.add_command(label='2 grupos', command=lambda: print('NP 2 grupos'))
-        #subMenuHipoteseNP.add_command(label='> 2 grupos', command=lambda: print('NP > 2 grupos'))
-
-        #subMenuHipotese.add_cascade(label="Não Paramétrico",
-        #                        menu=subMenuHipoteseNP)
-
-        
-
-        
-        menuTestes.add_cascade(
-            label='Hipóteses',
-            activebackground="#324aa8",
-            menu=subMenuHipotese
-        )
-
-
-        
-        barraMenu.add_cascade(label='Testes',menu=menuTestes)
-
-
-
-        barraMenu.add_command(label='Sobre',
-                              command=lambda: self.showSobre())
-        
-        barraMenu.add_command(label='Sair', 
-                              command=self.destroy)
-
-        self.config(menu=barraMenu)
-
+        self.util = Util()
+        self.definirConfiguracoes(rezisableLargura=True,rezisableAltura=True)
+        self.definirBarraMenu()
+                            
 
     def showSobre(self):
             messagebox.showinfo("Sobre Louise", "Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com") 
             
 
-
-
-louise = Louise()
-louise.mainloop()
+if __name__=="__main__":
+    louise = Louise()
+    louise.mainloop()
