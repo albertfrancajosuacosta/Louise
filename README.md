@@ -24,10 +24,10 @@ Louise é construído utilizada as seguintes bibliotecas:
 ## Funcionalidades em implantação:
 
 1. Teste de normalidade por Shapiro-Wilk
-    <s>- Início: 30/04/2024-Fim: 03/05/2024.</s>
+    - <s>Início: 30/04/2024-Fim: 03/05/2024.</s>
 
 2. Teste de normalidade por Anderson
-    <s>- Início: 03/05/2024-Fim: 03/05/2024.</s>
+    - <s>Início: 03/05/2024-Fim: 03/05/2024.</s>
 
 3. Teste de hipótese paramétrico 2 grupos (Teste T) - Não iniciado.
     - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
