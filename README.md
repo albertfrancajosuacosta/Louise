@@ -54,4 +54,15 @@ Início 30/04/2024
     - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
 
 
+## Instrução de uso:
+
+1. No repositório do GitHub, procure a pasta dist.
+2. Em dist, faça o download da pasta louise.
+3. Dentro da pasta louise, há uma pasta e um arquivo executável:
+    - _internal (pasta).
+    - louise (exe).
+4. Execute o arquivo louise.exe.
+    - Por se tratar de um arquivo executável (.exe), o antivírus pode alertar, mas não há risco em permitir a execução do arquivo.
+    
+
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![SciPy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=%white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
