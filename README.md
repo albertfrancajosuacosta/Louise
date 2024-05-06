@@ -1,6 +1,10 @@
 # Louise
 
+## Início
+
 Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.
+
+Início do projeto: 30/04/2024
 
 Louise é construído utilizada as seguintes bibliotecas:
 
@@ -16,24 +20,14 @@ Louise é construído utilizada as seguintes bibliotecas:
 
     - Pandas: <https://pandas.pydata.org/>
 
-## Contato
-
-Albert França Josuá Costa
-
-![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white) <albertfrancajosuacosta@gmail.com>
-
-![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white) <https://www.linkedin.com/in/albert-josu%C3%A1-9aa550239/>
-
-Início 30/04/2024
-
 
 ## Funcionalidades em implantação:
 
 1. Teste de normalidade por Shapiro-Wilk
-    - Início: 30/04/2024-Fim: 03/05/2024.
+    <s>- Início: 30/04/2024-Fim: 03/05/2024.</s>
 
 2. Teste de normalidade por Anderson
-    - Início: 03/05/2024-Fim: 03/05/2024.
+    <s>- Início: 03/05/2024-Fim: 03/05/2024.</s>
 
 3. Teste de hipótese paramétrico 2 grupos (Teste T) - Não iniciado.
     - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
@@ -54,7 +48,7 @@ Início 30/04/2024
     - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
 
 
-## Instrução de uso:
+## Instruções de uso:
 
 1. No repositório do GitHub, procure a pasta dist.
 2. Em dist, faça o download da pasta louise.
@@ -63,6 +57,15 @@ Início 30/04/2024
     - louise (exe).
 4. Execute o arquivo louise.exe.
     - Por se tratar de um arquivo executável (.exe), o antivírus pode alertar, mas não há risco em permitir a execução do arquivo.
-    
+
+## Contato
+
+Albert França Josuá Costa
+
+![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white) <albertfrancajosuacosta@gmail.com>
+
+![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white) <https://www.linkedin.com/in/albert-josu%C3%A1-9aa550239/>
+
+
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![SciPy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=%white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
