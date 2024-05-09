@@ -1,13 +1,19 @@
-from tkinter import HORIZONTAL, NO, VERTICAL, Scrollbar, Tk, messagebox
-from tkinter import ttk
+from tkinter import Tk, messagebox
 from tkinter import Menu
-from tkinter import Frame
 from util import Util
 from janelaNormalidade import JanelaNormalidade
+from janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
 
 
 
 class Louise(Tk):
+
+    def __init__(self):
+
+        super().__init__()
+        self.util = Util()
+        self.definirConfiguracoes(rezisableLargura=True,rezisableAltura=True)
+        self.definirBarraMenu()
 
     def definirConfiguracoes(self,rezisableLargura=True,rezisableAltura=True):
         
@@ -28,11 +34,11 @@ class Louise(Tk):
         self.menuTestes.add_command(label='Normalidade',
                                     #accelerator="Crtl+N",
                                     activebackground="#324aa8",
-                                    command= lambda: JanelaNormalidade(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
+                                    command= lambda: self.showJanelaNormalidade()
                                     )
         self.subMenuHipotese = Menu(self.menuTestes, tearoff=0)
         self.subMenuHipoteseP = Menu(self.subMenuHipotese, tearoff=False)
-        self.subMenuHipoteseP.add_command(label='2 grupos', command=lambda: print('P 2 grupos'))
+        self.subMenuHipoteseP.add_command(label='2 grupos', command=lambda: self.showJanelaHipoteseParametrico2grupos())
         #self.subMenuHipoteseP.add_command(label='> 2 grupos', command=lambda: print('P > 2 grupos'))
         self.subMenuHipotese.add_cascade(label="Paramétrico",menu=self.subMenuHipoteseP)
         
@@ -54,13 +60,11 @@ class Louise(Tk):
 
         self.config(menu=self.barraMenu)
 
-    def __init__(self):
+    def showJanelaNormalidade(self):
+        JanelaNormalidade(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
 
-        super().__init__()
-        self.util = Util()
-        self.definirConfiguracoes(rezisableLargura=True,rezisableAltura=True)
-        self.definirBarraMenu()
-                            
+    def showJanelaHipoteseParametrico2grupos(self):
+        JanelaHipoteseParametrico2Grupos(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
 
     def showSobre(self):
             messagebox.showinfo("Sobre Louise", "Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com") 

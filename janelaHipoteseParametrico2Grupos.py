@@ -10,7 +10,7 @@ from textoFormatado import TextoFormatado
 
 
 
-class JanelaNormalidade(Toplevel):
+class JanelaHipoteseParametrico2Grupos(Toplevel):
 
 
     def __init__(self, larguraMae, alturaMae, master = None):
