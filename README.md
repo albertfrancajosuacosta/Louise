@@ -29,10 +29,10 @@ Louise é construído utilizada as seguintes bibliotecas:
 2. Teste de normalidade por Anderson
     - <b><s>Início: 03/05/2024-Fim: 03/05/2024.</s></b>
 
-3. Teste de hipótese paramétrico 2 grupos (Teste T) - Não iniciado.
+3. Teste de hipótese paramétrico 2 grupos (Teste T)
     - <b><s>Início: 08/05/2024-Fim: 09/05/2024.</s></b>
 
-4. Teste de hipótese não-paramétrico 2  grupos (Mann-Whitney) - Não iniciado.
+4. Teste de hipótese não-paramétrico 2  grupos (Mann-Whitney)
     - <b>Início: 09/0/2024-Fim: dd/MM/yyyy.</b>
 
 5. Teste de hipótese não-paramétrico 2  grupos (Wilcoxon) - Não iniciado.
