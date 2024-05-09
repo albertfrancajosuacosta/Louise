@@ -1,5 +1,6 @@
 from tkinter.messagebox import showerror, showwarning
 from tkinter.ttk import Combobox, Treeview
+from tkinter import ttk
 import traceback
 
 from util import Util
@@ -123,7 +124,25 @@ class JanelaNormalidade(Toplevel):
 
         self.scrollbary = Scrollbar(self.frameCentralE, orient=VERTICAL)
         
+
+        self.style = ttk.Style()
+        self.style.theme_use("clam")
+        #self.style.configure("Treeview",
+        #                     background="#black",
+        #                     foreground="black",
+        #                    rowheight=25,
+        #                     fieldbackground="silver"
+        #                    )
         
+        self.style.configure("Treeview.Heading",
+                             background=self.util.corFundoTela,
+                             foreground=self.util.corLetra,
+                             fieldbackground="red",
+                             #rowheight=25,
+                             relief="flat"
+                             )
+
+      
         self.arvore = Treeview(self.frameCentralE,yscrollcommand=self.scrollbary.set,columns=("1","2"))
         self.arvore['show'] = 'headings'
         self.arvore.column("1", minwidth=10, width=10,  anchor=W)

@@ -3,18 +3,22 @@ from tkinter import Menu
 from util import Util
 from janelaNormalidade import JanelaNormalidade
 from janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
+from tkinter import ttk
 
 
 
 class Louise(Tk):
-
+    
     def __init__(self):
 
+        
         super().__init__()
         self.versao = 0.1
         self.util = Util()
         self.definirConfiguracoes(rezisableLargura=True,rezisableAltura=True)
         self.definirBarraMenu()
+        self.style = ttk.Style()
+        self.style.theme_use("clam")
 
     def definirConfiguracoes(self,rezisableLargura=True,rezisableAltura=True):
         

@@ -1,7 +1,7 @@
 from tkinter.messagebox import showerror, showwarning
 from tkinter.ttk import Combobox, Treeview
 import traceback
-
+from tkinter import ttk
 from util import Util
 from tkinter import VERTICAL, W, Button, Frame, Label, Scrollbar, StringVar, Toplevel, filedialog
 import pandas as pd
@@ -122,6 +122,23 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         
 
         self.scrollbary = Scrollbar(self.frameCentralE, orient=VERTICAL)
+
+        self.style = ttk.Style()
+        self.style.theme_use("clam")
+        #self.style.configure("Treeview",
+        #                     background="#black",
+        #                     foreground="black",
+        #                    rowheight=25,
+        #                     fieldbackground="silver"
+        #                    )
+        
+        self.style.configure("Treeview.Heading",
+                             background=self.util.corFundoTela,
+                             foreground=self.util.corLetra,
+                             fieldbackground="red",
+                             #rowheight=25,
+                             relief="flat"
+                             )
         
         
         self.arvore = Treeview(self.frameCentralE,yscrollcommand=self.scrollbary.set,columns=("1","2","3","4"))
