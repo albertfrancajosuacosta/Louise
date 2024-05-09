@@ -13,7 +13,6 @@ class Louise(Tk):
 
         
         super().__init__()
-        self.versao = 0.1
         self.util = Util()
         self.definirConfiguracoes(rezisableLargura=True,rezisableAltura=True)
         self.definirBarraMenu()
@@ -22,7 +21,7 @@ class Louise(Tk):
 
     def definirConfiguracoes(self,rezisableLargura=True,rezisableAltura=True):
         
-        self.title("Louise - Teste de Hipótese - Versão "+str(self.versao))
+        self.title("Louise - Teste de Hipótese - Versão "+str(self.util.versao))
         self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
         self.resizable(width=rezisableLargura, height=rezisableAltura)
         self.larguraDispositivo, self.alturaDispositvo = self.util.tamanhoTelaDispositivo(self,1.00,1.00)

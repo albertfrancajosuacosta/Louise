@@ -24,6 +24,10 @@ class TesteEstatistico():
 
         return est, criticoValor, significanciaNivel
     
-    def testT2grupos(self,dados1,dados2):
+    def testT2grupos(self,dados):
+
+        dados1 = dados.iloc[:,0:1]
+        dados2 = dados.iloc[:,1:2]
+            
 
         return ttest_ind(dados1,dados2)

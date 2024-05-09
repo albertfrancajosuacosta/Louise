@@ -26,7 +26,7 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
     def definirConfiguracoes(self, larguraMae, alturaMae,rezisableLargura=True,rezisableAltura=True):
         self.largura = larguraMae
         self.altura = alturaMae
-        self.title("Louise - Teste de Hipótese Paramétrico para 2 Grupos")
+        self.title("Louise - Teste de Hipótese Paramétrico para 2 Grupos - Versão "+str(self.util.versao))
         self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
         self.resizable(width=rezisableLargura, height=rezisableAltura)
         self.planilha = None
@@ -201,7 +201,8 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         
         
         # Adding combobox drop down list 
-        self.comboBoxTipoTesteNormalidade['values'] = ('Teste T') 
+        listaTestes  = ['Teste T']
+        self.comboBoxTipoTesteNormalidade['values'] = listaTestes
         self.comboBoxTipoTesteNormalidade['state']= 'readonly'
         self.comboBoxTipoTesteNormalidade.grid(row = 0, column = 1,sticky='NSEW',padx=10) 
         
@@ -255,30 +256,27 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         
         
     def testT2grupos(self):
-        pass 
-
-    def shapiroWilk(self):
         self.textoResultado.limpar()
         te = TesteEstatistico(signi=0.05)
-        estatistica, p_value =  te.shaporiWilk(self.planilha)
+        estatistica, p_value = te.testT2grupos(self.planilha)
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Hipóteses: \n", "bold")
-        self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
-        self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
+        self.textoResultado.insert_bullet("end", "H0: Não há diferença significativa \n")
+        self.textoResultado.insert_bullet("end", "H1: Há diferença significativa \n")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Estatística do teste\n", "bold")
-        self.textoResultado.insert("end", str(estatistica)+"\n")
+        self.textoResultado.insert("end", str(estatistica[0])+"\n")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "p-valor\n", "bold")
-        self.textoResultado.insert("end", str(p_value)+"\n")
+        self.textoResultado.insert("end", str(p_value[0])+"\n")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
@@ -292,51 +290,9 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         else:
             self.textoResultado.habitarDesabilitar("normal")
             self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
-            self.textoResultado.habitarDesabilitar("disabled")
+            self.textoResultado.habitarDesabilitar("disabled") 
+
     
-
-    def anderson(self):
-        self.textoResultado.limpar()
-        te = TesteEstatistico(signi=0.05)
-        [est, criticoValor, significanciaNivel] =  te.anderson(self.planilha,teste='norm')
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
-        self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
-        self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
-        self.textoResultado.insert("end", str(est)+"\n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Valor Crítico\n", "bold")
-        self.textoResultado.insert("end", str(criticoValor)+"\n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Nível de Significância\n", "bold")
-        self.textoResultado.insert("end", str(significanciaNivel)+"\n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "\n\n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        if(criticoValor<est):
-            self.textoResultado.habitarDesabilitar("normal")
-            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
-            self.textoResultado.habitarDesabilitar("disabled")
-        else:
-            self.textoResultado.habitarDesabilitar("normal")
-            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
-            self.textoResultado.habitarDesabilitar("disabled")
-                
                  
     def procurarArquivo(self):
 
@@ -357,11 +313,6 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
             self.qtdLinhasPlanilha, self.qtdColunasPlanilha = self.planilha.shape
 
             
-            #grupo1 = self.planilha.iloc[:,0:1]
-            #grupo2 = self.planilha.iloc[:,1:2]
-            
-            #print(self.planilha.iloc[:,0:1])
-
             if self.qtdColunasPlanilha != 2:
                 showwarning(title="Aviso", message="Os dados precisam estar em uma única coluna. Atualmente os dados estão em "+str(self.qtdColunasPlanilha)+' colunas.') 
             else: 
