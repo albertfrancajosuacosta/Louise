@@ -24,28 +24,28 @@ Louise é construído utilizada as seguintes bibliotecas:
 ## Funcionalidades em implantação:
 
 1. Teste de normalidade por Shapiro-Wilk
-    - <s>Início: 30/04/2024-Fim: 03/05/2024.</s>
+    - <b><s>Início: 30/04/2024-Fim: 03/05/2024.</s></b>
 
 2. Teste de normalidade por Anderson
-    - <s>Início: 03/05/2024-Fim: 03/05/2024.</s>
+    - <b><s>Início: 03/05/2024-Fim: 03/05/2024.</s></b>
 
 3. Teste de hipótese paramétrico 2 grupos (Teste T) - Não iniciado.
-    - Início: 08/05/2024-Fim: dd/MM/yyyy.
+    - <b>Início: 08/05/2024-Fim: dd/MM/yyyy.</b>
 
 4. Teste de hipótese não-paramétrico 2  grupos (Mann-Whitney) - Não iniciado.
-    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+    - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
 5. Teste de hipótese não-paramétrico 2  grupos (Wilcoxon) - Não iniciado.
-    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+    - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
 6. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
-    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+    - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
 7. Teste de hipótese paramétrico > 2  grupos (Kruskall-Wallis) - Não iniciado.
-    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+    - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
 8. Teste de hipótese paramétrico > 2  grupos (Friedman) - Não iniciado.
-    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+    - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
 
 ## Instruções de uso:
