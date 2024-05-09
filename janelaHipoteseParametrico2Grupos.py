@@ -124,12 +124,16 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         self.scrollbary = Scrollbar(self.frameCentralE, orient=VERTICAL)
         
         
-        self.arvore = Treeview(self.frameCentralE,yscrollcommand=self.scrollbary.set,columns=("1","2"))
+        self.arvore = Treeview(self.frameCentralE,yscrollcommand=self.scrollbary.set,columns=("1","2","3","4"))
         self.arvore['show'] = 'headings'
         self.arvore.column("1", minwidth=10, width=10,  anchor=W)
         self.arvore.column("2", minwidth=10, width=10, anchor=W)
+        self.arvore.column("3", minwidth=10, width=10,  anchor=W)
+        self.arvore.column("4", minwidth=10, width=10, anchor=W)
         self.arvore.heading("1", text="#")
-        self.arvore.heading("2", text="Valor")
+        self.arvore.heading("2", text="Valor Grupo 1")
+        self.arvore.heading("3", text="#")
+        self.arvore.heading("4", text="Valor Grupo 2")
 
         
         self.arvore.grid(row=0,
