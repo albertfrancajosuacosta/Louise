@@ -30,7 +30,7 @@ Louise é construído utilizada as seguintes bibliotecas:
     - <s>Início: 03/05/2024-Fim: 03/05/2024.</s>
 
 3. Teste de hipótese paramétrico 2 grupos (Teste T) - Não iniciado.
-    - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.
+    - Início: 08/05/2024-Fim: dd/MM/yyyy.
 
 4. Teste de hipótese não-paramétrico 2  grupos (Mann-Whitney) - Não iniciado.
     - Início: dd/MM/yyyy-Fim: dd/MM/yyyy.

@@ -1,4 +1,4 @@
-from scipy.stats import shapiro, anderson
+from scipy.stats import shapiro, anderson, ttest_ind
 
 
 class TesteEstatistico():
@@ -23,3 +23,7 @@ class TesteEstatistico():
         significanciaNivel  = resultados[2][2]
 
         return est, criticoValor, significanciaNivel
+    
+    def testT2grupos(self,dados1,dados2):
+
+        return ttest_ind(dados1,dados2)

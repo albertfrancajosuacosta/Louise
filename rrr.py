@@ -6,6 +6,22 @@
 # treeview scrollbars using tkinter
 
 
+import numpy as np
+
+from scipy import stats
+
+rng = np.random.default_rng()
+
+rvs1 = stats.norm.rvs(loc=5, scale=10, size=500, random_state=rng)
+
+rvs2 = stats.norm.rvs(loc=5, scale=10, size=50, random_state=rng)
+
+print(rvs1.shape)
+
+print(rvs2.shape)
+
+
+print(stats.ttest_ind(rvs1, rvs2))
 
 
 
@@ -87,7 +103,7 @@ window.mainloop()
 
 
 
-
+'''
 import numpy as np
 
 from scipy.stats import anderson
@@ -111,7 +127,6 @@ print(res)
 #print(res[2][2])
 
 
-'''
 root = Tk()
 root.title('Model Definition')
 root.geometry('{}x{}'.format(460, 350))

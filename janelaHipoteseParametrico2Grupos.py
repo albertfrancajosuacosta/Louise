@@ -201,7 +201,7 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         
         
         # Adding combobox drop down list 
-        self.comboBoxTipoTesteNormalidade['values'] = ('Shapiro-Wilk', 'Anderson') 
+        self.comboBoxTipoTesteNormalidade['values'] = ('Teste T') 
         self.comboBoxTipoTesteNormalidade['state']= 'readonly'
         self.comboBoxTipoTesteNormalidade.grid(row = 0, column = 1,sticky='NSEW',padx=10) 
         
@@ -238,7 +238,6 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         self.frameCentralD.rowconfigure(2,weight=1)
         self.textoResultado.grid(row=2,column=0,sticky="NSEW", columnspan=3)
 
-               
 
         self.frameCentral.grid(row=1,sticky="nenwswse") 
             
@@ -251,11 +250,12 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         elif self.tipoTesteNormalidadeEscolhido.get() == "":
             showwarning(title="Aviso", message="É necessário selecionar o teste primeiro.")
             self.comboBoxTipoTesteNormalidade.focus_set()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "Shapiro-Wilk":
-            self.shapiroWilk()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
-            self.anderson()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Teste T":
+            self.testT2grupos()
         
+        
+    def testT2grupos(self):
+        pass 
 
     def shapiroWilk(self):
         self.textoResultado.limpar()
@@ -340,11 +340,8 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
                  
     def procurarArquivo(self):
 
-        
-
         self.focus_set()
 
-        #showinfo(title='Information', message=mensagem)
 
         caminhoArquivo = filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
            
@@ -359,7 +356,13 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
             self.planilha = pd.read_excel(caminho,index_col=None)
             self.qtdLinhasPlanilha, self.qtdColunasPlanilha = self.planilha.shape
 
-            if self.qtdColunasPlanilha != 1:
+            
+            #grupo1 = self.planilha.iloc[:,0:1]
+            #grupo2 = self.planilha.iloc[:,1:2]
+            
+            #print(self.planilha.iloc[:,0:1])
+
+            if self.qtdColunasPlanilha != 2:
                 showwarning(title="Aviso", message="Os dados precisam estar em uma única coluna. Atualmente os dados estão em "+str(self.qtdColunasPlanilha)+' colunas.') 
             else: 
                 
@@ -381,9 +384,8 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
 
 
         for index, row in (planilha.sort_index(ascending=False)).iterrows():
-
-            #print(index, row.values[0])
-            self.arvore.insert(parent='', index=0, values = ((index+1), row.values[0]))
+           
+            self.arvore.insert(parent='', index=0, values = ((index+1), row.values[0], (index+1), row.values[1]))
 
 
      
