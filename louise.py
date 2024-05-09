@@ -3,6 +3,7 @@ from tkinter import Menu
 from util import Util
 from janelaNormalidade import JanelaNormalidade
 from janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
+from janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
 from tkinter import ttk
 
 
@@ -47,9 +48,9 @@ class Louise(Tk):
         self.subMenuHipotese.add_cascade(label="Paramétrico",menu=self.subMenuHipoteseP)
         
         self.subMenuHipoteseNP = Menu(self.subMenuHipotese, tearoff=False)
-        self.subMenuHipoteseNP.add_command(label='2 grupos', command=lambda: print('NP 2 grupos'))
+        self.subMenuHipoteseNP.add_command(label='2 grupos', command=lambda: self.showJanelaHipoteseNaoParametrico2grupos())
         #self.subMenuHipoteseNP.add_command(label='> 2 grupos', command=lambda: print('NP > 2 grupos'))
-        #self.subMenuHipotese.add_cascade(label="Não Paramétrico", menu=self.subMenuHipoteseNP)
+        self.subMenuHipotese.add_cascade(label="Não Paramétrico", menu=self.subMenuHipoteseNP)
 
         self.menuTestes.add_cascade(label='Hipóteses',
                                     activebackground="#324aa8",
@@ -64,11 +65,15 @@ class Louise(Tk):
 
         self.config(menu=self.barraMenu)
 
+  
     def showJanelaNormalidade(self):
         JanelaNormalidade(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
 
     def showJanelaHipoteseParametrico2grupos(self):
         JanelaHipoteseParametrico2Grupos(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
+
+    def showJanelaHipoteseNaoParametrico2grupos(self):
+        JanelaHipoteseNaoParametrico2Grupos(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
 
     def showSobre(self):
             messagebox.showinfo("Sobre Louise", "Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com") 

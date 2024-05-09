@@ -33,10 +33,10 @@ Louise é construído utilizada as seguintes bibliotecas:
     - <b><s>Início: 08/05/2024-Fim: 09/05/2024.</s></b>
 
 4. Teste de hipótese não-paramétrico 2  grupos (Mann-Whitney)
-    - <b>Início: 09/0/2024-Fim: dd/MM/yyyy.</b>
+    - <b>Início: 09/05/2024-Fim: dd/MM/yyyy.</b>
 
-5. Teste de hipótese não-paramétrico 2  grupos (Wilcoxon) - Não iniciado.
-    - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
+5. Teste de hipótese não-paramétrico 2  grupos (Wilcoxon).
+    - <b>Início: 09/05/2024 -Fim: dd/MM/yyyy.</b>
 
 6. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
     - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
