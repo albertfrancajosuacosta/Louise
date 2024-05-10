@@ -45,6 +45,4 @@ class TesteEstatistico():
         dados2 = dados.iloc[:,1:2]
 
 
-        print(type(dados1),type(dados2))
-
         return wilcoxon(dados1, dados2)
