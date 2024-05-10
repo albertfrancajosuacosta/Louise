@@ -1,16 +1,17 @@
 from tkinter.messagebox import showerror, showwarning
 from tkinter.ttk import Combobox, Treeview
-import traceback
 from tkinter import ttk
-from util import Util
+import traceback
+
+from util.util import Util
 from tkinter import VERTICAL, W, Button, Frame, Label, Scrollbar, StringVar, Toplevel, filedialog
 import pandas as pd
-from testesEstatisticos import TesteEstatistico
-from textoFormatado import TextoFormatado
+from util.testesEstatisticos import TesteEstatistico
+from util.textoFormatado import TextoFormatado
 
 
 
-class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
+class JanelaNormalidade(Toplevel):
 
 
     def __init__(self, larguraMae, alturaMae, master = None):
@@ -26,7 +27,7 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
     def definirConfiguracoes(self, larguraMae, alturaMae,rezisableLargura=True,rezisableAltura=True):
         self.largura = larguraMae
         self.altura = alturaMae
-        self.title("Louise - Teste de Hipótese Não Paramétrico para 2 Grupos - Versão "+str(self.util.versao))
+        self.title("Louise - Teste de Normalidade - Versão "+str(self.util.versao))
         self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
         self.resizable(width=rezisableLargura, height=rezisableAltura)
         self.planilha = None
@@ -122,6 +123,7 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
         
 
         self.scrollbary = Scrollbar(self.frameCentralE, orient=VERTICAL)
+        
 
         self.style = ttk.Style()
         self.style.theme_use("clam")
@@ -139,18 +141,14 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
                              #rowheight=25,
                              relief="flat"
                              )
-        
-        
-        self.arvore = Treeview(self.frameCentralE,yscrollcommand=self.scrollbary.set,columns=("1","2","3","4"))
+
+      
+        self.arvore = Treeview(self.frameCentralE,yscrollcommand=self.scrollbary.set,columns=("1","2"))
         self.arvore['show'] = 'headings'
         self.arvore.column("1", minwidth=10, width=10,  anchor=W)
         self.arvore.column("2", minwidth=10, width=10, anchor=W)
-        self.arvore.column("3", minwidth=10, width=10,  anchor=W)
-        self.arvore.column("4", minwidth=10, width=10, anchor=W)
         self.arvore.heading("1", text="#")
-        self.arvore.heading("2", text="Valor Grupo 1")
-        self.arvore.heading("3", text="#")
-        self.arvore.heading("4", text="Valor Grupo 2")
+        self.arvore.heading("2", text="Valor")
 
         
         self.arvore.grid(row=0,
@@ -189,7 +187,6 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
                                     sticky='ns'
                                     )
         
-
         self.tipoTesteNormalidadeEscolhido = StringVar()
 
         self.comboBoxTipoTesteNormalidade = Combobox(self.frameCentralD, 
@@ -201,11 +198,36 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
         
         
         # Adding combobox drop down list 
-        listaTestes  = ['Mann-Whitney', 'Wilcoxon']
-        self.comboBoxTipoTesteNormalidade['values'] = listaTestes
+        self.comboBoxTipoTesteNormalidade['values'] = ('Shapiro-Wilk', 'Anderson') 
         self.comboBoxTipoTesteNormalidade['state']= 'readonly'
         self.comboBoxTipoTesteNormalidade.grid(row = 0, column = 1,sticky='NSEW',padx=10) 
         
+
+        self.labelSelecioneNivelSignificancia = Label(self.frameCentralD,
+                                                      text="Selecione o nível de significância",
+                                                      font=('Arial',16,'bold')
+                                                      )
+        
+        self.labelSelecioneNivelSignificancia.config(bg=self.util.corFundoTela, fg=self.util.corLetra)
+        self.labelSelecioneNivelSignificancia.grid(row=1,
+                                    column=0,
+                                    sticky='ns'
+                                    )
+        
+
+
+        self.nivelSignificanciaeEscolhido = StringVar()
+
+        self.comboBoxNivelSignificancia = Combobox(self.frameCentralD, 
+                                            textvariable=self.nivelSignificanciaeEscolhido
+                                            #width=(self.largura//2)
+                                       )
+
+        # Adding combobox drop down list 
+        self.comboBoxNivelSignificancia['values'] = ('1%', '2.5%','5%', '10%', '15%') 
+        self.comboBoxNivelSignificancia['state']= 'readonly'
+        self.comboBoxNivelSignificancia.grid(row = 1, column = 1,sticky='NSEW',padx=10) 
+            
 
         self.botaoTestar = Button(self.frameCentralD, 
                    text="Testar", 
@@ -229,21 +251,25 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
             )
         
         
-        self.botaoTestar.grid(row=1,column=0, columnspan=2,  sticky="NSEW")
+        self.botaoTestar.grid(row=2,column=0, columnspan=2,  sticky="NSEW")
 
 
         self.textoResultado = TextoFormatado(self.frameCentralD)
 
         self.textoResultado.limpar()
         
-        self.frameCentralD.rowconfigure(2,weight=1)
-        self.textoResultado.grid(row=2,column=0,sticky="NSEW", columnspan=3)
+        self.frameCentralD.rowconfigure(3,weight=1)
+        self.textoResultado.grid(row=3,column=0,sticky="NSEW", columnspan=3)
 
+               
 
         self.frameCentral.grid(row=1,sticky="nenwswse") 
             
 
     def testar(self):
+
+        
+        self.sig = self.util.converteNivelSignificancia(self.nivelSignificanciaeEscolhido.get(),self.tipoTesteNormalidadeEscolhido.get())
             
         if self.labelCaminhoArquivo.cget("text") == "":
             showwarning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
@@ -251,35 +277,34 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
         elif self.tipoTesteNormalidadeEscolhido.get() == "":
             showwarning(title="Aviso", message="É necessário selecionar o teste primeiro.")
             self.comboBoxTipoTesteNormalidade.focus_set()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "Mann-Whitney":
-            self.testeMannWhitney2grupos()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "Wilcoxon":
-            self.testeWilcoxon2grupos()
-
-            
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Shapiro-Wilk":
+            self.shapiroWilk()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
+            self.anderson()
         
-    def testeWilcoxon2grupos(self):
+
+    def shapiroWilk(self):
         self.textoResultado.limpar()
-        te = TesteEstatistico(signi=0.05)
-        estatistica, p_value = te.wilcoxon2grupos(self.planilha)
+        te = TesteEstatistico(signi=self.sig)
+        estatistica, p_value =  te.shaporiWilk(self.planilha)
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Hipóteses: \n", "bold")
-        self.textoResultado.insert_bullet("end", "H0: Não há diferença significativa \n")
-        self.textoResultado.insert_bullet("end", "H1: Há diferença significativa \n")
+        self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
+        self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Estatística do teste\n", "bold")
-        self.textoResultado.insert("end", str(estatistica[0])+"\n")
+        self.textoResultado.insert("end", str(estatistica)+"\n")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "p-valor\n", "bold")
-        self.textoResultado.insert("end", str(p_value[0])+"\n")
+        self.textoResultado.insert("end", str(p_value)+"\n")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
@@ -293,53 +318,60 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
         else:
             self.textoResultado.habitarDesabilitar("normal")
             self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
-            self.textoResultado.habitarDesabilitar("disabled") 
-
-
-    def testeMannWhitney2grupos(self):
-        
-        self.textoResultado.limpar()
-        te = TesteEstatistico(signi=0.05)
-        estatistica, p_value = te.mannWhitney2grupos(self.planilha)
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
-        self.textoResultado.insert_bullet("end", "H0: Não há diferença significativa \n")
-        self.textoResultado.insert_bullet("end", "H1: Há diferença significativa \n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
-        self.textoResultado.insert("end", str(estatistica[0])+"\n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "p-valor\n", "bold")
-        self.textoResultado.insert("end", str(p_value[0])+"\n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "\n\n")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        if(p_value<te.nivelSignificancia):
-            self.textoResultado.habitarDesabilitar("normal")
-            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
             self.textoResultado.habitarDesabilitar("disabled")
-        else:
-            self.textoResultado.habitarDesabilitar("normal")
-            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
-            self.textoResultado.habitarDesabilitar("disabled") 
-
     
+
+    def anderson(self):
+        self.textoResultado.limpar()
+        te = TesteEstatistico(signi=self.sig)
+        [est, criticoValor, significanciaNivel] =  te.anderson(self.planilha,teste='norm')
+        
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
+        self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
+        self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
+        self.textoResultado.insert("end", str(est)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Valor Crítico\n", "bold")
+        self.textoResultado.insert("end", str(criticoValor)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Nível de Significância\n", "bold")
+        self.textoResultado.insert("end", str(significanciaNivel)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "\n\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        if(criticoValor<est):
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+        else:
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+                
                  
     def procurarArquivo(self):
 
+        
+
         self.focus_set()
 
+        #showinfo(title='Information', message=mensagem)
 
         caminhoArquivo = filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
            
@@ -354,8 +386,7 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
             self.planilha = pd.read_excel(caminho,index_col=None)
             self.qtdLinhasPlanilha, self.qtdColunasPlanilha = self.planilha.shape
 
-            
-            if self.qtdColunasPlanilha != 2:
+            if self.qtdColunasPlanilha != 1:
                 showwarning(title="Aviso", message="Os dados precisam estar em uma única coluna. Atualmente os dados estão em "+str(self.qtdColunasPlanilha)+' colunas.') 
             else: 
                 
@@ -377,8 +408,9 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
 
 
         for index, row in (planilha.sort_index(ascending=False)).iterrows():
-           
-            self.arvore.insert(parent='', index=0, values = ((index+1), row.values[0], (index+1), row.values[1]))
+
+            #print(index, row.values[0])
+            self.arvore.insert(parent='', index=0, values = ((index+1), row.values[0]))
 
 
      

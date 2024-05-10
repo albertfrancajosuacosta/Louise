@@ -33,3 +33,30 @@ class Util:
         largura = frame.winfo_reqwidth()
         altura = frame.winfo_reqheight()
         return largura, altura
+    
+
+    def converteNivelSignificancia(self, valorOriginal,testeSelecionado):
+        if(testeSelecionado == 'Anderson'):
+            pass
+            if valorOriginal == "1%":
+                return 1.
+            if valorOriginal == "2.5%":
+                return 2.5
+            if valorOriginal == "5%":
+                return 5.
+            if valorOriginal == "10%":
+                return 10.
+            if valorOriginal == "15%":
+                return 15.
+        else:    
+            if valorOriginal == "1%":
+                return 0.01
+            if valorOriginal == "2.5%":
+                return 0.025
+            if valorOriginal == "5%":
+                return 0.05
+            if valorOriginal == "10%":
+                return 0.10
+            if valorOriginal == "15%":
+                return 0.15
+        

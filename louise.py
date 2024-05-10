@@ -1,9 +1,9 @@
 from tkinter import Tk, messagebox
 from tkinter import Menu
-from util import Util
-from janelaNormalidade import JanelaNormalidade
-from janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
-from janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
+from util.util import Util
+from view.janelaNormalidade import JanelaNormalidade
+from view.janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
+from view.janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
 from tkinter import ttk
 
 

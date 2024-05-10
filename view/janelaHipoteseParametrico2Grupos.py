@@ -2,11 +2,11 @@ from tkinter.messagebox import showerror, showwarning
 from tkinter.ttk import Combobox, Treeview
 import traceback
 from tkinter import ttk
-from util import Util
+from util.util import Util
 from tkinter import VERTICAL, W, Button, Frame, Label, Scrollbar, StringVar, Toplevel, filedialog
 import pandas as pd
-from testesEstatisticos import TesteEstatistico
-from textoFormatado import TextoFormatado
+from util.testesEstatisticos import TesteEstatistico
+from util.textoFormatado import TextoFormatado
 
 
 
@@ -190,10 +190,10 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
                                     )
         
 
-        self.tipoTesteNormalidadeEscolhido = StringVar()
+        self.tipoTesteEscolhido = StringVar()
 
-        self.comboBoxTipoTesteNormalidade = Combobox(self.frameCentralD, 
-                                            textvariable=self.tipoTesteNormalidadeEscolhido
+        self.comboBoxTipoTeste = Combobox(self.frameCentralD, 
+                                            textvariable=self.tipoTesteEscolhido
                                             #width=(self.largura//2)
                                        )
         
@@ -202,9 +202,34 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         
         # Adding combobox drop down list 
         listaTestes  = ['Teste T']
-        self.comboBoxTipoTesteNormalidade['values'] = listaTestes
-        self.comboBoxTipoTesteNormalidade['state']= 'readonly'
-        self.comboBoxTipoTesteNormalidade.grid(row = 0, column = 1,sticky='NSEW',padx=10) 
+        self.comboBoxTipoTeste['values'] = listaTestes
+        self.comboBoxTipoTeste['state']= 'readonly'
+        self.comboBoxTipoTeste.grid(row = 0, column = 1,sticky='NSEW',padx=10) 
+
+        self.labelSelecioneNivelSignificancia = Label(self.frameCentralD,
+                                                      text="Selecione o nível de significância",
+                                                      font=('Arial',16,'bold')
+                                                      )
+        
+        self.labelSelecioneNivelSignificancia.config(bg=self.util.corFundoTela, fg=self.util.corLetra)
+        self.labelSelecioneNivelSignificancia.grid(row=1,
+                                    column=0,
+                                    sticky='ns'
+                                    )
+        
+
+
+        self.nivelSignificanciaeEscolhido = StringVar()
+
+        self.comboBoxNivelSignificancia = Combobox(self.frameCentralD, 
+                                            textvariable=self.nivelSignificanciaeEscolhido
+                                            #width=(self.largura//2)
+                                       )
+
+        # Adding combobox drop down list 
+        self.comboBoxNivelSignificancia['values'] = ('1%', '2.5%','5%', '10%', '15%') 
+        self.comboBoxNivelSignificancia['state']= 'readonly'
+        self.comboBoxNivelSignificancia.grid(row = 1, column = 1,sticky='NSEW',padx=10) 
         
 
         self.botaoTestar = Button(self.frameCentralD, 
@@ -229,38 +254,41 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
             )
         
         
-        self.botaoTestar.grid(row=1,column=0, columnspan=2,  sticky="NSEW")
+        self.botaoTestar.grid(row=2,column=0, columnspan=2,  sticky="NSEW")
 
 
         self.textoResultado = TextoFormatado(self.frameCentralD)
 
         self.textoResultado.limpar()
         
-        self.frameCentralD.rowconfigure(2,weight=1)
-        self.textoResultado.grid(row=2,column=0,sticky="NSEW", columnspan=3)
+        self.frameCentralD.rowconfigure(3,weight=1)
+        self.textoResultado.grid(row=3,column=0,sticky="NSEW", columnspan=3)
 
 
         self.frameCentral.grid(row=1,sticky="nenwswse") 
             
 
     def testar(self):
+
+        
+        self.sig = self.util.converteNivelSignificancia(self.nivelSignificanciaeEscolhido.get(),self.tipoTesteEscolhido.get())
             
         if self.labelCaminhoArquivo.cget("text") == "":
             showwarning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
             self.botaoArquivo.focus_set()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "":
+        elif self.tipoTesteEscolhido.get() == "":
             showwarning(title="Aviso", message="É necessário selecionar o teste primeiro.")
-            self.comboBoxTipoTesteNormalidade.focus_set()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "Teste T":
+            self.comboBoxTipoTeste.focus_set()
+        elif self.tipoTesteEscolhido.get() == "Teste T":
             self.testT2grupos()
         
         
     def testT2grupos(self):
         self.textoResultado.limpar()
-        te = TesteEstatistico(signi=0.05)
+        te = TesteEstatistico(signi=self.sig)
         estatistica, p_value = te.testT2grupos(self.planilha)
         self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
+        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
