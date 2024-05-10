@@ -43,13 +43,16 @@ Louise é construído utilizada as seguintes bibliotecas:
 5. Teste de hipótese não-paramétrico 2  grupos (Wilcoxon).
     - <b><s>Início: 09/05/2024 -Fim: 09/05/2024.</s></b>
 
-6. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
+6. Escolha do nível de significância entre 1%, 2.5%, 5%, 10% e 15%.
+    - <b><s>Início: 10/05/2024 -Fim: 10/05/2024.</s></b>
+
+7. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
     - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
-7. Teste de hipótese paramétrico > 2  grupos (Kruskall-Wallis) - Não iniciado.
+8. Teste de hipótese paramétrico > 2  grupos (Kruskall-Wallis) - Não iniciado.
     - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
-8. Teste de hipótese paramétrico > 2  grupos (Friedman) - Não iniciado.
+9. Teste de hipótese paramétrico > 2  grupos (Friedman) - Não iniciado.
     - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
 
