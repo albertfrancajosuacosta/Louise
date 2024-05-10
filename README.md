@@ -2,7 +2,7 @@
 
 ## Início
 
-Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.
+Louise tem como objetivo fornecer uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.
 
 Início do projeto: 30/04/2024
 
@@ -19,6 +19,11 @@ Louise é construído utilizada as seguintes bibliotecas:
 3.  Manipulação de dados
 
     - Pandas: <https://pandas.pydata.org/>
+
+
+## Considerações:
+
+-   A interface gráfica com o usuário da versão inicial (0.1) requer melhorias que serão atendidas na próxima versão da ferramenta. Entretanto, a ferramenta é funcional na presente versão. 
 
 
 ## Funcionalidades em implantação:
