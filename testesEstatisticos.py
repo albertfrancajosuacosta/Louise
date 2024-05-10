@@ -1,4 +1,4 @@
-from scipy.stats import shapiro, anderson, ttest_ind
+from scipy.stats import shapiro, anderson, ttest_ind, mannwhitneyu, wilcoxon
 
 
 class TesteEstatistico():
@@ -31,3 +31,20 @@ class TesteEstatistico():
             
 
         return ttest_ind(dados1,dados2)
+    
+    def mannWhitney2grupos(self,dados):
+        
+        dados1 = dados.iloc[:,0:1]
+        dados2 = dados.iloc[:,1:2]
+
+        return mannwhitneyu(dados1, dados2)
+
+    def wilcoxon2grupos(self,dados):
+
+        dados1 = dados.iloc[:,0:1]
+        dados2 = dados.iloc[:,1:2]
+
+
+        print(type(dados1),type(dados2))
+
+        return wilcoxon(dados1, dados2)

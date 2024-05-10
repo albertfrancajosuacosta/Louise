@@ -254,27 +254,14 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
         elif self.tipoTesteNormalidadeEscolhido.get() == "Mann-Whitney":
             self.testeMannWhitney2grupos()
         elif self.tipoTesteNormalidadeEscolhido.get() == "Wilcoxon":
-            self.testeMannWhitney2grupos()
+            self.testeWilcoxon2grupos()
 
             
         
     def testeWilcoxon2grupos(self):
         self.textoResultado.limpar()
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "EM IMPLANTAÇÃO ", "h1")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-
-    def testeMannWhitney2grupos(self):
-        self.textoResultado.limpar()
-        self.textoResultado.habitarDesabilitar("normal")
-        self.textoResultado.insert("end", "EM IMPLANTAÇÃO ", "h1")
-        self.textoResultado.habitarDesabilitar("disabled")
-
-        '''
-        self.textoResultado.limpar()
         te = TesteEstatistico(signi=0.05)
-        estatistica, p_value = te.testT2grupos(self.planilha)
+        estatistica, p_value = te.wilcoxon2grupos(self.planilha)
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
         self.textoResultado.habitarDesabilitar("disabled")
@@ -307,7 +294,46 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
             self.textoResultado.habitarDesabilitar("normal")
             self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
             self.textoResultado.habitarDesabilitar("disabled") 
-'''
+
+
+    def testeMannWhitney2grupos(self):
+        
+        self.textoResultado.limpar()
+        te = TesteEstatistico(signi=0.05)
+        estatistica, p_value = te.mannWhitney2grupos(self.planilha)
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
+        self.textoResultado.insert_bullet("end", "H0: Não há diferença significativa \n")
+        self.textoResultado.insert_bullet("end", "H1: Há diferença significativa \n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
+        self.textoResultado.insert("end", str(estatistica[0])+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "p-valor\n", "bold")
+        self.textoResultado.insert("end", str(p_value[0])+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "\n\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        if(p_value<te.nivelSignificancia):
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+        else:
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled") 
+
     
                  
     def procurarArquivo(self):
