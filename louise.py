@@ -76,7 +76,7 @@ class Louise(Tk):
         JanelaHipoteseNaoParametrico2Grupos(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
 
     def showSobre(self):
-            messagebox.showinfo("Sobre Louise", "Louise é um projeto com objetivo de desenvolver uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com") 
+            messagebox.showinfo("Sobre Louise", "Louise tem como objetivo fornecer uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com") 
             
 
 if __name__=="__main__":
