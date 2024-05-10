@@ -194,6 +194,7 @@ class JanelaNormalidade(Toplevel):
                                             #width=(self.largura//2)
                                        )
         
+        
         self.frameCentralD.columnconfigure(1,weight=1)
         
         
@@ -227,7 +228,7 @@ class JanelaNormalidade(Toplevel):
         self.comboBoxNivelSignificancia['values'] = ('1%', '2.5%','5%', '10%', '15%') 
         self.comboBoxNivelSignificancia['state']= 'readonly'
         self.comboBoxNivelSignificancia.grid(row = 1, column = 1,sticky='NSEW',padx=10) 
-            
+        self.comboBoxNivelSignificancia.current(2)   
 
         self.botaoTestar = Button(self.frameCentralD, 
                    text="Testar", 

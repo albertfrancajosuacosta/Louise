@@ -230,7 +230,7 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         self.comboBoxNivelSignificancia['values'] = ('1%', '2.5%','5%', '10%', '15%') 
         self.comboBoxNivelSignificancia['state']= 'readonly'
         self.comboBoxNivelSignificancia.grid(row = 1, column = 1,sticky='NSEW',padx=10) 
-        
+        self.comboBoxNivelSignificancia.current(2) 
 
         self.botaoTestar = Button(self.frameCentralD, 
                    text="Testar", 
