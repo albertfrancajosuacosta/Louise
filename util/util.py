@@ -11,7 +11,8 @@ class Util:
          self.corLetra = "#ffffff"
          self.corBorda = "#b4cffa"
          self.corFundoResultado = "#D9DDDC"
-         self.versao = 0.1
+         self.versao_0_1 = 0.1
+         self.versao_0_5 = 0.5
 
 
    
