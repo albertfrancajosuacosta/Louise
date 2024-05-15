@@ -79,19 +79,32 @@ class Louise_v0_05(ttk.Frame):
         self.frameTestesNormalidadeHipoteses = ttk.Frame(self.frameSelecioneTeste,bootstyle="light")
         self.frameTestesNormalidadeHipoteses.pack(fill=BOTH, expand=Y, anchor=N)
 
-        self.labelNormalidade = ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Normalidade:",width=50)
+
+        # form variables
+        self.name = ttk.StringVar(value="")
+        self.address = ttk.StringVar(value="")
+        self.phone = ttk.StringVar(value="")
+
+
+        self.create_form_entry(self.frameTestesNormalidadeHipoteses,"name",self.name)
+
+        self.create_form_entry(self.frameTestesNormalidadeHipoteses,"Endereço",self.address)
+
+        self.create_form_entry(self.frameTestesNormalidadeHipoteses,"Telefone",self.phone)
+
+        #self.labelNormalidade = ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Normalidade:",width=50)
         #self.labelNormalidade.pack(side=TOP, padx=5)
         #self.labelNormalidade.place(x=0, y=35)
-        self.labelNormalidade.pack(side=LEFT, fill=X, expand=NO, pady=10, padx=5,anchor=N)
+        #self.labelNormalidade.pack(side=LEFT, fill=X, expand=NO, pady=10, padx=5,anchor=N)
 
-        self.name = ttk.StringVar(value="")
-        self.ent = ttk.Entry(master=self.frameTestesNormalidadeHipoteses, textvariable=self.name)
-        self.ent.pack(side=LEFT, fill=X, expand=NO, pady=10, padx=5,anchor=N)
+        #self.name = ttk.StringVar(value="")
+        #self.ent = ttk.Entry(master=self.frameTestesNormalidadeHipoteses, textvariable=self.name)
+        #self.ent.pack(side=LEFT, fill=X, expand=NO, pady=10, padx=5,anchor=N)
         #self.ent.place(x=0, y=100)
 
 
-        self.labelHipotese= ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Hipótese:",width=50)
-        self.labelHipotese.pack(side=LEFT, fill="x", expand=NO, pady=100, padx=5,anchor=N)
+        #self.labelHipotese= ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Hipótese:",width=50)
+        #self.labelHipotese.pack(side=LEFT, fill="x", expand=NO, pady=100, padx=5,anchor=N)
         #self.labelHipotese.pack(side=TOP, padx=5)
 
         #self.name1 = ttk.StringVar(value="")
@@ -132,6 +145,18 @@ class Louise_v0_05(ttk.Frame):
 
         #self.create_path_row()
 
+
+    def create_form_entry(self, widget, label, variable):
+        """Create a single form entry"""
+        #container = ttk.Frame(self)
+        container = widget
+        container.pack(fill=X, expand=YES, pady=5)
+
+        lbl = ttk.Label(master=container, text=label.title(), width=10)
+        lbl.pack(side=LEFT, padx=5)
+
+        ent = ttk.Entry(master=container, textvariable=variable)
+        ent.pack(side=LEFT, padx=5, fill=X, expand=YES)
 
     def showFrameTeste(self):
          self.frameSelecioneTeste.pack(fill=BOTH, expand=YES, anchor=N)
