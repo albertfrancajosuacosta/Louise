@@ -1,4 +1,5 @@
-
+from pathlib import Path
+import ttkbootstrap as ttk
 
 class Util:
      
@@ -13,6 +14,32 @@ class Util:
          self.corFundoResultado = "#D9DDDC"
          self.versao_0_1 = 0.1
          self.versao_0_5 = 0.5
+
+         CAMINHO_IMAGEM = Path(__file__).parent / 'img'
+
+         self.arquivo_imagem = {
+            'properties-dark': 'icons8_settings_24px.png',
+            'properties-light': 'icons8_settings_24px_2.png',
+            'add-to-backup-dark': 'icons8_add_folder_24px.png',
+            'add-to-backup-light': 'icons8_add_book_24px.png',
+            'stop-backup-dark': 'icons8_cancel_24px.png',
+            'stop-backup-light': 'icons8_cancel_24px_1.png',
+            'play': 'icons8_play_24px_1.png',
+            'refresh': 'icons8_refresh_24px_1.png',
+            'stop-dark': 'icons8_stop_24px.png',
+            'stop-light': 'icons8_stop_24px_1.png',
+            'opened-folder': 'icons8_opened_folder_24px.png',
+            'logo': 'backup.png',
+            'curve': 'curve_24px.png',
+            'sair': 'exit_24px.png',
+            'sobre': 'sobre_24px.png'
+         }
+
+         #self.fotoimagens = []
+         #imgpath = Path(__file__).parent / 'img'
+         #for key, val in self.arquivo_imagem.items():
+         #   _path = imgpath / val
+         #   self.fotoimagens.append(ttk.PhotoImage(name=key, file=_path))
 
 
    

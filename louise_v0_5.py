@@ -2,7 +2,7 @@ from datetime import datetime
 from random import choices
 import ttkbootstrap as ttk
 from ttkbootstrap.style import Bootstyle
-from ttkbootstrap.dialogs import Messagebox,MessageDialog
+from ttkbootstrap.dialogs import Messagebox
 from ttkbootstrap.constants import *
 from pathlib import Path
 from util.util import Util
@@ -21,32 +21,10 @@ class Louise_v0_05(ttk.Frame):
         self.master.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,0,0))
         self.master.title("Louise - Teste de Hipótese - Versão "+str(self.util.versao_0_5))
 
-        #self.
-
-        image_files = {
-            'properties-dark': 'icons8_settings_24px.png',
-            'properties-light': 'icons8_settings_24px_2.png',
-            'add-to-backup-dark': 'icons8_add_folder_24px.png',
-            'add-to-backup-light': 'icons8_add_book_24px.png',
-            'stop-backup-dark': 'icons8_cancel_24px.png',
-            'stop-backup-light': 'icons8_cancel_24px_1.png',
-            'play': 'icons8_play_24px_1.png',
-            'refresh': 'icons8_refresh_24px_1.png',
-            'stop-dark': 'icons8_stop_24px.png',
-            'stop-light': 'icons8_stop_24px_1.png',
-            'opened-folder': 'icons8_opened_folder_24px.png',
-            'logo': 'backup.png',
-            'curve': 'curve_24px.png',
-            'sair': 'exit_24px.png',
-            'sobre': 'sobre_24px.png'
-        }
-
-    
-        
-
+      
         self.photoimages = []
         imgpath = Path(__file__).parent / 'img'
-        for key, val in image_files.items():
+        for key, val in self.util.arquivo_imagem.items():
             _path = imgpath / val
             self.photoimages.append(ttk.PhotoImage(name=key, file=_path))
 
