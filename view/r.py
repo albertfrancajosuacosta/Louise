@@ -1,461 +1,295 @@
-from pathlib import Path
-from tkinter import PhotoImage
+import datetime
+import pathlib
+from queue import Queue
+from threading import Thread
+from tkinter.filedialog import askdirectory
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-from ttkbootstrap.dialogs import Messagebox
+from ttkbootstrap import utility
 
 
-PATH = Path(__file__).parent / 'assets'
+class FileSearchEngine(ttk.Frame):
 
-
-class MouseUtilities(ttk.Frame):
+    queue = Queue()
+    searching = False
 
     def __init__(self, master):
-        super().__init__(master)
+        super().__init__(master, padding=15)
         self.pack(fill=BOTH, expand=YES)
 
-        self.images = [
-            PhotoImage(
-                name='reset', 
-                file=PATH / 'magic_mouse/icons8_reset_24px.png'),
-            PhotoImage(
-                name='reset-small', 
-                file=PATH / 'magic_mouse/icons8_reset_16px.png'),
-            PhotoImage(
-                name='submit', 
-                file=PATH / 'magic_mouse/icons8_submit_progress_24px.png'),
-            PhotoImage(
-                name='question', 
-                file=PATH / 'magic_mouse/icons8_question_mark_16px.png'),
-            PhotoImage(
-                name='direction', 
-                file=PATH / 'magic_mouse/icons8_move_16px.png'),
-            PhotoImage(
-                name='bluetooth', 
-                file=PATH / 'magic_mouse/icons8_bluetooth_2_16px.png'),
-            PhotoImage(
-                name='buy', 
-                file=PATH / 'magic_mouse/icons8_buy_26px_2.png'),
-            PhotoImage(
-                name='mouse', 
-                file=PATH / 'magic_mouse/magic_mouse.png')
-        ]
+        # application variables
+        _path = pathlib.Path().absolute().as_posix()
+        self.path_var = ttk.StringVar(value=_path)
+        self.term_var = ttk.StringVar(value='md')
+        self.type_var = ttk.StringVar(value='endswidth')
 
-        for i in range(3):
-            self.columnconfigure(i, weight=1)
-        self.rowconfigure(0, weight=1)
+        # header and labelframe option container
+        option_text = "Complete the form to begin your search"
+        self.option_lf = ttk.Labelframe(self, text=option_text, padding=15)
+        self.option_lf.pack(fill=X, expand=YES, anchor=N)
 
-        # column 1
-        col1 = ttk.Frame(self, padding=10)
-        col1.grid(row=0, column=0, sticky=NSEW)
+        self.create_path_row()
+        self.create_term_row()
+        self.create_type_row()
+        self.create_results_view()
 
-        # device info
-        dev_info = ttk.Labelframe(col1, text='Device Info', padding=10)
-        dev_info.pack(side=TOP, fill=BOTH, expand=YES)
-
-        # header
-        dev_info_header = ttk.Frame(dev_info, padding=5)
-        dev_info_header.pack(fill=X)
-
-        btn = ttk.Button(
-            master=dev_info_header,
-            image='reset',
-            bootstyle=LINK,
-            command=self.callback
+        self.progressbar = ttk.Progressbar(
+            master=self, 
+            mode=INDETERMINATE, 
+            bootstyle=(STRIPED, SUCCESS)
         )
-        btn.pack(side=LEFT)
+        self.progressbar.pack(fill=X, expand=YES)
 
-        lbl = ttk.Label(dev_info_header, text='Model 2009, 2xAA Batteries')
-        lbl.pack(side=LEFT, fill=X, padx=15)
-
-        btn = ttk.Button(
-            master=dev_info_header,
-            image='submit',
-            bootstyle=LINK,
-            command=self.callback
+    def create_path_row(self):
+        """Add path row to labelframe"""
+        path_row = ttk.Frame(self.option_lf)
+        path_row.pack(fill=X, expand=YES)
+        path_lbl = ttk.Label(path_row, text="Path", width=8)
+        path_lbl.pack(side=LEFT, padx=(15, 0))
+        path_ent = ttk.Entry(path_row, textvariable=self.path_var)
+        path_ent.pack(side=LEFT, fill=X, expand=YES, padx=5)
+        browse_btn = ttk.Button(
+            master=path_row, 
+            text="Browse", 
+            command=self.on_browse, 
+            width=8
         )
-        btn.pack(side=LEFT)
+        browse_btn.pack(side=LEFT, padx=5)
 
-        # image
-        ttk.Label(dev_info, image='mouse').pack(fill=X)
-
-        # progressbar
-        pb = ttk.Progressbar(dev_info, value=66)
-        pb.pack(fill=X, pady=5, padx=5)
-        ttk.Label(pb, text='66%', bootstyle=(PRIMARY, INVERSE)).pack()
-
-        # progress message
-        self.setvar('progress', 'Battery is discharging.')
-        lbl = ttk.Label(
-            master=dev_info,
-            textvariable='progress',
-            font='Helvetica 8',
-            anchor=CENTER
+    def create_term_row(self):
+        """Add term row to labelframe"""
+        term_row = ttk.Frame(self.option_lf)
+        term_row.pack(fill=X, expand=YES, pady=15)
+        term_lbl = ttk.Label(term_row, text="Term", width=8)
+        term_lbl.pack(side=LEFT, padx=(15, 0))
+        term_ent = ttk.Entry(term_row, textvariable=self.term_var)
+        term_ent.pack(side=LEFT, fill=X, expand=YES, padx=5)
+        search_btn = ttk.Button(
+            master=term_row, 
+            text="Search", 
+            command=self.on_search, 
+            bootstyle=OUTLINE, 
+            width=8
         )
-        lbl.pack(fill=X)
+        search_btn.pack(side=LEFT, padx=5)
 
-        # licence info
-        lic_info = ttk.Labelframe(col1, text='License Info', padding=20)
-        lic_info.pack(side=TOP, fill=BOTH, expand=YES, pady=(10, 0))
-        lic_info.rowconfigure(0, weight=1)
-        lic_info.columnconfigure(0, weight=2)
+    def create_type_row(self):
+        """Add type row to labelframe"""
+        type_row = ttk.Frame(self.option_lf)
+        type_row.pack(fill=X, expand=YES)
+        type_lbl = ttk.Label(type_row, text="Type", width=8)
+        type_lbl.pack(side=LEFT, padx=(15, 0))
 
-        lic_title = ttk.Label(
-            master=lic_info,
-            text='Trial Version, 28 days left',
-            anchor=CENTER
+        contains_opt = ttk.Radiobutton(
+            master=type_row, 
+            text="Contains", 
+            variable=self.type_var, 
+            value="contains"
         )
-        lic_title.pack(fill=X, pady=(0, 20))
+        contains_opt.pack(side=LEFT)
 
-        lbl = ttk.Label(
-            master=lic_info,
-            text='Mouse serial number:',
-            anchor=CENTER,
-            font='Helvetica 8'
+        startswith_opt = ttk.Radiobutton(
+            master=type_row, 
+            text="StartsWith", 
+            variable=self.type_var, 
+            value="startswith"
         )
-        lbl.pack(fill=X)
-        self.setvar('license', 'dtMM2-XYZGHIJKLMN3')
+        startswith_opt.pack(side=LEFT, padx=15)
 
-        lic_num = ttk.Label(
-            master=lic_info,
-            textvariable='license',
-            bootstyle=PRIMARY,
-            anchor=CENTER
+        endswith_opt = ttk.Radiobutton(
+            master=type_row, 
+            text="EndsWith", 
+            variable=self.type_var, 
+            value="endswith"
         )
-        lic_num.pack(fill=X, pady=(0, 20))
+        endswith_opt.pack(side=LEFT)
+        endswith_opt.invoke()
 
-        buy_now = ttk.Button(
-            master=lic_info,
-            image='buy',
-            text='Buy now',
-            compound=BOTTOM,
-            command=self.callback
+    def create_results_view(self):
+        """Add result treeview to labelframe"""
+        self.resultview = ttk.Treeview(
+            master=self, 
+            bootstyle=INFO, 
+            columns=[0, 1, 2, 3, 4],
+            show=HEADINGS
         )
-        buy_now.pack(padx=10, fill=X)
+        self.resultview.pack(fill=BOTH, expand=YES, pady=10)
 
-        # Column 2
-        col2 = ttk.Frame(self, padding=10)
-        col2.grid(row=0, column=1, sticky=NSEW)
-
-        # scrolling
-        scrolling = ttk.Labelframe(col2, text='Scrolling', padding=(15, 10))
-        scrolling.pack(side=TOP, fill=BOTH, expand=YES)
-
-        op1 = ttk.Checkbutton(scrolling, text='Scrolling', variable='op1')
-        op1.pack(fill=X, pady=5)
-
-        # no horizontal scrolling
-        op2 = ttk.Checkbutton(
-            master=scrolling,
-            text='No horizontal scrolling',
-            variable='op2'
+        # setup columns and use `scale_size` to adjust for resolution
+        self.resultview.heading(0, text='Name', anchor=W)
+        self.resultview.heading(1, text='Modified', anchor=W)
+        self.resultview.heading(2, text='Type', anchor=E)
+        self.resultview.heading(3, text='Size', anchor=E)
+        self.resultview.heading(4, text='Path', anchor=W)
+        self.resultview.column(
+            column=0, 
+            anchor=W, 
+            width=utility.scale_size(self, 125), 
+            stretch=False
         )
-        op2.pack(fill=X, padx=(20, 0), pady=5)
-
-        btn = ttk.Button(
-            master=op2,
-            image='question',
-            bootstyle=LINK,
-            command=self.callback
+        self.resultview.column(
+            column=1, 
+            anchor=W, 
+            width=utility.scale_size(self, 140), 
+            stretch=False
         )
-        btn.pack(side=RIGHT)
-
-        # inverse
-        op3 = ttk.Checkbutton(
-            master=scrolling,
-            text='Inverse scroll directcion vertically',
-            variable='op3'
+        self.resultview.column(
+            column=2, 
+            anchor=E, 
+            width=utility.scale_size(self, 50), 
+            stretch=False
         )
-        op3.pack(fill=X, padx=(20, 0), pady=5)
-
-        btn = ttk.Button(
-            master=op3,
-            image='direction',
-            bootstyle=LINK,
-            command=self.callback
+        self.resultview.column(
+            column=3, 
+            anchor=E, 
+            width=utility.scale_size(self, 50), 
+            stretch=False
         )
-        btn.pack(side=RIGHT)
-
-        # Scroll only vertical or horizontal
-        op4 = ttk.Checkbutton(
-            master=scrolling,
-            text='Scroll only vertical or horizontal',
-            state=DISABLED
-        )
-        op4.configure(variable='op4')
-        op4.pack(fill=X, padx=(20, 0), pady=5)
-
-        # smooth scrolling
-        op5 = ttk.Checkbutton(
-            master=scrolling,
-            text='Smooth scrolling',
-            variable='op5'
-        )
-        op5.pack(fill=X, padx=(20, 0), pady=5)
-
-        btn = ttk.Button(
-            master=op5,
-            image='bluetooth',
-            bootstyle=LINK,
-            command=self.callback
-        )
-        btn.pack(side=RIGHT)
-
-        # scroll speed
-        scroll_speed_frame = ttk.Frame(scrolling)
-        scroll_speed_frame.pack(fill=X, padx=(20, 0), pady=5)
-
-        lbl = ttk.Label(scroll_speed_frame, text='Speed:')
-        lbl.pack(side=LEFT)
-
-        scale = ttk.Scale(scroll_speed_frame, value=35, from_=1, to=100)
-        scale.pack(side=LEFT, fill=X, expand=YES, padx=5)
-
-        scroll_speed_btn = ttk.Button(
-            master=scroll_speed_frame,
-            image='reset-small',
-            bootstyle=LINK,
-            command=self.callback
-        )
-        scroll_speed_btn.pack(side=LEFT)
-
-        # scroll sense
-        scroll_sense_frame = ttk.Frame(scrolling)
-        scroll_sense_frame.pack(fill=X, padx=(20, 0), pady=(5, 0))
-
-        ttk.Label(scroll_sense_frame, text='Sense:').pack(side=LEFT)
-
-        scale = ttk.Scale(scroll_sense_frame, value=50, from_=1, to=100)
-        scale.pack(side=LEFT, fill=X, expand=YES, padx=5)
-
-        scroll_sense_btn = ttk.Button(
-            master=scroll_sense_frame,
-            image='reset-small',
-            bootstyle=LINK,
-            command=self.callback
-        )
-        scroll_sense_btn.pack(side=LEFT)
-
-        # 1 finger gestures
-        finger_gest = ttk.Labelframe(
-            master=col2,
-            text='1 Finger Gestures',
-            padding=(15, 10)
-        )
-        finger_gest.pack(
-            side=TOP,
-            fill=BOTH,
-            expand=YES,
-            pady=(10, 0)
-        )
-        op6 = ttk.Checkbutton(
-            master=finger_gest,
-            text='Fast swipe left/right',
-            variable='op6'
-        )
-        op6.pack(fill=X, pady=5)
-
-        cb = ttk.Checkbutton(
-            master=finger_gest,
-            text='Swap swipe direction',
-            variable='op7'
-        )
-        cb.pack(fill=X, padx=(20, 0), pady=5)
-
-        # gest sense
-        gest_sense_frame = ttk.Frame(finger_gest)
-        gest_sense_frame.pack(fill=X, padx=(20, 0), pady=(5, 0))
-
-        ttk.Label(gest_sense_frame, text='Sense:').pack(side=LEFT)
-
-        scale = ttk.Scale(gest_sense_frame, value=50, from_=1, to=100)
-        scale.pack(side=LEFT, fill=X, expand=YES, padx=5)
-
-        btn = ttk.Button(
-            master=gest_sense_frame,
-            image='reset-small',
-            bootstyle=LINK,
-            command=self.callback
-        )
-        btn.pack(side=LEFT)
-
-        # middle click
-        middle_click = ttk.Labelframe(
-            master=col2,
-            text='Middle Click',
-            padding=(15, 10)
-        )
-        middle_click.pack(
-            side=TOP,
-            fill=BOTH,
-            expand=YES,
-            pady=(10, 0)
-        )
-        cbo = ttk.Combobox(
-            master=middle_click,
-            values=['Any 2 finger', 'Other 1', 'Other 2']
-        )
-        cbo.current(0)
-        cbo.pack(fill=X)
-
-        # Column 3
-        col3 = ttk.Frame(self, padding=10)
-        col3.grid(row=0, column=2, sticky=NSEW)
-
-        # two finger gestures
-        two_finger_gest = ttk.Labelframe(
-            master=col3,
-            text='2 Finger Gestures',
-            padding=10
-        )
-        two_finger_gest.pack(side=TOP, fill=BOTH)
-
-        op7 = ttk.Checkbutton(
-            master=two_finger_gest,
-            text='Fast swipe left/right',
-            variable='op7'
-        )
-        op7.pack(fill=X, pady=5)
-
-        op8 = ttk.Checkbutton(
-            master=two_finger_gest,
-            text='Swap swipe direction',
-            variable='op8'
-        )
-        op8.pack(fill=X, padx=(20, 0), pady=5)
-
-        # gest sense
-        gest_sense_frame = ttk.Frame(two_finger_gest)
-        gest_sense_frame.pack(fill=X, padx=(20, 0), pady=(5, 0))
-
-        ttk.Label(gest_sense_frame, text='Sense:').pack(side=LEFT)
-
-        scale = ttk.Scale(gest_sense_frame, value=50, from_=1, to=100)
-        scale.pack(side=LEFT, fill=X, expand=YES, padx=5)
-
-        btn = ttk.Button(
-            master=gest_sense_frame,
-            image='reset-small',
-            bootstyle=LINK,
-            command=self.callback
-        )
-        btn.pack(side=LEFT)
-
-        # fast two finger swipe down
-        lbl = ttk.Label(
-            master=two_finger_gest,
-            text='On fast 2 finger up/down swipe:'
-        )
-        lbl.pack(fill=X, pady=(10, 5))
-
-        op9 = ttk.Checkbutton(
-            master=two_finger_gest,
-            text='Swap swipe direction',
-            variable='op9'
-        )
-        op9.pack(fill=X, padx=(20, 0), pady=5)
-
-        op10 = ttk.Checkbutton(
-            master=two_finger_gest,
-            text='Swap swipe direction',
-            variable='op10'
-        )
-        op10.pack(fill=X, padx=(20, 0), pady=5)
-
-        two_finger_cbo = ttk.Combobox(
-            master=two_finger_gest,
-            values=['Cycle Task View | Normal | Desktop View']
-        )
-        two_finger_cbo.current(0)
-        two_finger_cbo.pack(fill=X, padx=(20, 0), pady=5)
-
-        # two finger sense
-        two_finger_sense_frame = ttk.Frame(two_finger_gest)
-        two_finger_sense_frame.pack(fill=X, padx=(20, 0), pady=(5, 0))
-
-        ttk.Label(two_finger_sense_frame, text='Sense:').pack(side=LEFT)
-
-        scale = ttk.Scale(two_finger_sense_frame, value=50, from_=1, to=100)
-        scale.pack(side=LEFT, fill=X, expand=YES, padx=5)
-
-        two_finger_sense_btn = ttk.Button(
-            master=two_finger_sense_frame,
-            image='reset-small',
-            bootstyle=LINK
-        )
-        two_finger_sense_btn.configure(command=self.callback)
-        two_finger_sense_btn.pack(side=LEFT)
-
-        # mouse options
-        mouse_options = ttk.Labelframe(
-            master=col3,
-            text='2 Finger Gestures',
-            padding=(15, 10)
-        )
-        mouse_options.pack(
-            side=TOP,
-            fill=BOTH,
-            expand=YES,
-            pady=(10, 0)
+        self.resultview.column(
+            column=4, 
+            anchor=W, 
+            width=utility.scale_size(self, 300)
         )
 
-        op11 = ttk.Checkbutton(
-            master=mouse_options,
-            text='Ignore input if mouse if lifted',
-            variable='op11'
+    def on_browse(self):
+        """Callback for directory browse"""
+        path = askdirectory(title="Browse directory")
+        if path:
+            self.path_var.set(path)
+
+    def on_search(self):
+        """Search for a term based on the search type"""
+        search_term = self.term_var.get()
+        search_path = self.path_var.get()
+        search_type = self.type_var.get()
+
+        if search_term == '':
+            return
+
+        # start search in another thread to prevent UI from locking
+        Thread(
+            target=FileSearchEngine.file_search, 
+            args=(search_term, search_path, search_type), 
+            daemon=True
+        ).start()
+        self.progressbar.start(10)
+
+        iid = self.resultview.insert(
+            parent='', 
+            index=END, 
         )
-        op11.pack(fill=X, pady=5)
+        self.resultview.item(iid, open=True)
+        self.after(100, lambda: self.check_queue(iid))
 
-        op12 = ttk.Checkbutton(
-            master=mouse_options,
-            text='Ignore input if mouse if lifted',
-            variable='op12'
-        )
-        op12.pack(fill=X, pady=5)
+    def check_queue(self, iid):
+        """Check file queue and print results if not empty"""
+        if all([
+            FileSearchEngine.searching, 
+            not FileSearchEngine.queue.empty()
+        ]):
+            filename = FileSearchEngine.queue.get()
+            self.insert_row(filename, iid)
+            self.update_idletasks()
+            self.after(100, lambda: self.check_queue(iid))
+        elif all([
+            not FileSearchEngine.searching,
+            not FileSearchEngine.queue.empty()
+        ]):
+            while not FileSearchEngine.queue.empty():
+                filename = FileSearchEngine.queue.get()
+                self.insert_row(filename, iid)
+            self.update_idletasks()
+            self.progressbar.stop()
+        elif all([
+            FileSearchEngine.searching,
+            FileSearchEngine.queue.empty()
+        ]):
+            self.after(100, lambda: self.check_queue(iid))
+        else:
+            self.progressbar.stop()
 
-        op13 = ttk.Checkbutton(
-            master=mouse_options,
-            text='Ignore input if mouse if lifted',
-            variable='op13'
-        )
-        op13.pack(fill=X, pady=5)
+    def insert_row(self, file, iid):
+        """Insert new row in tree search results"""
+        try:
+            _stats = file.stat()
+            _name = file.stem
+            _timestamp = datetime.datetime.fromtimestamp(_stats.st_mtime)
+            _modified = _timestamp.strftime(r'%m/%d/%Y %I:%M:%S%p')
+            _type = file.suffix.lower()
+            _size = FileSearchEngine.convert_size(_stats.st_size)
+            _path = file.as_posix()
+            iid = self.resultview.insert(
+                parent='', 
+                index=END, 
+                values=(_name, _modified, _type, _size, _path)
+            )
+            self.resultview.selection_set(iid)
+            self.resultview.see(iid)
+        except OSError:
+            return
 
-        # base speed
-        base_speed_sense_frame = ttk.Frame(mouse_options)
-        base_speed_sense_frame.pack(fill=X, padx=(20, 0), pady=(5, 0))
+    @staticmethod
+    def file_search(term, search_path, search_type):
+        """Recursively search directory for matching files"""
+        FileSearchEngine.set_searching(1)
+        if search_type == 'contains':
+            FileSearchEngine.find_contains(term, search_path)
+        elif search_type == 'startswith':
+            FileSearchEngine.find_startswith(term, search_path)
+        elif search_type == 'endswith':
+            FileSearchEngine.find_endswith(term, search_path)
 
-        lbl = ttk.Label(base_speed_sense_frame, text='Base speed:')
-        lbl.pack(side=LEFT)
+    @staticmethod
+    def find_contains(term, search_path):
+        """Find all files that contain the search term"""
+        for path, _, files in pathlib.os.walk(search_path):
+            if files:
+                for file in files:
+                    if term in file:
+                        record = pathlib.Path(path) / file
+                        FileSearchEngine.queue.put(record)
+        FileSearchEngine.set_searching(False)
 
-        scale = ttk.Scale(base_speed_sense_frame, value=50, from_=1, to=100)
-        scale.pack(side=LEFT, fill=X, expand=YES, padx=5)
+    @staticmethod
+    def find_startswith(term, search_path):
+        """Find all files that start with the search term"""
+        for path, _, files in pathlib.os.walk(search_path):
+            if files:
+                for file in files:
+                    if file.startswith(term):
+                        record = pathlib.Path(path) / file
+                        FileSearchEngine.queue.put(record)
+        FileSearchEngine.set_searching(False)
 
-        base_speed_sense_btn = ttk.Button(
-            master=base_speed_sense_frame,
-            image='reset-small',
-            bootstyle=LINK
-        )
-        base_speed_sense_btn.configure(command=self.callback)
-        base_speed_sense_btn.pack(side=LEFT)
+    @staticmethod
+    def find_endswith(term, search_path):
+        """Find all files that end with the search term"""
+        for path, _, files in pathlib.os.walk(search_path):
+            if files:
+                for file in files:
+                    if file.endswith(term):
+                        record = pathlib.Path(path) / file
+                        FileSearchEngine.queue.put(record)
+        FileSearchEngine.set_searching(False)
 
-        # turn on all checkbuttons
-        for i in range(1, 14):
-            self.setvar(f'op{i}', 1)
+    @staticmethod
+    def set_searching(state=False):
+        """Set searching status"""
+        FileSearchEngine.searching = state
 
-        # turn off select buttons
-        for j in [2, 9, 12, 13]:
-            self.setvar(f'op{j}', 0)
-
-    def callback(self):
-        """Demo callback"""
-        Messagebox.ok(
-            title='Button callback', 
-            message="You pressed a button."
-        )
+    @staticmethod
+    def convert_size(size):
+        """Convert bytes to mb or kb depending on scale"""
+        kb = size // 1000
+        mb = round(kb / 1000, 1)
+        if kb > 1000:
+            return f'{mb:,.1f} MB'
+        else:
+            return f'{kb:,d} KB'        
 
 
 if __name__ == '__main__':
 
-    app = ttk.Window("Magic Mouse", "yeti")
-    MouseUtilities(app)
+    app = ttk.Window("File Search Engine", "journal")
+    FileSearchEngine(app)
     app.mainloop()

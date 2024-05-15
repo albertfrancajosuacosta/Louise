@@ -22,7 +22,7 @@ class Louise(Tk):
 
     def definirConfiguracoes(self,rezisableLargura=True,rezisableAltura=True):
         
-        self.title("Louise - Teste de Hipótese - Versão "+str(self.util.versao))
+        self.title("Louise - Teste de Hipótese - Versão "+str(self.util.versao_0_1))
         self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
         self.resizable(width=rezisableLargura, height=rezisableAltura)
         self.larguraDispositivo, self.alturaDispositvo = self.util.tamanhoTelaDispositivo(self,1.00,1.00)
