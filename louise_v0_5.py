@@ -21,6 +21,8 @@ class Louise_v0_05(ttk.Frame):
     def __init__(self, *args, **kwargs):
         
         super().__init__(*args, **kwargs)
+
+        
         self.pack(fill=BOTH, expand=YES)
         self.util = Util()
         self.master.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,0,0))
@@ -138,9 +140,7 @@ class Louise_v0_05(ttk.Frame):
                 mensagem = "Louise tem como objetivo fornecer uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com"
                 Messagebox.show_info(mensagem, title='Sobre', alert=True, parent=self)
                
-               
-
-   
+                  
 
 if __name__ == '__main__':
 

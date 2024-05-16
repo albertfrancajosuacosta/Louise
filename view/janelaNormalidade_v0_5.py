@@ -2,6 +2,7 @@ from datetime import datetime
 from random import choices
 from tkinter import StringVar, Toplevel
 from tkinter import filedialog
+import tkinter
 import traceback
 import ttkbootstrap as ttk
 from ttkbootstrap.style import Bootstyle
@@ -10,6 +11,8 @@ from ttkbootstrap.dialogs import Messagebox
 from ttkbootstrap.constants import *
 from tkinter.scrolledtext import ScrolledText
 from pathlib import Path
+from util.testesEstatisticos import TesteEstatistico
+from util.textoFormatado import TextoFormatado
 from util.util import Util
 import pandas as pd
 
@@ -22,7 +25,13 @@ class JanelaNormalidade_v0_5(Toplevel):
     def __init__(self, *args, **kwargs):
        
         super().__init__(*args, **kwargs)
+        
 
+        self.arquivoCarregado = False
+
+        self.enderecoArquivoSelecionado = StringVar()
+
+        self.tipoTesteNormalidadeEscolhido = StringVar()
       
         image_files = {
             'properties-dark': 'icons8_settings_24px.png',
@@ -69,11 +78,12 @@ class JanelaNormalidade_v0_5(Toplevel):
             bootstyle=SECONDARY)
 
         ## Endereço
+  
         self.labelEnderecoArquivo = ttk.Label(bus_frm, text='Endereço:')
         self.labelEnderecoArquivo.grid(row=0, column=0, sticky=W, pady=2)
-        self.labelEnderecoArquivo = ttk.Label(bus_frm, textvariable='endereco')
-        self.labelEnderecoArquivo.grid(row=0, column=1, sticky=EW, padx=5, pady=2)
-        #self.setvar('endereco', 'd:/test/')
+        self.enderecoArquivo = ttk.Label(bus_frm)
+        self.enderecoArquivo.grid(row=0, column=1, sticky=EW, padx=5, pady=2)
+       
 
         ## Tamnho Grupo
         lbl = ttk.Label(bus_frm, text='Tamanho Grupo:')
@@ -102,7 +112,7 @@ class JanelaNormalidade_v0_5(Toplevel):
         self.labelTesteNormalidade.grid(row=0, column=0, sticky=W, pady=2)
 
        
-        self.tipoTesteNormalidadeEscolhido = StringVar()
+        
 
         self.comboBoxTipoTesteNormalidade = ttk.Combobox(busTeste, 
                                             textvariable=self.tipoTesteNormalidadeEscolhido
@@ -149,97 +159,82 @@ class JanelaNormalidade_v0_5(Toplevel):
         #lbl = ttk.Label(left_panel, image='logo', style='bg.TLabel')
         #lbl.pack(side='bottom')
 
-        # right panel
-        right_panel = ttk.Frame(self, padding=(2, 1))
-        right_panel.pack(side=RIGHT, fill=BOTH, expand=YES)
+        # Painel Direito
+        painelDireito = ttk.Frame(self, padding=(2, 1))
+        painelDireito.pack(side=RIGHT, fill=BOTH, expand=YES)
 
         ## file input
-        browse_frm = ttk.Frame(right_panel)
+        browse_frm = ttk.Frame(painelDireito)
         browse_frm.pack(side=TOP, fill=X, padx=2, pady=1)
 
         self.file_entry = ttk.Entry(browse_frm)
         self.file_entry.config(state=DISABLED)
         self.file_entry.pack(side=LEFT, fill=X, expand=YES)
 
-        btn = ttk.Button(
+        self.botaoProcurarArquivo = ttk.Button(
             master=browse_frm, 
             image='opened-folder', 
             bootstyle=(LINK, SECONDARY),
             command=lambda: self.procurarArquivo()
         )
-        btn.pack(side=RIGHT)
+        self.botaoProcurarArquivo.pack(side=RIGHT)
 
-        ## Treeview
-        tv = ttk.Treeview(right_panel, show='headings', height=5)
-        tv.configure(columns=(
-            'name', 'state', 'last-modified', 
-            'last-run-time', 'size'
-        ))
-        tv.column('name', width=150, stretch=True)
-
-        for col in ['last-modified', 'last-run-time', 'size']:
-            tv.column(col, stretch=False)
-
-        for col in tv['columns']:
-            tv.heading(col, text=col.title(), anchor=W)
-
-        tv.pack(fill=X, pady=1)
+      
 
         ## scrolling text output
-        scroll_cf = CollapsingFrame(right_panel)
-        scroll_cf.pack(fill=BOTH, expand=YES)
+        collapsibleArquivoAberto = CollapsingFrame(painelDireito)
+        collapsibleArquivoAberto.pack(fill=BOTH, expand=YES)
 
-        output_container = ttk.Frame(scroll_cf, padding=1)
-        _value = 'Log: Backing up... [Uploading file: D:/sample_file_35.txt]'
-        self.setvar('scroll-message', _value)
-        st = ScrolledText(output_container)
-        st.pack(fill=BOTH, expand=YES)
-        scroll_cf.add(output_container, textvariable='scroll-message')
+        output_container = ttk.Frame(collapsibleArquivoAberto, padding=1)
+       
+        self.st = ScrolledText(output_container)
+        self.st.pack(fill=BOTH, expand=YES)
+        collapsibleArquivoAberto.add(output_container, textvariable='scroll-message')
 
+        self.textoResultado = TextoFormatado(painelDireito)
 
-        ## treeview and backup logs
-        for x in range(20, 35):
-            result = choices(['Backup Up', 'Missed in Destination'])[0]
-            st.insert(END, f'19:34:{x}\t\t Uploading: D:/file_{x}.txt\n')
-            st.insert(END, f'19:34:{x}\t\t Upload {result}.\n')
-            timestamp = datetime.now().strftime('%d.%m.%Y %H:%M:%S')
-            tv.insert('', END, x, 
-                      values=(f'sample_file_{x}.txt', 
-                              result, timestamp, timestamp, 
-                              f'{int(x // 3)} MB')
-            )
-        tv.selection_set(20)
+        self.textoResultado.limpar()
 
 
 
     def testar(self):
         
         self.sig = self.util.converteNivelSignificancia(self.nivelSignificanciaeEscolhido.get(),self.tipoTesteNormalidadeEscolhido.get())
-            
-        if self.labelCaminhoArquivo.cget("text") == "":
-            Messagebox.show_warning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
-            self.botaoArquivo.focus_set()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "":
-            Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
-            self.comboBoxTipoTesteNormalidade.focus_set()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "Shapiro-Wilk":
-            self.shapiroWilk()
-        elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
-            self.anderson()
+      
 
+       
+
+        if not isinstance(self.enderecoArquivoSelecionado,str):
+             if self.enderecoArquivoSelecionado.get() == "":
+                Messagebox.show_warning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
+                self.botaoProcurarArquivo.focus_set()
+        else:
+            if self.tipoTesteNormalidadeEscolhido.get() == "":
+                Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
+                self.comboBoxTipoTesteNormalidade.focus_set()
+            elif self.tipoTesteNormalidadeEscolhido.get() == "Shapiro-Wilk":
+                self.shapiroWilk()
+            elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
+                self.anderson()
+                
+
+        self.enderecoArquivoSelecionado.focus_force()
 
     def procurarArquivo(self):
-        self.labelEnderecoArquivo.focus_set()
-        #showinfo(title='Information', message=mensagem)
+       
         caminhoArquivo = filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
+        self.enderecoArquivoSelecionado = caminhoArquivo
+        self.setvar('scroll-message', self.enderecoArquivoSelecionado.split("/")[-1])
+        
         if caminhoArquivo:
-           
-            self.setvar('endereco', caminhoArquivo)
+            self.enderecoArquivo.config(text=self.enderecoArquivoSelecionado)
+          
             self.file_entry.config(state=NORMAL)
-            self.file_entry.insert(END, caminhoArquivo)
+            self.file_entry.insert(END, self.enderecoArquivoSelecionado)
             self.file_entry.config(state=DISABLED)
             self.processarArquivo(caminhoArquivo)
 
+        self.focus_set()
 
     def processarArquivo(self,caminho):
 
@@ -252,11 +247,9 @@ class JanelaNormalidade_v0_5(Toplevel):
                 Messagebox.show_error(title="Erro", message="Os dados precisam estar em uma única coluna. Atualmente os dados estão em "+str(self.qtdColunasPlanilha)+' colunas.') 
             else: 
                 
-                #self.carregarDados(self.planilha)
+                self.carregarDados(self.planilha)
                 self.focus_set()
-              
-
-
+            
         except Exception as e:
 
             Messagebox.show_error(title='Error', message='Erro ao abrir arquivo.')
@@ -264,16 +257,100 @@ class JanelaNormalidade_v0_5(Toplevel):
 
 
     def carregarDados(self,planilha):
+        
+        self.st.delete('1.0', END)
+        self.st.configure(font='TkFixedFont')
+        self.st.insert(END, '#\t\t\tValor\n')
+        for index, row in planilha.iterrows():
+           
+            _texto = str(index+1)+'\t\t'+str(row.values[0])+'\n'
+            self.st.insert(END, _texto)
 
-        for i in self.arvore.get_children():
-            self.arvore.delete(i)
+        self.st.tag_add("start", "1.0","2.0")
+        self.st.tag_configure("start", background="#2780e3", foreground="#FFFFFF")
+        self.st.config(state= DISABLED)
+        
 
+    def shapiroWilk(self):
+        self.textoResultado.limpar()
+        te = TesteEstatistico(signi=self.sig)
+        estatistica, p_value =  te.shaporiWilk(self.planilha)
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-        for index, row in (planilha.sort_index(ascending=False)).iterrows():
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
+        self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
+        self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
-            #print(index, row.values[0])
-            self.arvore.insert(parent='', index=0, values = ((index+1), row.values[0]))
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
+        self.textoResultado.insert("end", str(estatistica)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
 
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "p-valor\n", "bold")
+        self.textoResultado.insert("end", str(p_value)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "\n\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        if(p_value<te.nivelSignificancia):
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+        else:
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+    
+
+    def anderson(self):
+        self.textoResultado.limpar()
+        te = TesteEstatistico(signi=self.sig)
+        [est, criticoValor, significanciaNivel] =  te.anderson(self.planilha,teste='norm')
+        
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteNormalidadeEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
+        self.textoResultado.insert_bullet("end", "H0: Normalmente distribuído \n")
+        self.textoResultado.insert_bullet("end", "H1: Não normalmente distribuído \n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
+        self.textoResultado.insert("end", str(est)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Valor Crítico\n", "bold")
+        self.textoResultado.insert("end", str(criticoValor)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Nível de Significância\n", "bold")
+        self.textoResultado.insert("end", str(significanciaNivel)+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "\n\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        if(criticoValor<est):
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+        else:
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
 
 class CollapsingFrame(ttk.Frame):
     """A collapsible frame widget that opens and closes with a click."""
@@ -355,11 +432,3 @@ class CollapsingFrame(ttk.Frame):
         else:
             child.grid()
             child.btn.configure(image=self.images[0])
-
-
-#if __name__ == '__main__':
-
-
-#    app = ttk.Window("Louise - Teste de Hipótese - Versão ")
-#    JanelaNormalidade_v0_5(app)
-#    app.mainloop()
