@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 from random import choices
 from tkinter import Label
 import ttkbootstrap as ttk
@@ -21,13 +22,17 @@ class Louise_v0_05(ttk.Frame):
         self.util = Util()
         self.master.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,0,0))
         self.master.title("Louise - Teste de Hipótese - Versão "+str(self.util.versao_0_5))
-
+        self.master.iconbitmap(CAMINHO_IMAGEM.__str__()+"\\lamed.ico")
       
         self.photoimages = []
         imgpath = Path(__file__).parent / 'img'
         for key, val in self.util.arquivo_imagem.items():
             _path = imgpath / val
             self.photoimages.append(ttk.PhotoImage(name=key, file=_path))
+
+
+        
+        
 
         # buttonbar
         buttonbar = ttk.Frame(self, style='primary.TFrame')
@@ -80,32 +85,40 @@ class Louise_v0_05(ttk.Frame):
         self.frameTestesNormalidadeHipoteses.pack(fill=BOTH, expand=Y, anchor=N)
 
 
-        # form variables
-        self.name = ttk.StringVar(value="")
-        self.address = ttk.StringVar(value="")
-        self.phone = ttk.StringVar(value="")
+        self.labelNormalidade = ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Normalidade:",width=50)
+        self.labelNormalidade.place(x=30,y=30)  
 
 
-        self.create_form_entry(self.frameTestesNormalidadeHipoteses,"name",self.name)
+        botaoTesteNormalidade = ttk.Button(
+            master=self.frameTestesNormalidadeHipoteses,
+            text="Normalidade",
+            command=lambda : print('normalidade'),
+            bootstyle=INFO,
+            width=25
+        )
+        botaoTesteNormalidade.place(x=50,y=80)
+        
+        
+        self.labelHipotese= ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Hipótese:",width=50)
+        self.labelHipotese.place(x=30,y=130)
 
-        self.create_form_entry(self.frameTestesNormalidadeHipoteses,"Endereço",self.address)
+        botaoTesteHipoteseParametrico2Grupos = ttk.Button(
+            master=self.frameTestesNormalidadeHipoteses,
+            text="Paramétrico 2 Grupos",
+            command=lambda : print('Paramétrico 2 Grupos'),
+            bootstyle=PRIMARY,
+            width=25
+        )
+        botaoTesteHipoteseParametrico2Grupos.place(x=50,y=180)
 
-        self.create_form_entry(self.frameTestesNormalidadeHipoteses,"Telefone",self.phone)
-
-        #self.labelNormalidade = ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Normalidade:",width=50)
-        #self.labelNormalidade.pack(side=TOP, padx=5)
-        #self.labelNormalidade.place(x=0, y=35)
-        #self.labelNormalidade.pack(side=LEFT, fill=X, expand=NO, pady=10, padx=5,anchor=N)
-
-        #self.name = ttk.StringVar(value="")
-        #self.ent = ttk.Entry(master=self.frameTestesNormalidadeHipoteses, textvariable=self.name)
-        #self.ent.pack(side=LEFT, fill=X, expand=NO, pady=10, padx=5,anchor=N)
-        #self.ent.place(x=0, y=100)
-
-
-        #self.labelHipotese= ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Hipótese:",width=50)
-        #self.labelHipotese.pack(side=LEFT, fill="x", expand=NO, pady=100, padx=5,anchor=N)
-        #self.labelHipotese.pack(side=TOP, padx=5)
+        botaoTesteHipoteseNaoParametrico2Grupos = ttk.Button(
+            master=self.frameTestesNormalidadeHipoteses,
+            text="Não Paramétrico 2 Grupos",
+            command=lambda : print('Não Paramétrico 2 Grupos'),
+            bootstyle=PRIMARY,
+            width=25
+        )
+        botaoTesteHipoteseNaoParametrico2Grupos.place(x=50,y=230)
 
         #self.name1 = ttk.StringVar(value="")
         #self.ent1 = ttk.Entry(master=self.frameTestesNormalidadeHipoteses, textvariable=self.name1)
@@ -167,21 +180,7 @@ class Louise_v0_05(ttk.Frame):
                  #app.eval('tk::PlaceWindow . center')
                
 
-    def create_path_row(self):
-        """Add path row to labelframe"""
-        path_row = ttk.Frame(self.option_lf)
-        path_row.pack(fill=X, expand=YES)
-        path_lbl = ttk.Label(path_row, text="Path", width=8)
-        path_lbl.pack(side=LEFT, padx=(15, 0))
-        path_ent = ttk.Entry(path_row, textvariable=self.path_var)
-        path_ent.pack(side=LEFT, fill=X, expand=YES, padx=5)
-        browse_btn = ttk.Button(
-            master=path_row, 
-            text="Browse", 
-            command=self.on_browse, 
-            width=8
-        )
-        browse_btn.pack(side=LEFT, padx=5)
+   
 
 if __name__ == '__main__':
 
