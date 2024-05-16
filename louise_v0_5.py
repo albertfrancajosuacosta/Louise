@@ -8,6 +8,9 @@ from ttkbootstrap.dialogs import Messagebox
 from ttkbootstrap.constants import *
 from pathlib import Path
 from util.util import Util
+from view.janelaNormalidade_v0_5 import JanelaNormalidade_v0_5
+from view.janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
+from view.janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
 
 
 CAMINHO_IMAGEM = Path(__file__).parent / 'img'
@@ -92,7 +95,7 @@ class Louise_v0_05(ttk.Frame):
         botaoTesteNormalidade = ttk.Button(
             master=self.frameTestesNormalidadeHipoteses,
             text="Normalidade",
-            command=lambda : print('normalidade'),
+            command=lambda : self.openJanelaNormalidade(),
             bootstyle=INFO,
             width=25
         )
@@ -119,57 +122,14 @@ class Louise_v0_05(ttk.Frame):
             width=25
         )
         botaoTesteHipoteseNaoParametrico2Grupos.place(x=50,y=230)
-
-        #self.name1 = ttk.StringVar(value="")
-        #self.ent1 = ttk.Entry(master=self.frameTestesNormalidadeHipoteses, textvariable=self.name1)
-        #self.ent1.pack(side=TOP, padx=5, fill=X, expand=YES)
-        
-        #cnl_btn = ttk.Button(
-        #    master=container,
-        #    text="Cancel",
-        #    command=self.on_cancel,
-        #    bootstyle=DANGER,
-        #    width=6,
-        #)
-        #cnl_btn.pack(side=RIGHT, padx=5)
-
-
-        #textoTesteNormalidade = "Teste de Normalidade"
-        #self.frameTesteNormalidade = ttk.LabelFrame(self.frameTestesNormalidadeHipoteses, text=textoTesteNormalidade, padding=15, bootstyle="dark")
-        #self.frameTesteNormalidade.pack(fill=BOTH, expand=YES, anchor=N)
-
-        #textoTesteHipotese = "Teste de Hipótese"
-        #self.frameTesteHipotese = ttk.LabelFrame(self.frameTestesNormalidadeHipoteses, text=textoTesteHipotese, padding=15, bootstyle="dark")
-        #self.frameTesteHipotese.pack(fill=BOTH, expand=YES, anchor=N)
-
-        #self.frameHipoteses = ttk.Frame(self.frameSelecioneTeste,bootstyle="danger")
-       # self.frameHipoteses.pack(fill=BOTH, expand=Y, anchor=N)
-
-        #textoTesteNormalidade = "Teste de Normalidade"
-        #self.frameSelecioneTeste = ttk.Labelframe(self.frameSelecioneTeste , text=textoTesteNormalidade, padding=1,bootstyle="dark")
-        
-        #label2 = Label(self.frameSelecioneTeste, text=textoTesteNormalidade)
-        #label2.pack(fill=BOTH, expand=YES, anchor=N)
-        #label2.place(x=0, y=35)
         
         self.frameSelecioneTeste.pack_forget()
-        #self.frameSelecioneTeste.pack(fill=BOTH, expand=YES, anchor=N)
-        
+      
 
-        #self.create_path_row()
-
-
-    def create_form_entry(self, widget, label, variable):
-        """Create a single form entry"""
-        #container = ttk.Frame(self)
-        container = widget
-        container.pack(fill=X, expand=YES, pady=5)
-
-        lbl = ttk.Label(master=container, text=label.title(), width=10)
-        lbl.pack(side=LEFT, padx=5)
-
-        ent = ttk.Entry(master=container, textvariable=variable)
-        ent.pack(side=LEFT, padx=5, fill=X, expand=YES)
+    def openJanelaNormalidade(self):
+         
+          JanelaNormalidade_v0_5()
+          
 
     def showFrameTeste(self):
          self.frameSelecioneTeste.pack(fill=BOTH, expand=YES, anchor=N)
