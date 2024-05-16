@@ -1,5 +1,8 @@
 from datetime import datetime
 from random import choices
+from tkinter import StringVar, Toplevel
+from tkinter import filedialog
+import traceback
 import ttkbootstrap as ttk
 from ttkbootstrap.style import Bootstyle
 from tkinter.filedialog import askdirectory
@@ -8,22 +11,19 @@ from ttkbootstrap.constants import *
 from tkinter.scrolledtext import ScrolledText
 from pathlib import Path
 from util.util import Util
+import pandas as pd
 
 
 CAMINHO_IMAGEM = Path(__file__).parent.parent / 'img'
 
 
-class JanelaNormalidade_v0_5(ttk.Frame):
+class JanelaNormalidade_v0_5(Toplevel):
 
     def __init__(self, *args, **kwargs):
        
         super().__init__(*args, **kwargs)
 
       
-        
-        self.frame = ttk.Frame()
-        #self.pack(fill=BOTH, expand=YES)
-
         image_files = {
             'properties-dark': 'icons8_settings_24px.png',
             'properties-light': 'icons8_settings_24px_2.png',
@@ -53,143 +53,101 @@ class JanelaNormalidade_v0_5(ttk.Frame):
 
         
         # left panel
-        left_panel = ttk.Frame(self, style='bg.TFrame')
-        left_panel.pack(side=LEFT, fill=Y)
+        painelEsquerdo = ttk.Frame(self, style='bg.TFrame')
+        painelEsquerdo.pack(side=LEFT, fill=Y)
 
-        ## backup summary (collapsible)
-        bus_cf = CollapsingFrame(left_panel)
-        bus_cf.pack(fill=X, pady=1)
+        ## Collapsible arquivo  (collapsible)
+        collapsibleArquivo = CollapsingFrame(painelEsquerdo)
+        collapsibleArquivo.pack(fill=X, pady=1)
 
         ## container
-        bus_frm = ttk.Frame(bus_cf, padding=5)
+        bus_frm = ttk.Frame(collapsibleArquivo, padding=5)
         bus_frm.columnconfigure(1, weight=1)
-        bus_cf.add(
+        collapsibleArquivo.add(
             child=bus_frm, 
-            title='Backup Summary', 
+            title='Arquivo Selecionado', 
             bootstyle=SECONDARY)
 
-        ## destination
-        lbl = ttk.Label(bus_frm, text='Destination:')
-        lbl.grid(row=0, column=0, sticky=W, pady=2)
-        lbl = ttk.Label(bus_frm, textvariable='destination')
-        lbl.grid(row=0, column=1, sticky=EW, padx=5, pady=2)
-        self.setvar('destination', 'd:/test/')
+        ## Endereço
+        self.labelEnderecoArquivo = ttk.Label(bus_frm, text='Endereço:')
+        self.labelEnderecoArquivo.grid(row=0, column=0, sticky=W, pady=2)
+        self.labelEnderecoArquivo = ttk.Label(bus_frm, textvariable='endereco')
+        self.labelEnderecoArquivo.grid(row=0, column=1, sticky=EW, padx=5, pady=2)
+        #self.setvar('endereco', 'd:/test/')
 
-        ## last run
-        lbl = ttk.Label(bus_frm, text='Last Run:')
+        ## Tamnho Grupo
+        lbl = ttk.Label(bus_frm, text='Tamanho Grupo:')
         lbl.grid(row=1, column=0, sticky=W, pady=2)
-        lbl = ttk.Label(bus_frm, textvariable='lastrun')
+        lbl = ttk.Label(bus_frm, textvariable='tamahoGrupo')
         lbl.grid(row=1, column=1, sticky=EW, padx=5, pady=2)
-        self.setvar('lastrun', '14.06.2021 19:34:43')
+        #self.setvar('lastrun', '14.06.2021 19:34:43')
 
-        ## files Identical
-        lbl = ttk.Label(bus_frm, text='Files Identical:')
-        lbl.grid(row=2, column=0, sticky=W, pady=2)
-        lbl = ttk.Label(bus_frm, textvariable='filesidentical')
-        lbl.grid(row=2, column=1, sticky=EW, padx=5, pady=2)
-        self.setvar('filesidentical', '15%')
 
+
+        # Collapsible teste (collapsible)
+        collapsibleTeste = CollapsingFrame(painelEsquerdo)
+        collapsibleTeste.pack(fill=BOTH, pady=1)
+
+       
+        ## container
+        busTeste = ttk.Frame(collapsibleTeste, padding=5)
+        busTeste.columnconfigure(1, weight=1)
+        collapsibleTeste.add(
+            child=busTeste, 
+            title='Teste', 
+            bootstyle=SECONDARY)
+        
+        ## Teste
+        self.labelTesteNormalidade = ttk.Label(busTeste, text='Teste:')
+        self.labelTesteNormalidade.grid(row=0, column=0, sticky=W, pady=2)
+
+       
+        self.tipoTesteNormalidadeEscolhido = StringVar()
+
+        self.comboBoxTipoTesteNormalidade = ttk.Combobox(busTeste, 
+                                            textvariable=self.tipoTesteNormalidadeEscolhido
+                                            #width=(self.largura//2)
+                                       )
+            
+        self.comboBoxTipoTesteNormalidade['values'] = ('Shapiro-Wilk', 'Anderson') 
+        self.comboBoxTipoTesteNormalidade['state']= 'readonly'
+        self.comboBoxTipoTesteNormalidade.grid(row=1, column=0, sticky=W, pady=2)
+
+
+        ## Nível de significância
+        self.labelTesteNormalidade = ttk.Label(busTeste, text='Nível de Significância:')
+        self.labelTesteNormalidade.grid(row=2, column=0, sticky=W, pady=2)
+
+        self.nivelSignificanciaeEscolhido = StringVar()
+
+        self.comboBoxNivelSignificancia = ttk.Combobox(busTeste, 
+                                            textvariable=self.nivelSignificanciaeEscolhido
+                                            #width=(self.largura//2)
+                                       )
+
+        # Adding combobox drop down list 
+        self.comboBoxNivelSignificancia['values'] = ('1%', '2.5%','5%', '10%', '15%') 
+        self.comboBoxNivelSignificancia['state']= 'readonly'
+        self.comboBoxNivelSignificancia.current(2)
+        self.comboBoxNivelSignificancia.grid(row=3, column=0, sticky=W, pady=2)   
+
+
+        self.botaoTestar = ttk.Button(busTeste,
+                   text="Testar", 
+                   command= lambda: self.testar(),
+                   bootstyle="success"                  
+            )
+        
+        self.botaoTestar.grid(row=5, column=1, pady=2) 
+
+        
         ## section separator
         sep = ttk.Separator(bus_frm, bootstyle=SECONDARY)
         sep.grid(row=3, column=0, columnspan=2, pady=10, sticky=EW)
 
-        ## properties button
-        _func = lambda: Messagebox.ok(message='Changing properties')
-        bus_prop_btn = ttk.Button(
-            master=bus_frm, 
-            text='Properties', 
-            image='properties-dark', 
-            compound=LEFT,
-            command=_func, 
-            bootstyle=LINK
-        )
-        bus_prop_btn.grid(row=4, column=0, columnspan=2, sticky=W)
-
-        ## add to backup button
-        _func = lambda: Messagebox.ok(message='Adding to backup')
-        add_btn = ttk.Button(
-            master=bus_frm, 
-            text='Add to backup', 
-            image='add-to-backup-dark', 
-            compound=LEFT,
-            command=_func, 
-            bootstyle=LINK
-        )
-        add_btn.grid(row=5, column=0, columnspan=2, sticky=W)
-
-        # backup status (collapsible)
-        status_cf = CollapsingFrame(left_panel)
-        status_cf.pack(fill=BOTH, pady=1)
-
-        ## container
-        status_frm = ttk.Frame(status_cf, padding=10)
-        status_frm.columnconfigure(1, weight=1)
-        status_cf.add(
-            child=status_frm, 
-            title='Backup Status', 
-            bootstyle=SECONDARY
-        )
-        ## progress message
-        lbl = ttk.Label(
-            master=status_frm, 
-            textvariable='prog-message', 
-            font='Helvetica 10 bold'
-        )
-        lbl.grid(row=0, column=0, columnspan=2, sticky=W)
-        self.setvar('prog-message', 'Backing up...')
-
-        ## progress bar
-        pb = ttk.Progressbar(
-            master=status_frm, 
-            variable='prog-value', 
-            bootstyle=SUCCESS
-        )
-        pb.grid(row=1, column=0, columnspan=2, sticky=EW, pady=(10, 5))
-        self.setvar('prog-value', 71)
-
-        ## time started
-        lbl = ttk.Label(status_frm, textvariable='prog-time-started')
-        lbl.grid(row=2, column=0, columnspan=2, sticky=EW, pady=2)
-        self.setvar('prog-time-started', 'Started at: 14.06.2021 19:34:56')
-
-        ## time elapsed
-        lbl = ttk.Label(status_frm, textvariable='prog-time-elapsed')
-        lbl.grid(row=3, column=0, columnspan=2, sticky=EW, pady=2)
-        self.setvar('prog-time-elapsed', 'Elapsed: 1 sec')
-
-        ## time remaining
-        lbl = ttk.Label(status_frm, textvariable='prog-time-left')
-        lbl.grid(row=4, column=0, columnspan=2, sticky=EW, pady=2)
-        self.setvar('prog-time-left', 'Left: 0 sec')
-
-        ## section separator
-        sep = ttk.Separator(status_frm, bootstyle=SECONDARY)
-        sep.grid(row=5, column=0, columnspan=2, pady=10, sticky=EW)
-
-        ## stop button
-        _func = lambda: Messagebox.ok(message='Stopping backup')
-        btn = ttk.Button(
-            master=status_frm, 
-            text='Stop', 
-            image='stop-backup-dark', 
-            compound=LEFT, 
-            command=_func, 
-            bootstyle=LINK
-        )
-        btn.grid(row=6, column=0, columnspan=2, sticky=W)
-
-        ## section separator
-        sep = ttk.Separator(status_frm, bootstyle=SECONDARY)
-        sep.grid(row=7, column=0, columnspan=2, pady=10, sticky=EW)
-
-        # current file message
-        lbl = ttk.Label(status_frm, textvariable='current-file-msg')
-        lbl.grid(row=8, column=0, columnspan=2, pady=2, sticky=EW)
-        self.setvar('current-file-msg', 'Uploading: d:/test/settings.txt')
-
         # logo
-        lbl = ttk.Label(left_panel, image='logo', style='bg.TLabel')
-        lbl.pack(side='bottom')
+        #lbl = ttk.Label(left_panel, image='logo', style='bg.TLabel')
+        #lbl.pack(side='bottom')
 
         # right panel
         right_panel = ttk.Frame(self, padding=(2, 1))
@@ -199,14 +157,15 @@ class JanelaNormalidade_v0_5(ttk.Frame):
         browse_frm = ttk.Frame(right_panel)
         browse_frm.pack(side=TOP, fill=X, padx=2, pady=1)
 
-        file_entry = ttk.Entry(browse_frm, textvariable='folder-path')
-        file_entry.pack(side=LEFT, fill=X, expand=YES)
+        self.file_entry = ttk.Entry(browse_frm)
+        self.file_entry.config(state=DISABLED)
+        self.file_entry.pack(side=LEFT, fill=X, expand=YES)
 
         btn = ttk.Button(
             master=browse_frm, 
             image='opened-folder', 
             bootstyle=(LINK, SECONDARY),
-            command=self.get_directory
+            command=lambda: self.procurarArquivo()
         )
         btn.pack(side=RIGHT)
 
@@ -237,10 +196,6 @@ class JanelaNormalidade_v0_5(ttk.Frame):
         st.pack(fill=BOTH, expand=YES)
         scroll_cf.add(output_container, textvariable='scroll-message')
 
-        # seed with some sample data
-
-        ## starting sample directory
-        file_entry.insert(END, 'D:/text/myfiles/top-secret/samples/')
 
         ## treeview and backup logs
         for x in range(20, 35):
@@ -255,12 +210,69 @@ class JanelaNormalidade_v0_5(ttk.Frame):
             )
         tv.selection_set(20)
 
-    def get_directory(self):
-        """Open dialogue to get directory and update variable"""
-        self.update_idletasks()
-        d = askdirectory()
-        if d:
-            self.setvar('folder-path', d)
+
+
+    def testar(self):
+        
+        self.sig = self.util.converteNivelSignificancia(self.nivelSignificanciaeEscolhido.get(),self.tipoTesteNormalidadeEscolhido.get())
+            
+        if self.labelCaminhoArquivo.cget("text") == "":
+            Messagebox.show_warning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
+            self.botaoArquivo.focus_set()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "":
+            Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
+            self.comboBoxTipoTesteNormalidade.focus_set()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Shapiro-Wilk":
+            self.shapiroWilk()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
+            self.anderson()
+
+
+    def procurarArquivo(self):
+        self.labelEnderecoArquivo.focus_set()
+        #showinfo(title='Information', message=mensagem)
+        caminhoArquivo = filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
+        if caminhoArquivo:
+           
+            self.setvar('endereco', caminhoArquivo)
+            self.file_entry.config(state=NORMAL)
+            self.file_entry.insert(END, caminhoArquivo)
+            self.file_entry.config(state=DISABLED)
+            self.processarArquivo(caminhoArquivo)
+
+
+    def processarArquivo(self,caminho):
+
+        try:
+            self.planilha = pd.read_excel(caminho,index_col=None)
+            self.setvar('tamahoGrupo', self.util.metaDadosPlanilha(self.planilha)[0])
+            self.qtdLinhasPlanilha, self.qtdColunasPlanilha = self.planilha.shape
+
+            if self.qtdColunasPlanilha != 1:
+                Messagebox.show_error(title="Erro", message="Os dados precisam estar em uma única coluna. Atualmente os dados estão em "+str(self.qtdColunasPlanilha)+' colunas.') 
+            else: 
+                
+                #self.carregarDados(self.planilha)
+                self.focus_set()
+              
+
+
+        except Exception as e:
+
+            Messagebox.show_error(title='Error', message='Erro ao abrir arquivo.')
+            print(traceback.format_exc())
+
+
+    def carregarDados(self,planilha):
+
+        for i in self.arvore.get_children():
+            self.arvore.delete(i)
+
+
+        for index, row in (planilha.sort_index(ascending=False)).iterrows():
+
+            #print(index, row.values[0])
+            self.arvore.insert(parent='', index=0, values = ((index+1), row.values[0]))
 
 
 class CollapsingFrame(ttk.Frame):

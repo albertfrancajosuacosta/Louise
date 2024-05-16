@@ -27,7 +27,7 @@ class JanelaNormalidade(Toplevel):
     def definirConfiguracoes(self, larguraMae, alturaMae,rezisableLargura=True,rezisableAltura=True):
         self.largura = larguraMae
         self.altura = alturaMae
-        self.title("Louise - Teste de Normalidade - Versão "+str(self.util.versao))
+        self.title("Louise - Teste de Normalidade - Versão "+str(self.util.versao_0_1))
         self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
         self.resizable(width=rezisableLargura, height=rezisableAltura)
         self.planilha = None
@@ -367,9 +367,7 @@ class JanelaNormalidade(Toplevel):
                 
                  
     def procurarArquivo(self):
-
         
-
         self.focus_set()
 
         #showinfo(title='Information', message=mensagem)

@@ -42,6 +42,10 @@ class Util:
          #   self.fotoimagens.append(ttk.PhotoImage(name=key, file=_path))
 
 
+    def metaDadosPlanilha(self, planilha):
+        linha, coluna = planilha.shape
+        return linha, coluna 
+       
    
          
     def tamanhoTelaDispositivo(self, janela,pL=0.80,pA=0.80):
