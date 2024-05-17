@@ -1,5 +1,9 @@
 from pathlib import Path
 import ttkbootstrap as ttk
+from datetime import datetime
+
+
+
 
 class Util:
      
@@ -32,7 +36,8 @@ class Util:
             'logo': 'backup.png',
             'curve': 'curve_24px.png',
             'sair': 'exit_24px.png',
-            'sobre': 'sobre_24px.png'
+            'sobre': 'sobre_24px.png',
+            'salvar': 'save_24px.png'
          }
 
          #self.fotoimagens = []
@@ -41,6 +46,14 @@ class Util:
          #   _path = imgpath / val
          #   self.fotoimagens.append(ttk.PhotoImage(name=key, file=_path))
 
+
+    def salvarResultadosInTxt(self,resultados):
+        dataHoraString = str(datetime.now())
+        dataHoraString = dataHoraString.replace(':','-').replace('.','-')
+        caminho = (Path(__file__).parent.parent.__str__()+"\\Resultado "+dataHoraString+".txt")
+        f = open(caminho,"w")
+        f.write(resultados)
+        f.close()
 
     def metaDadosPlanilha(self, planilha):
         linha, coluna = planilha.shape

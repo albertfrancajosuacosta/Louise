@@ -47,7 +47,8 @@ class JanelaNormalidade_v0_5(Toplevel):
             'opened-folder': 'icons8_opened_folder_24px.png',
             'logo': 'backup.png',
             'curve': 'curve_24px.png',
-            'sair': 'exit_24px.png'
+            'sair': 'exit_24px.png',
+            'salvar': 'save_24px.png'
         }
 
     
@@ -111,8 +112,7 @@ class JanelaNormalidade_v0_5(Toplevel):
         self.labelTesteNormalidade = ttk.Label(busTeste, text='Teste:')
         self.labelTesteNormalidade.grid(row=0, column=0, sticky=W, pady=2)
 
-       
-        
+    
 
         self.comboBoxTipoTesteNormalidade = ttk.Combobox(busTeste, 
                                             textvariable=self.tipoTesteNormalidadeEscolhido
@@ -148,9 +148,37 @@ class JanelaNormalidade_v0_5(Toplevel):
                    bootstyle="success"                  
             )
         
-        self.botaoTestar.grid(row=5, column=1, pady=2) 
+        self.botaoTestar.grid(row=5, column=0, pady=2)
 
+
+        # Collapsible opções resultados (collapsible)
+        collapsibleOpcoesResultados = CollapsingFrame(painelEsquerdo)
+        collapsibleOpcoesResultados.pack(fill=BOTH, pady=1)
+
+       
+        ## container
+        busOpcoesResultados = ttk.Frame(collapsibleOpcoesResultados, padding=5)
+        busOpcoesResultados.columnconfigure(1, weight=1)
+        collapsibleOpcoesResultados.add(
+            child=busOpcoesResultados, 
+            title='Opções Resultado', 
+            bootstyle=SECONDARY)
         
+             
+
+        self.botaoSalvarResultado = ttk.Button(busOpcoesResultados,
+                   text="Salvar", 
+                   command= lambda: self.salvarResultado(),
+                   bootstyle="success",
+                   image='salvar', 
+                   compound=LEFT, 
+                              
+        )
+        self.botaoSalvarResultado.pack_forget()
+        #self.botaoSalvarResultado.grid(row=0, column=0, pady=2)
+
+      
+      
         ## section separator
         sep = ttk.Separator(bus_frm, bootstyle=SECONDARY)
         sep.grid(row=3, column=0, columnspan=2, pady=10, sticky=EW)
@@ -192,15 +220,18 @@ class JanelaNormalidade_v0_5(Toplevel):
         collapsibleArquivoAberto.add(output_container, textvariable='scroll-message')
 
         self.textoResultado = TextoFormatado(painelDireito)
+        self.textoResultado.pack(fill=BOTH, expand=YES)
 
-        self.textoResultado.limpar()
-
-
+        
+    def salvarResultado(self):
+       
+        self.util.salvarResultadosInTxt(self.textoResultado.get(1.0,"end-1c"))
 
     def testar(self):
         
         self.sig = self.util.converteNivelSignificancia(self.nivelSignificanciaeEscolhido.get(),self.tipoTesteNormalidadeEscolhido.get())
       
+        self.textoResultado.limpar()
 
        
 
@@ -217,8 +248,8 @@ class JanelaNormalidade_v0_5(Toplevel):
             elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
                 self.anderson()
                 
+        self.botaoSalvarResultado.grid(row=0, column=0, pady=2)
 
-        self.enderecoArquivoSelecionado.focus_force()
 
     def procurarArquivo(self):
        

@@ -46,7 +46,8 @@ class Louise_v0_05(ttk.Frame):
         ## new backup
         _func = lambda: self.showFrameTeste()
         btn = ttk.Button(
-            master=buttonbar, text='Testes',
+            master=buttonbar, 
+            text='Testes',
             image='curve', 
             compound=LEFT, 
             command=_func
