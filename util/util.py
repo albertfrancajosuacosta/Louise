@@ -54,6 +54,7 @@ class Util:
         f = open(caminho,"w")
         f.write(resultados)
         f.close()
+        return caminho
 
     def metaDadosPlanilha(self, planilha):
         linha, coluna = planilha.shape

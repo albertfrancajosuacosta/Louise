@@ -225,7 +225,9 @@ class JanelaNormalidade_v0_5(Toplevel):
         
     def salvarResultado(self):
        
-        self.util.salvarResultadosInTxt(self.textoResultado.get(1.0,"end-1c"))
+        caminho = self.util.salvarResultadosInTxt(self.textoResultado.get(1.0,"end-1c"))
+        Messagebox.show_info(title="Arquivo salvo em: ", message=caminho)
+
 
     def testar(self):
         
