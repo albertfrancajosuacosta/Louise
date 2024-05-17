@@ -1,0 +1,11 @@
+Resultado - Teste T Nível de Significância 0.15
+Hipóteses: 
+• H0: Não há diferença significativa 
+• H1: Há diferença significativa 
+Estatística do teste
+6.773394717521754e-16
+p-valor
+0.9999999999999994
+
+
+Falha em rejeitar H0 

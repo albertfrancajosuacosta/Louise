@@ -86,11 +86,18 @@ class JanelaHipoteseParametrico2Grupos_v0_5(Toplevel):
         self.enderecoArquivo.grid(row=0, column=1, sticky=EW, padx=5, pady=2)
        
 
-        ## Tamnho Grupo
-        lbl = ttk.Label(bus_frm, text='Tamanho Grupo:')
+        ## Tamnho Grupo 1
+        lbl = ttk.Label(bus_frm, text='Tamanho Grupo 1:')
         lbl.grid(row=1, column=0, sticky=W, pady=2)
-        lbl = ttk.Label(bus_frm, textvariable='tamahoGrupo')
+        lbl = ttk.Label(bus_frm, textvariable='tamahoGrupo1')
         lbl.grid(row=1, column=1, sticky=EW, padx=5, pady=2)
+        #self.setvar('lastrun', '14.06.2021 19:34:43')
+
+        ## Tamnho Grupo 2
+        lbl = ttk.Label(bus_frm, text='Tamanho Grupo 2:')
+        lbl.grid(row=2, column=0, sticky=W, pady=2)
+        lbl = ttk.Label(bus_frm, textvariable='tamahoGrupo2')
+        lbl.grid(row=2, column=1, sticky=EW, padx=5, pady=2)
         #self.setvar('lastrun', '14.06.2021 19:34:43')
 
 
@@ -273,7 +280,9 @@ class JanelaHipoteseParametrico2Grupos_v0_5(Toplevel):
 
         try:
             self.planilha = pd.read_excel(caminho,index_col=None)
-            self.setvar('tamahoGrupo', self.util.metaDadosPlanilha(self.planilha)[0])
+            self.setvar('tamahoGrupo1', self.util.metaDadosPlanilha2Grupos(self.planilha)[2])
+            self.setvar('tamahoGrupo2', self.util.metaDadosPlanilha2Grupos(self.planilha)[3])
+            
             self.qtdLinhasPlanilha, self.qtdColunasPlanilha = self.planilha.shape
 
             if self.qtdColunasPlanilha != 2:

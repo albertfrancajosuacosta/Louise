@@ -59,6 +59,12 @@ class Util:
     def metaDadosPlanilha(self, planilha):
         linha, coluna = planilha.shape
         return linha, coluna 
+    
+    def metaDadosPlanilha2Grupos(self, planilha):
+        linha, coluna = planilha.shape
+        tamanhoGrupo1 = (planilha[planilha.columns[0]].shape)[0]
+        tamanhoGrupo2 = (planilha[planilha.columns[1]].shape)[0] 
+        return linha, coluna, tamanhoGrupo1, tamanhoGrupo2
        
    
          
