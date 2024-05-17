@@ -1,11 +1,13 @@
-Resultado - Shapiro-Wilk Nível de Significância 0.05
+Resultado - Anderson Nível de Significância 5.0
 Hipóteses: 
 • H0: Normalmente distribuído 
 • H1: Não normalmente distribuído 
 Estatística do teste
-0.997973852728139
-p-valor
-0.0006608349358210453
+1.4006332218332318
+Valor Crítico
+0.786
+Nível de Significância
+5.0
 
 
 Reijeita H0 

@@ -1,227 +1,125 @@
-from tkinter.messagebox import showerror, showwarning
-from tkinter.ttk import Combobox, Treeview
+from datetime import datetime
+from random import choices
+from tkinter import StringVar, Toplevel
+from tkinter import filedialog
+import tkinter
 import traceback
-from tkinter import ttk
-from util.util import Util
-from tkinter import VERTICAL, W, Button, Frame, Label, Scrollbar, StringVar, Toplevel, filedialog
-import pandas as pd
+import ttkbootstrap as ttk
+from ttkbootstrap.style import Bootstyle
+from tkinter.filedialog import askdirectory
+from ttkbootstrap.dialogs import Messagebox
+from ttkbootstrap.constants import *
+from tkinter.scrolledtext import ScrolledText
+from pathlib import Path
 from util.testesEstatisticos import TesteEstatistico
 from util.textoFormatado import TextoFormatado
+from util.util import Util
+import pandas as pd
 
+
+CAMINHO_IMAGEM = Path(__file__).parent.parent / 'img'
 
 
 class JanelaHipoteseParametrico2Grupos(Toplevel):
 
-
-    def __init__(self, larguraMae, alturaMae, master = None):
-
-        super().__init__(master = master)
-        
-        self.util = Util()
-        self.definirConfiguracoes(larguraMae, alturaMae,rezisableLargura=True,rezisableAltura=True)
-
-        
-
-
-    def definirConfiguracoes(self, larguraMae, alturaMae,rezisableLargura=True,rezisableAltura=True):
-        self.largura = larguraMae
-        self.altura = alturaMae
-        self.title("Louise - Teste de Hipótese Paramétrico para 2 Grupos - Versão "+str(self.util.versao))
-        self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
-        self.resizable(width=rezisableLargura, height=rezisableAltura)
-        self.planilha = None
-        self.qtdLinhasPlanilha = None
-        self.qtdColunasPlanilha = None
-        self.configure(background=self.util.corFundoTela)
-        self.x, self.y = self.util.posicaoJanelaCentralizada(self,self.largura,self.altura)
-        self.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,self.x,self.y))
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(1,weight=1)
-
-        
-
-        #Frame Superior
-        self.frameSuperior = Frame(self, 
-                                height=int(0.90*self.altura),
-                                highlightbackground=self.util.corBorda,
-                                highlightthickness=2
-                            )
-                                
-
-        self.frameSuperior.configure(background=self.util.corFundoTela)
-        
-        self.labelSelecioneArquivo = Label(self.frameSuperior, 
-                             text ="Selecione o arquivo", 
-                             font=('Arial',16,'bold')
-        )
-        self.labelSelecioneArquivo.grid(row=0,
-                                        column=0,
-                                        sticky='w',
-                                        padx=10
-                                        )
-        self.labelSelecioneArquivo.config(bg=self.util.corFundoTela, fg=self.util.corLetra)
-
-     
-        self.labelCaminhoArquivo = Label(self.frameSuperior,
-                               font=('Arial',10),
-                               width=50,
-                              # bg="#d5f0ed"
-                            ) 
-        
-        self.labelCaminhoArquivo.grid(row=0,
-                                      column=1,
-                                      #sticky='n',
-                                      padx=10
-                                      )
-
-        self.botaoArquivo = Button(self.frameSuperior,
-                                    text="Procurar",
-                                    command=lambda: self.procurarArquivo()
-                                    )
-        
-        self.botaoArquivo.grid(row=0,
-                               column=2,
-                               sticky='nw',
-                               padx=10
-                               )
-        
-        self.frameSuperior.grid(row=0, sticky="nenw")
-
-        #Frame Central
-
-        self.frameCentral = Frame(self, 
-                                height=self.util.alturaTela,
-                                width=self.util.larguraTela,
-                                highlightbackground=self.util.corBorda,
-                                highlightthickness=2
-                            )
-
-        self.frameCentral.configure(background=self.util.corFundoTela)
-
-        self.frameCentral.columnconfigure(0, weight=1)
-        self.frameCentral.columnconfigure(1, weight=1)
-        self.frameCentral.rowconfigure(0,weight=1)
-
-
-        #Frame Central Esquerdo
-
-        self.frameCentralE = Frame(self.frameCentral, 
-                                height=self.util.alturaTela,
-                                width=self.util.larguraTela//2,
-                                highlightbackground=self.util.corBorda,
-                                highlightthickness=2
-                            )
-        self.frameCentralE.configure(background=self.util.corFundoTela)
-        
-        self.frameCentralE.grid(row=0,
-                                column=0,
-                                sticky="nenwswse")
-        
-        self.frameCentralE.columnconfigure(0, weight=1)
-        self.frameCentralE.rowconfigure(0,weight=1)
-        
-
-        self.scrollbary = Scrollbar(self.frameCentralE, orient=VERTICAL)
-
-        self.style = ttk.Style()
-        self.style.theme_use("clam")
-        #self.style.configure("Treeview",
-        #                     background="#black",
-        #                     foreground="black",
-        #                    rowheight=25,
-        #                     fieldbackground="silver"
-        #                    )
-        
-        self.style.configure("Treeview.Heading",
-                             background=self.util.corFundoTela,
-                             foreground=self.util.corLetra,
-                             fieldbackground="red",
-                             #rowheight=25,
-                             relief="flat"
-                             )
-        
-        
-        self.arvore = Treeview(self.frameCentralE,yscrollcommand=self.scrollbary.set,columns=("1","2","3","4"))
-        self.arvore['show'] = 'headings'
-        self.arvore.column("1", minwidth=10, width=10,  anchor=W)
-        self.arvore.column("2", minwidth=10, width=10, anchor=W)
-        self.arvore.column("3", minwidth=10, width=10,  anchor=W)
-        self.arvore.column("4", minwidth=10, width=10, anchor=W)
-        self.arvore.heading("1", text="#")
-        self.arvore.heading("2", text="Valor Grupo 1")
-        self.arvore.heading("3", text="#")
-        self.arvore.heading("4", text="Valor Grupo 2")
-
-        
-        self.arvore.grid(row=0,
-                        column=0,
-                        sticky='NSEW'            
-        )
-        
-      
-        self.scrollbary.config(command=self.arvore.yview)
+    def __init__(self, *args, **kwargs):
        
-        self.scrollbary.grid(row=0,column=1,sticky='NSEW')
+        super().__init__(*args, **kwargs)
+        
 
-        
-        #Frame Central Direito
-        self.frameCentralD = Frame(self.frameCentral, 
-                                height=self.util.alturaTela,
-                                width=self.util.larguraTela//2,
-                                highlightbackground=self.util.corBorda,
-                                highlightthickness=2
-                            )
-        self.frameCentralD.configure(background=self.util.corFundoTela)
+        self.arquivoCarregado = False
 
-        
-        self.frameCentralD.grid(row=0,
-                                column=1,
-                                sticky="nenwswse")
-        
-        self.labelSelecioneTeste = Label(self.frameCentralD, 
-                                       text ="Selecione o teste", 
-                                       font=('Arial',16,'bold') 
-                                    )
-        self.labelSelecioneTeste.config(bg=self.util.corFundoTela, fg=self.util.corLetra)
-
-        self.labelSelecioneTeste.grid(row=0,
-                                    column=0,
-                                    sticky='ns'
-                                    )
-        
+        self.enderecoArquivoSelecionado = StringVar()
 
         self.tipoTesteEscolhido = StringVar()
+      
+        self.util = Util()
 
-        self.comboBoxTipoTeste = Combobox(self.frameCentralD, 
+        self.photoimages = []
+
+        imgpath = Path(__file__).parent.parent / 'img'
+        for key, val in self.util.arquivo_imagem.items():
+            _path = imgpath / val
+            self.photoimages.append(ttk.PhotoImage(name=key, file=_path))
+
+        
+        # left panel
+        painelEsquerdo = ttk.Frame(self, style='bg.TFrame')
+        painelEsquerdo.pack(side=LEFT, fill=Y)
+
+        ## Collapsible arquivo  (collapsible)
+        collapsibleArquivo = CollapsingFrame(painelEsquerdo)
+        collapsibleArquivo.pack(fill=X, pady=1)
+
+        ## container
+        bus_frm = ttk.Frame(collapsibleArquivo, padding=5)
+        bus_frm.columnconfigure(1, weight=1)
+        collapsibleArquivo.add(
+            child=bus_frm, 
+            title='Arquivo Selecionado', 
+            bootstyle=SECONDARY)
+
+        ## Endereço
+  
+        self.labelEnderecoArquivo = ttk.Label(bus_frm, text='Endereço:')
+        self.labelEnderecoArquivo.grid(row=0, column=0, sticky=W, pady=2)
+        self.enderecoArquivo = ttk.Label(bus_frm)
+        self.enderecoArquivo.grid(row=0, column=1, sticky=EW, padx=5, pady=2)
+       
+
+        ## Tamnho Grupo 1
+        lbl = ttk.Label(bus_frm, text='Tamanho Grupo 1:')
+        lbl.grid(row=1, column=0, sticky=W, pady=2)
+        lbl = ttk.Label(bus_frm, textvariable='tamahoGrupo1')
+        lbl.grid(row=1, column=1, sticky=EW, padx=5, pady=2)
+        #self.setvar('lastrun', '14.06.2021 19:34:43')
+
+        ## Tamnho Grupo 2
+        lbl = ttk.Label(bus_frm, text='Tamanho Grupo 2:')
+        lbl.grid(row=2, column=0, sticky=W, pady=2)
+        lbl = ttk.Label(bus_frm, textvariable='tamahoGrupo2')
+        lbl.grid(row=2, column=1, sticky=EW, padx=5, pady=2)
+        #self.setvar('lastrun', '14.06.2021 19:34:43')
+
+
+
+        # Collapsible teste (collapsible)
+        collapsibleTeste = CollapsingFrame(painelEsquerdo)
+        collapsibleTeste.pack(fill=BOTH, pady=1)
+
+       
+        ## container
+        busTeste = ttk.Frame(collapsibleTeste, padding=5)
+        busTeste.columnconfigure(1, weight=1)
+        collapsibleTeste.add(
+            child=busTeste, 
+            title='Teste', 
+            bootstyle=SECONDARY)
+        
+        ## Teste
+        self.labelTesteNormalidade = ttk.Label(busTeste, text='Teste:')
+        self.labelTesteNormalidade.grid(row=0, column=0, sticky=W, pady=2)
+
+    
+
+        self.comboBoxTipoTeste = ttk.Combobox(busTeste, 
                                             textvariable=self.tipoTesteEscolhido
                                             #width=(self.largura//2)
                                        )
-        
-        self.frameCentralD.columnconfigure(1,weight=1)
-        
-        
-        # Adding combobox drop down list 
+            
         listaTestes  = ['Teste T']
         self.comboBoxTipoTeste['values'] = listaTestes
         self.comboBoxTipoTeste['state']= 'readonly'
-        self.comboBoxTipoTeste.grid(row = 0, column = 1,sticky='NSEW',padx=10) 
+        self.comboBoxTipoTeste.grid(row=1, column=0, sticky=W, pady=2)
 
-        self.labelSelecioneNivelSignificancia = Label(self.frameCentralD,
-                                                      text="Selecione o nível de significância",
-                                                      font=('Arial',16,'bold')
-                                                      )
-        
-        self.labelSelecioneNivelSignificancia.config(bg=self.util.corFundoTela, fg=self.util.corLetra)
-        self.labelSelecioneNivelSignificancia.grid(row=1,
-                                    column=0,
-                                    sticky='ns'
-                                    )
-        
 
+        ## Nível de significância
+        self.labelTesteNormalidade = ttk.Label(busTeste, text='Nível de Significância:')
+        self.labelTesteNormalidade.grid(row=2, column=0, sticky=W, pady=2)
 
         self.nivelSignificanciaeEscolhido = StringVar()
 
-        self.comboBoxNivelSignificancia = Combobox(self.frameCentralD, 
+        self.comboBoxNivelSignificancia = ttk.Combobox(busTeste, 
                                             textvariable=self.nivelSignificanciaeEscolhido
                                             #width=(self.largura//2)
                                        )
@@ -229,64 +127,177 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         # Adding combobox drop down list 
         self.comboBoxNivelSignificancia['values'] = ('1%', '2.5%','5%', '10%', '15%') 
         self.comboBoxNivelSignificancia['state']= 'readonly'
-        self.comboBoxNivelSignificancia.grid(row = 1, column = 1,sticky='NSEW',padx=10) 
-        self.comboBoxNivelSignificancia.current(2) 
+        self.comboBoxNivelSignificancia.current(2)
+        self.comboBoxNivelSignificancia.grid(row=3, column=0, sticky=W, pady=2)   
 
-        self.botaoTestar = Button(self.frameCentralD, 
+
+        self.botaoTestar = ttk.Button(busTeste,
                    text="Testar", 
                    command= lambda: self.testar(),
-                   activebackground="blue", 
-                   activeforeground="white",
-                   anchor="center",
-                   bd=3,
-                   bg="lightgray",
-                   cursor="hand2",
-                   disabledforeground="gray",
-                   fg="black",
-                   font=('Arial',16,'bold'),
-                   height=0,
-                   highlightbackground="black",
-                   highlightcolor="green",
-                   highlightthickness=2,
-                   justify="center",
-                   overrelief="raised",
-                   wraplength=80
+                   bootstyle="success"                  
             )
         
+        self.botaoTestar.grid(row=5, column=0, pady=2)
+
+
+        # Collapsible opções resultados (collapsible)
+        collapsibleOpcoesResultados = CollapsingFrame(painelEsquerdo)
+        collapsibleOpcoesResultados.pack(fill=BOTH, pady=1)
+
+       
+        ## container
+        busOpcoesResultados = ttk.Frame(collapsibleOpcoesResultados, padding=5)
+        busOpcoesResultados.columnconfigure(1, weight=1)
+        collapsibleOpcoesResultados.add(
+            child=busOpcoesResultados, 
+            title='Opções Resultado', 
+            bootstyle=SECONDARY)
         
-        self.botaoTestar.grid(row=2,column=0, columnspan=2,  sticky="NSEW")
+             
 
+        self.botaoSalvarResultado = ttk.Button(busOpcoesResultados,
+                   text="Salvar", 
+                   command= lambda: self.salvarResultado(),
+                   bootstyle="success",
+                   image='salvar', 
+                   compound=LEFT, 
+                              
+        )
+        self.botaoSalvarResultado.pack_forget()
+        #self.botaoSalvarResultado.grid(row=0, column=0, pady=2)
 
-        self.textoResultado = TextoFormatado(self.frameCentralD)
+      
+      
+        ## section separator
+        sep = ttk.Separator(bus_frm, bootstyle=SECONDARY)
+        sep.grid(row=3, column=0, columnspan=2, pady=10, sticky=EW)
 
-        self.textoResultado.limpar()
+        # logo
+        #lbl = ttk.Label(left_panel, image='logo', style='bg.TLabel')
+        #lbl.pack(side='bottom')
+
+        # Painel Direito
+        painelDireito = ttk.Frame(self, padding=(2, 1))
+        painelDireito.pack(side=RIGHT, fill=BOTH, expand=YES)
+
+        ## file input
+        browse_frm = ttk.Frame(painelDireito)
+        browse_frm.pack(side=TOP, fill=X, padx=2, pady=1)
+
+        self.file_entry = ttk.Entry(browse_frm)
+        self.file_entry.config(state=DISABLED)
+        self.file_entry.pack(side=LEFT, fill=X, expand=YES)
+
+        self.botaoProcurarArquivo = ttk.Button(
+            master=browse_frm, 
+            image='opened-folder', 
+            bootstyle=(LINK, SECONDARY),
+            command=lambda: self.procurarArquivo()
+        )
+        self.botaoProcurarArquivo.pack(side=RIGHT)
+
+      
+
+        ## scrolling text output
+        collapsibleArquivoAberto = CollapsingFrame(painelDireito)
+        collapsibleArquivoAberto.pack(fill=BOTH, expand=YES)
+
+        output_container = ttk.Frame(collapsibleArquivoAberto, padding=1)
+       
+        self.st = ScrolledText(output_container)
+        self.st.pack(fill=BOTH, expand=YES)
+        collapsibleArquivoAberto.add(output_container, textvariable='scroll-message')
+
+        self.textoResultado = TextoFormatado(painelDireito)
+        self.textoResultado.pack(fill=BOTH, expand=YES)
+
         
-        self.frameCentralD.rowconfigure(3,weight=1)
-        self.textoResultado.grid(row=3,column=0,sticky="NSEW", columnspan=3)
+    def salvarResultado(self):
+       
+        caminho = self.util.salvarResultadosInTxt(self.textoResultado.get(1.0,"end-1c"))
+        Messagebox.show_info(title="Arquivo salvo em: ", message=caminho)
 
-
-        self.frameCentral.grid(row=1,sticky="nenwswse") 
-            
 
     def testar(self):
-
         
         self.sig = self.util.converteNivelSignificancia(self.nivelSignificanciaeEscolhido.get(),self.tipoTesteEscolhido.get())
+      
+        self.textoResultado.limpar()
+
+       
+
+        if not isinstance(self.enderecoArquivoSelecionado,str):
+             if self.enderecoArquivoSelecionado.get() == "":
+                Messagebox.show_warning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
+                self.botaoProcurarArquivo.focus_set()
+        else:
+            if self.tipoTesteEscolhido.get() == "":
+                Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
+                self.comboBoxTipoTeste.focus_set()
+            elif self.tipoTesteEscolhido.get() == "Teste T":
+                self.testeT2grupos()
             
-        if self.labelCaminhoArquivo.cget("text") == "":
-            showwarning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
-            self.botaoArquivo.focus_set()
-        elif self.tipoTesteEscolhido.get() == "":
-            showwarning(title="Aviso", message="É necessário selecionar o teste primeiro.")
-            self.comboBoxTipoTeste.focus_set()
-        elif self.tipoTesteEscolhido.get() == "Teste T":
-            self.testT2grupos()
+                
+        self.botaoSalvarResultado.grid(row=0, column=0, pady=2)
+
+
+    def procurarArquivo(self):
+       
+        caminhoArquivo = filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
+        self.enderecoArquivoSelecionado = caminhoArquivo
+        self.setvar('scroll-message', self.enderecoArquivoSelecionado.split("/")[-1])
         
+        if caminhoArquivo:
+            self.enderecoArquivo.config(text=self.enderecoArquivoSelecionado)
+          
+            self.file_entry.config(state=NORMAL)
+            self.file_entry.insert(END, self.enderecoArquivoSelecionado)
+            self.file_entry.config(state=DISABLED)
+            self.processarArquivo(caminhoArquivo)
+
+        self.focus_set()
+
+    def processarArquivo(self,caminho):
+
+        try:
+            self.planilha = pd.read_excel(caminho,index_col=None)
+            self.setvar('tamahoGrupo1', self.util.metaDadosPlanilha2Grupos(self.planilha)[2])
+            self.setvar('tamahoGrupo2', self.util.metaDadosPlanilha2Grupos(self.planilha)[3])
+            
+            self.qtdLinhasPlanilha, self.qtdColunasPlanilha = self.planilha.shape
+
+            if self.qtdColunasPlanilha != 2:
+                Messagebox.show_error(title="Erro", message="Os dados precisam estar em duas colunas. Atualmente os dados estão em "+str(self.qtdColunasPlanilha)+' colunas.') 
+            else: 
+                
+                self.carregarDados(self.planilha)
+                self.focus_set()
+            
+        except Exception as e:
+
+            Messagebox.show_error(title='Error', message='Erro ao abrir arquivo.')
+            print(traceback.format_exc())
+
+
+    def carregarDados(self,planilha):
         
-    def testT2grupos(self):
+        self.st.delete('1.0', END)
+        self.st.configure(font='TkFixedFont')
+        self.st.insert(END, '#\t\t\tGrupo 1\t\t\t\t#\t\t\tGrupo 2\n')
+        for index, row in planilha.iterrows():
+           
+            _texto = str(index+1)+'\t\t'+str(row.values[0])+'\t\t\t\t\t'+str(index+1)+'\t\t'+str(row.values[1])+'\n'
+            self.st.insert(END, _texto)
+
+        self.st.tag_add("start1", "1.0","2.0")
+        self.st.tag_configure("start1", background="#2780e3", foreground="#FFFFFF")
+        self.st.config(state= DISABLED)
+        
+
+    def testeT2grupos(self):
         self.textoResultado.limpar()
         te = TesteEstatistico(signi=self.sig)
-        estatistica, p_value = te.testT2grupos(self.planilha)
+        estatistica, p_value = te.testeT2grupos(self.planilha)
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Resultado - "+self.tipoTesteEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
         self.textoResultado.habitarDesabilitar("disabled")
@@ -320,52 +331,83 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
             self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
             self.textoResultado.habitarDesabilitar("disabled") 
 
-    
-                 
-    def procurarArquivo(self):
+class CollapsingFrame(ttk.Frame):
+    """A collapsible frame widget that opens and closes with a click."""
 
-        self.focus_set()
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        self.columnconfigure(0, weight=1)
+        self.cumulative_rows = 0
 
+        # widget images
+        self.images = [
+            ttk.PhotoImage(file=CAMINHO_IMAGEM/'icons8_double_up_24px.png'),
+            ttk.PhotoImage(file=CAMINHO_IMAGEM/'icons8_double_right_24px.png')
+        ]
 
-        caminhoArquivo = filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
-           
-        if caminhoArquivo:
-            self.labelCaminhoArquivo.config(text=caminhoArquivo)
-            self.processarArquivo(caminhoArquivo)
+    def add(self, child, title="", bootstyle=PRIMARY, **kwargs):
+        """Add a child to the collapsible frame
 
+        Parameters:
 
-    def processarArquivo(self,caminho):
+            child (Frame):
+                The child frame to add to the widget.
 
-        try:
-            self.planilha = pd.read_excel(caminho,index_col=None)
-            self.qtdLinhasPlanilha, self.qtdColunasPlanilha = self.planilha.shape
+            title (str):
+                The title appearing on the collapsible section header.
 
-            
-            if self.qtdColunasPlanilha != 2:
-                showwarning(title="Aviso", message="Os dados precisam estar em uma única coluna. Atualmente os dados estão em "+str(self.qtdColunasPlanilha)+' colunas.') 
-            else: 
-                
-                self.carregarDados(self.planilha)
-                self.focus_set()
-              
+            bootstyle (str):
+                The style to apply to the collapsible section header.
 
+            **kwargs (Dict):
+                Other optional keyword arguments.
+        """
+        if child.winfo_class() != 'TFrame':
+            return
 
-        except Exception as e:
+        style_color = Bootstyle.ttkstyle_widget_color(bootstyle)
+        frm = ttk.Frame(self, bootstyle=style_color)
+        frm.grid(row=self.cumulative_rows, column=0, sticky=EW)
 
-            showerror(title='Error', message='Erro ao abrir arquivo.')
-            print(traceback.format_exc())
+        # header title
+        header = ttk.Label(
+            master=frm,
+            text=title,
+            bootstyle=(style_color, INVERSE)
+        )
+        if kwargs.get('textvariable'):
+            header.configure(textvariable=kwargs.get('textvariable'))
+        header.pack(side=LEFT, fill=BOTH, padx=10)
 
+        # header toggle button
+        def _func(c=child): return self._toggle_open_close(c)
+        btn = ttk.Button(
+            master=frm,
+            image=self.images[0],
+            bootstyle=style_color,
+            command=_func
+        )
+        btn.pack(side=RIGHT)
 
-    def carregarDados(self,planilha):
+        # assign toggle button to child so that it can be toggled
+        child.btn = btn
+        child.grid(row=self.cumulative_rows + 1, column=0, sticky=NSEW)
 
-        for i in self.arvore.get_children():
-            self.arvore.delete(i)
+        # increment the row assignment
+        self.cumulative_rows += 2
 
+    def _toggle_open_close(self, child):
+        """Open or close the section and change the toggle button 
+        image accordingly.
 
-        for index, row in (planilha.sort_index(ascending=False)).iterrows():
-           
-            self.arvore.insert(parent='', index=0, values = ((index+1), row.values[0], (index+1), row.values[1]))
+        Parameters:
 
-
-     
-     
+            child (Frame):
+                The child element to add or remove from grid manager.
+        """
+        if child.winfo_viewable():
+            child.grid_remove()
+            child.btn.configure(image=self.images[1])
+        else:
+            child.grid()
+            child.btn.configure(image=self.images[0])

@@ -1,84 +1,157 @@
-from tkinter import Tk, messagebox
-from tkinter import Menu
+from datetime import datetime
+import os
+from random import choices
+from tkinter import Label
+import ttkbootstrap as ttk
+from ttkbootstrap.style import Bootstyle
+from ttkbootstrap.dialogs import Messagebox
+from ttkbootstrap.constants import *
+from pathlib import Path
 from util.util import Util
+from view.janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
 from view.janelaNormalidade import JanelaNormalidade
 from view.janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
-from view.janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
-from tkinter import ttk
 
 
+CAMINHO_IMAGEM = Path(__file__).parent / 'img'
 
-class Louise(Tk):
-    
-    def __init__(self):
+
+class Louise_v0_05(ttk.Frame):
+
+    def __init__(self, *args, **kwargs):
+        
+        super().__init__(*args, **kwargs)
 
         
-        super().__init__()
+        self.pack(fill=BOTH, expand=YES)
         self.util = Util()
-        self.definirConfiguracoes(rezisableLargura=True,rezisableAltura=True)
-        self.definirBarraMenu()
-        self.style = ttk.Style()
-        self.style.theme_use("clam")
+        self.master.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,0,0))
+        self.master.title("Louise - Teste de Hipótese - Versão "+str(self.util.versao_0_5))
+        self.master.iconbitmap(CAMINHO_IMAGEM.__str__()+"\\lamed.ico")
+      
+        self.photoimages = []
+        imgpath = Path(__file__).parent / 'img'
+        for key, val in self.util.arquivo_imagem.items():
+            _path = imgpath / val
+            self.photoimages.append(ttk.PhotoImage(name=key, file=_path))
 
-    def definirConfiguracoes(self,rezisableLargura=True,rezisableAltura=True):
+
+
+        # buttonbar
+        buttonbar = ttk.Frame(self, style='primary.TFrame')
+        buttonbar.pack(fill=X, pady=1, side=TOP)
+
+        ## new backup
+        _func = lambda: self.showFrameTeste()
+        btn = ttk.Button(
+            master=buttonbar, 
+            text='Testes',
+            image='curve', 
+            compound=LEFT, 
+            command=_func
+        )
+        btn.pack(side=LEFT, ipadx=5, ipady=5, padx=(1, 0), pady=1)
+
+        ## backup
+        _func = lambda: self.showSobre()
+        btn = ttk.Button(
+            master=buttonbar, 
+            text='Sobre', 
+            image='sobre', 
+            compound=LEFT, 
+            command=_func
+        )
+        btn.pack(side=LEFT, ipadx=5, ipady=5, padx=0, pady=1)
+
+        ## refresh
+        _func = lambda: self.master.destroy()
+        btn = ttk.Button(
+            master=buttonbar, 
+            text='Sair', 
+            image='sair',
+            compound=LEFT, 
+            command=_func
+        )
+        btn.pack(side=LEFT, ipadx=5, ipady=5, padx=0, pady=1)
+
         
-        self.title("Louise - Teste de Hipótese - Versão "+str(self.util.versao_0_1))
-        self.iconbitmap('C:\\Users\\alber\\Documents\\LabMax\\Louise\\img\\lamed.ico')
-        self.resizable(width=rezisableLargura, height=rezisableAltura)
-        self.larguraDispositivo, self.alturaDispositvo = self.util.tamanhoTelaDispositivo(self,1.00,1.00)
-        self.configure(background=self.util.corFundoTela)
-        #x, y = util.posicaoJanelaCentralizada(self,int(larguraDispositivo*0.80), int(alturaDispositvo*0.80))
-        self.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,0,0))
-        self.larguraTelaPrincipal = int(self.larguraDispositivo*0.80)
-        self.alturaTelaPrincipal = int(self.alturaDispositvo*0.80)
+
+        # painel central
+        painelCentral = ttk.Frame(self, padding=(1, 1),bootstyle="light")
+        painelCentral.pack(side=TOP, fill=BOTH, expand=YES)
 
 
-    def definirBarraMenu(self):
-        self.barraMenu = Menu(self)
-        self.menuTestes = Menu(self.barraMenu,tearoff=False)
-        self.menuTestes.add_command(label='Normalidade',
-                                    #accelerator="Crtl+N",
-                                    activebackground="#324aa8",
-                                    command= lambda: self.showJanelaNormalidade()
-                                    )
-        self.subMenuHipotese = Menu(self.menuTestes, tearoff=0)
-        self.subMenuHipoteseP = Menu(self.subMenuHipotese, tearoff=False)
-        self.subMenuHipoteseP.add_command(label='2 grupos', command=lambda: self.showJanelaHipoteseParametrico2grupos())
-        #self.subMenuHipoteseP.add_command(label='> 2 grupos', command=lambda: print('P > 2 grupos'))
-        self.subMenuHipotese.add_cascade(label="Paramétrico",menu=self.subMenuHipoteseP)
         
-        self.subMenuHipoteseNP = Menu(self.subMenuHipotese, tearoff=False)
-        self.subMenuHipoteseNP.add_command(label='2 grupos', command=lambda: self.showJanelaHipoteseNaoParametrico2grupos())
-        #self.subMenuHipoteseNP.add_command(label='> 2 grupos', command=lambda: print('NP > 2 grupos'))
-        self.subMenuHipotese.add_cascade(label="Não Paramétrico", menu=self.subMenuHipoteseNP)
+        textoSelecioneTeste = "Selecione o teste"
+        self.frameSelecioneTeste = ttk.Labelframe(painelCentral, text=textoSelecioneTeste,bootstyle="dark")
 
-        self.menuTestes.add_cascade(label='Hipóteses',
-                                    activebackground="#324aa8",
-                                    menu=self.subMenuHipotese
-                                    )
+        self.frameTestesNormalidadeHipoteses = ttk.Frame(self.frameSelecioneTeste,bootstyle="light")
+        self.frameTestesNormalidadeHipoteses.pack(fill=BOTH, expand=Y, anchor=N)
 
-        self.barraMenu.add_cascade(label='Testes',menu=self.menuTestes)
 
-        self.barraMenu.add_command(label='Sobre', command=lambda: self.showSobre())
+        self.labelNormalidade = ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Normalidade:",width=50)
+        self.labelNormalidade.place(x=30,y=30)  
+
+
+        botaoTesteNormalidade = ttk.Button(
+            master=self.frameTestesNormalidadeHipoteses,
+            text="Normalidade",
+            command=lambda : self.openJanelaNormalidade(),
+            bootstyle=INFO,
+            width=25
+        )
+        botaoTesteNormalidade.place(x=50,y=80)
         
-        self.barraMenu.add_command(label='Sair',command=self.destroy)
+        
+        self.labelHipotese= ttk.Label(self.frameTestesNormalidadeHipoteses, text="Testes de Hipótese:",width=50)
+        self.labelHipotese.place(x=30,y=130)
 
-        self.config(menu=self.barraMenu)
+        botaoTesteHipoteseParametrico2Grupos = ttk.Button(
+            master=self.frameTestesNormalidadeHipoteses,
+            text="Paramétrico 2 Grupos",
+            command=lambda : self.openJanelaHipoteseParametrico2Grupos(),
+            bootstyle=PRIMARY,
+            width=25
+        )
+        botaoTesteHipoteseParametrico2Grupos.place(x=50,y=180)
 
-  
-    def showJanelaNormalidade(self):
-        JanelaNormalidade(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
+        botaoTesteHipoteseNaoParametrico2Grupos = ttk.Button(
+            master=self.frameTestesNormalidadeHipoteses,
+            text="Não Paramétrico 2 Grupos",
+            command=lambda : self.openJanelaHipoteseNaoParametrico2Grupos(),
+            bootstyle=PRIMARY,
+            width=25
+        )
+        botaoTesteHipoteseNaoParametrico2Grupos.place(x=50,y=230)
+        
+        self.frameSelecioneTeste.pack_forget()
+      
 
-    def showJanelaHipoteseParametrico2grupos(self):
-        JanelaHipoteseParametrico2Grupos(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
+    def openJanelaNormalidade(self):
+         
+          JanelaNormalidade()
+          
+    def openJanelaHipoteseParametrico2Grupos(self):
+          
+          JanelaHipoteseParametrico2Grupos()
 
-    def showJanelaHipoteseNaoParametrico2grupos(self):
-        JanelaHipoteseNaoParametrico2Grupos(larguraMae=self.larguraTelaPrincipal, alturaMae=self.alturaTelaPrincipal)
+    def openJanelaHipoteseNaoParametrico2Grupos(self):
+        
+        JanelaHipoteseNaoParametrico2Grupos()
 
+    def showFrameTeste(self):
+         self.frameSelecioneTeste.pack(fill=BOTH, expand=YES, anchor=N)
+       
     def showSobre(self):
-            messagebox.showinfo("Sobre Louise", "Louise tem como objetivo fornecer uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com") 
-            
+                mensagem = "Louise tem como objetivo fornecer uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com"
+                Messagebox.show_info(mensagem, title='Sobre', alert=True, parent=self)
+               
+                  
 
-if __name__=="__main__":
-    louise = Louise()
-    louise.mainloop()
+if __name__ == '__main__':
+
+
+    app = ttk.Window()
+    Louise_v0_05(app)
+   
+    app.mainloop()
