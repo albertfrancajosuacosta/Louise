@@ -21,7 +21,7 @@ class TesteEstatistico():
         indexCriticoValor = int(np.where(resultados.significance_level==self.nivelSignificancia)[0])        
         return resultados.statistic, resultados.critical_values[indexCriticoValor], self.nivelSignificancia
     
-    def testT2grupos(self,dados):
+    def testeT2grupos(self,dados):
 
         dados1 = dados.iloc[:,0:1]
         dados2 = dados.iloc[:,1:2]
