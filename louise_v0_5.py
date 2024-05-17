@@ -9,8 +9,7 @@ from ttkbootstrap.constants import *
 from pathlib import Path
 from util.util import Util
 from view.janelaNormalidade_v0_5 import JanelaNormalidade_v0_5
-from view.janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
-from view.janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
+from view.janelaHipoteseParametrico2Grupos_v0_5 import JanelaHipoteseParametrico2Grupos_v0_5
 
 
 CAMINHO_IMAGEM = Path(__file__).parent / 'img'
@@ -111,7 +110,7 @@ class Louise_v0_05(ttk.Frame):
         botaoTesteHipoteseParametrico2Grupos = ttk.Button(
             master=self.frameTestesNormalidadeHipoteses,
             text="Paramétrico 2 Grupos",
-            command=lambda : print('Paramétrico 2 Grupos'),
+            command=lambda : self.openJanelaHipoteseParametrico2Grupos(),
             bootstyle=PRIMARY,
             width=25
         )
@@ -133,6 +132,9 @@ class Louise_v0_05(ttk.Frame):
          
           JanelaNormalidade_v0_5()
           
+    def openJanelaHipoteseParametrico2Grupos(self):
+          
+          JanelaHipoteseParametrico2Grupos_v0_5()
 
     def showFrameTeste(self):
          self.frameSelecioneTeste.pack(fill=BOTH, expand=YES, anchor=N)
