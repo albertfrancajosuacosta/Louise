@@ -24,7 +24,9 @@ Louise é construído utilizada as seguintes bibliotecas:
 
 ## Considerações:
 
--   A interface gráfica com o usuário da versão inicial (0.1) requer melhorias que serão atendidas na próxima versão da ferramenta. Entretanto, a ferramenta é funcional na presente versão. 
+-   <s>A interface gráfica com o usuário da versão inicial (0.1) requer melhorias que serão atendidas na próxima versão da ferramenta. Entretanto, a ferramenta é funcional na presente versão.</s>
+
+-   Disponibilizada a versão 0.5 em 17/05/2024 contendo as melhorias na interface gráfica com o usuário pendentes na versão 0.1. Todas as funcionalidades da versão 0.1 estão mantidas e foi acrescida a funcionalidade de salvar o resultado em arquivo.
 
 
 ## Funcionalidades em implantação:
