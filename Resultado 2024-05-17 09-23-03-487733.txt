@@ -1,0 +1,11 @@
+Resultado - Shapiro-Wilk Nível de Significância 0.05
+Hipóteses: 
+• H0: Normalmente distribuído 
+• H1: Não normalmente distribuído 
+Estatística do teste
+0.997973852728139
+p-valor
+0.0006608349358210453
+
+
+Reijeita H0 

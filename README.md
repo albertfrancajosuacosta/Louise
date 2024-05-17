@@ -14,7 +14,8 @@ Louise é construído utilizada as seguintes bibliotecas:
 
 2.  Interface Gráfica com o Usuário
 
-    - Tkinter: <https://docs.python.org/pt-br/3/library/tkinter.html>
+    - Tkinter: <https://docs.python.org/pt-br/3/library/tkinter.html> (Versão 0.1)
+    - Tkinter bootstrap: <https://ttkbootstrap.readthedocs.io> (Versão 0.5)
 
 3.  Manipulação de dados
 
