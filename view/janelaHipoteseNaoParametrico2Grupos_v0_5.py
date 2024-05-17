@@ -20,7 +20,7 @@ import pandas as pd
 CAMINHO_IMAGEM = Path(__file__).parent.parent / 'img'
 
 
-class JanelaHipoteseParametrico2Grupos_v0_5(Toplevel):
+class JanelaHipoteseNaoParametrico2Grupos_v0_5(Toplevel):
 
     def __init__(self, *args, **kwargs):
        
@@ -126,7 +126,7 @@ class JanelaHipoteseParametrico2Grupos_v0_5(Toplevel):
                                             #width=(self.largura//2)
                                        )
             
-        listaTestes  = ['Teste T']
+        listaTestes  = ['Mann-Whitney', 'Wilcoxon']
         self.comboBoxTipoTeste['values'] = listaTestes
         self.comboBoxTipoTeste['state']= 'readonly'
         self.comboBoxTipoTeste.grid(row=1, column=0, sticky=W, pady=2)
@@ -253,8 +253,12 @@ class JanelaHipoteseParametrico2Grupos_v0_5(Toplevel):
             if self.tipoTesteEscolhido.get() == "":
                 Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
                 self.comboBoxTipoTeste.focus_set()
-            elif self.tipoTesteEscolhido.get() == "Teste T":
-                self.testeT2grupos()
+            elif self.tipoTesteEscolhido.get() == "Mann-Whitney":
+                self.testeMannWhitney2grupos()
+                self.comboBoxTipoTeste.focus_set()
+            elif self.tipoTesteEscolhido.get() == "Wilcoxon":
+                self.testeWilcoxon2grupos()
+                self.comboBoxTipoTeste.focus_set()
             
                 
         self.botaoSalvarResultado.grid(row=0, column=0, pady=2)
@@ -313,10 +317,49 @@ class JanelaHipoteseParametrico2Grupos_v0_5(Toplevel):
         self.st.config(state= DISABLED)
         
 
-    def testeT2grupos(self):
+    def testeWilcoxon2grupos(self):
         self.textoResultado.limpar()
         te = TesteEstatistico(signi=self.sig)
-        estatistica, p_value = te.testeT2grupos(self.planilha)
+        estatistica, p_value = te.wilcoxon2grupos(self.planilha)
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Resultado - "+self.tipoTesteEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Hipóteses: \n", "bold")
+        self.textoResultado.insert_bullet("end", "H0: Não há diferença significativa \n")
+        self.textoResultado.insert_bullet("end", "H1: Há diferença significativa \n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "Estatística do teste\n", "bold")
+        self.textoResultado.insert("end", str(estatistica[0])+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "p-valor\n", "bold")
+        self.textoResultado.insert("end", str(p_value[0])+"\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        self.textoResultado.habitarDesabilitar("normal")
+        self.textoResultado.insert("end", "\n\n")
+        self.textoResultado.habitarDesabilitar("disabled")
+
+        if(p_value<te.nivelSignificancia):
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Reijeita H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled")
+        else:
+            self.textoResultado.habitarDesabilitar("normal")
+            self.textoResultado.insert("end", "Falha em rejeitar H0 \n","bold")
+            self.textoResultado.habitarDesabilitar("disabled") 
+
+
+    def testeMannWhitney2grupos(self):
+        
+        self.textoResultado.limpar()
+        te = TesteEstatistico(signi=self.sig)
+        estatistica, p_value = te.mannWhitney2grupos(self.planilha)
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Resultado - "+self.tipoTesteEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
         self.textoResultado.habitarDesabilitar("disabled")
