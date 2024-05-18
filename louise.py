@@ -40,7 +40,7 @@ class Louise(ttk.Frame):
             _path = imgpath / val
             self.photoimages.append(ttk.PhotoImage(name=key, file=_path))
 
-
+        #d
         # buttonbar
         buttonbar = ttk.Frame(self, style='primary.TFrame')
         buttonbar.pack(fill=X, pady=1, side=TOP)
