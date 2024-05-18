@@ -1,11 +1,9 @@
 from tkinter import *
-
-import ttkbootstrap as ttk
+#import ttkbootstrap as ttk
 from PIL import Image
 
-from louise import Louise
 
-splash = ttk.Window()
+splash = Tk()
 altura = 500
 largura = 500
 
@@ -19,7 +17,6 @@ backgroundImage = PhotoImage(file='C:\\Users\\alber\\Documents\\LabMax\\Louise\\
 bg_image = Label(
     splash,
     image=backgroundImage
-
 )
 bg_image.pack()
 
@@ -62,24 +59,15 @@ gif_Label.place(x=200, y=220, width=100, height=100)
 
 
 
-
 def main_window():
-
+    print('oi')
     splash.withdraw()
-    
-    app = ttk.Window()
-    Louise(app)
-    app.mainloop()
-    
-    #app = ttk.Window()
-    #Louise(app)
-    #app.mainloop()
-    #mainloop()
-    
-    def ExitWindow():
-        app.quit()
+    openJanelaLouise()
 
-    app.protocol("WM_DELETE_WINDOW", ExitWindow)
+    #def ExitWindow():
+    #    app.quit()
+
+    #app.protocol("WM_DELETE_WINDOW", ExitWindow)
 
 
 def animation(count):
@@ -92,9 +80,11 @@ def animation(count):
     showAnimation = splash.after(50, lambda: animation(count))
 
 
-splash.after(1000,lambda : main_window())
-
-
 animation(count)
+
+splash.after(1000, main_window)
+
+
+
 
 splash.mainloop()

@@ -27,6 +27,9 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
 
 
     def criarJanela(self):
+
+        self.iconbitmap(CAMINHO_IMAGEM.__str__() + "\\lamed.ico")
+
         self.arquivoCarregado = False
 
         self.enderecoArquivoSelecionado = StringVar()
