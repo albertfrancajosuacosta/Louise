@@ -1,13 +1,11 @@
-import ttkbootstrap as ttk
-from ttkbootstrap.style import Bootstyle
-from ttkbootstrap.dialogs import Messagebox
-from ttkbootstrap.constants import *
 from pathlib import Path
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
+from ttkbootstrap.dialogs import Messagebox
 from util.util import Util
 from view.janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
-from view.janelaNormalidade import JanelaNormalidade
 from view.janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
-
+from view.janelaNormalidade import JanelaNormalidade
 
 CAMINHO_IMAGEM = Path(__file__).parent / 'img'
 
@@ -52,7 +50,7 @@ class Louise(ttk.Frame):
         btn = ttk.Button(
             master=buttonbar, 
             text='Testes',
-            image='curve', 
+            image='curve',
             compound=LEFT, 
             command=_func
         )

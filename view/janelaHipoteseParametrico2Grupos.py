@@ -1,22 +1,17 @@
-from datetime import datetime
-from random import choices
+from tkinter import StringVar, Toplevel
+import traceback
+from pathlib import Path
 from tkinter import StringVar, Toplevel
 from tkinter import filedialog
-import tkinter
-import traceback
-import ttkbootstrap as ttk
-from ttkbootstrap.style import Bootstyle
-from tkinter.filedialog import askdirectory
-from ttkbootstrap.dialogs import Messagebox
-from ttkbootstrap.constants import *
 from tkinter.scrolledtext import ScrolledText
-from pathlib import Path
+import pandas as pd
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
+from ttkbootstrap.dialogs import Messagebox
 from util.collapsingFrame import CollapsingFrame
 from util.testesEstatisticos import TesteEstatistico
 from util.textoFormatado import TextoFormatado
 from util.util import Util
-import pandas as pd
-
 
 CAMINHO_IMAGEM = Path(__file__).parent.parent / 'img'
 

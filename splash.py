@@ -1,12 +1,11 @@
 from tkinter import *
-from PIL import Image 
-import ttkbootstrap as ttk
-from louise import Louise
-from louise_v_01 import Louise_v_01
-from util.util import Util
-from view.janelaNormalidade import JanelaNormalidade
 
-splash = Tk()
+import ttkbootstrap as ttk
+from PIL import Image
+
+from louise import Louise
+
+splash = ttk.Window()
 altura = 500
 largura = 500
 
@@ -64,31 +63,28 @@ gif_Label.place(x=200, y=220, width=100, height=100)
 
 
 
-
 def main_window():
 
     splash.withdraw()
     
-    louise = Louise_v_01()
-    #app = ttk.Window()
-    #Louise(app)
-    #app.mainloop()
+    app = ttk.Window()
+    Louise(app)
+    app.mainloop()
     
     #app = ttk.Window()
     #Louise(app)
     #app.mainloop()
     #mainloop()
     
-    #def ExitWindow():
-    #    app.quit()
+    def ExitWindow():
+        app.quit()
 
-    #app.protocol("WM_DELETE_WINDOW", ExitWindow)
+    app.protocol("WM_DELETE_WINDOW", ExitWindow)
 
 
 def animation(count):
     global showAnimation
     newImage = imageObject[count]
-
     gif_Label.configure(image=newImage)
     count += 1
     if count == frames:
@@ -99,6 +95,6 @@ def animation(count):
 splash.after(1000,lambda : main_window())
 
 
-#animation(count)
+animation(count)
 
 splash.mainloop()

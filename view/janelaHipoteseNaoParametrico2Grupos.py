@@ -1,5 +1,5 @@
 from tkinter import StringVar, Toplevel
-from tkinter import filedialog
+import tkinter
 import traceback
 import ttkbootstrap as ttk
 from ttkbootstrap.dialogs import Messagebox
@@ -244,7 +244,7 @@ class JanelaHipoteseNaoParametrico2Grupos(Toplevel):
 
     def procurarArquivo(self):
        
-        caminhoArquivo = filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
+        caminhoArquivo = tkinter.filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
         self.enderecoArquivoSelecionado = caminhoArquivo
         self.setvar('scroll-message', self.enderecoArquivoSelecionado.split("/")[-1])
         
