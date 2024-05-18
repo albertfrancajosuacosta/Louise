@@ -25,16 +25,18 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
     def __init__(self, *args, **kwargs):
        
         super().__init__(*args, **kwargs)
+        self.util = Util()
+        self.criarJanela()
+
         
 
+    def criarJanela(self):
         self.arquivoCarregado = False
 
         self.enderecoArquivoSelecionado = StringVar()
 
         self.tipoTesteEscolhido = StringVar()
       
-        self.util = Util()
-
         self.photoimages = []
 
         imgpath = Path(__file__).parent.parent / 'img'
@@ -211,7 +213,7 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
         self.textoResultado = TextoFormatado(painelDireito)
         self.textoResultado.pack(fill=BOTH, expand=YES)
 
-        
+
     def salvarResultado(self):
        
         caminho = self.util.salvarResultadosInTxt(self.textoResultado.get(1.0,"end-1c"))
