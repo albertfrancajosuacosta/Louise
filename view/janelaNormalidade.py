@@ -25,17 +25,19 @@ class JanelaNormalidade(Toplevel):
     def __init__(self, *args, **kwargs):
        
         super().__init__(*args, **kwargs)
+        self.util = Util()
+        self.criarJanela()
         
 
+        
+
+    def criarJanela(self):
         self.arquivoCarregado = False
 
         self.enderecoArquivoSelecionado = StringVar()
 
         self.tipoTesteNormalidadeEscolhido = StringVar()
       
-          
-        self.util = Util()
-
         self.photoimages = []
 
         imgpath = Path(__file__).parent.parent / 'img'
@@ -204,7 +206,7 @@ class JanelaNormalidade(Toplevel):
         self.textoResultado = TextoFormatado(painelDireito)
         self.textoResultado.pack(fill=BOTH, expand=YES)
 
-        
+
     def salvarResultado(self):
        
         caminho = self.util.salvarResultadosInTxt(self.textoResultado.get(1.0,"end-1c"))
