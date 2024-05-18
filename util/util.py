@@ -5,6 +5,8 @@ from datetime import datetime
 
 
 
+
+
 class Util:
      
     def __init__(self):
@@ -19,7 +21,7 @@ class Util:
          self.versao_0_1 = 0.1
          self.versao_0_5 = 0.5
 
-         CAMINHO_IMAGEM = Path(__file__).parent / 'img'
+         self.CAMINHO_IMAGEM = Path(__file__).parent.parent / 'img'
 
          self.arquivo_imagem = {
             
@@ -36,6 +38,8 @@ class Util:
          #   _path = imgpath / val
          #   self.fotoimagens.append(ttk.PhotoImage(name=key, file=_path))
 
+
+    
 
     def salvarResultadosInTxt(self,resultados):
         dataHoraString = str(datetime.now())

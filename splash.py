@@ -1,5 +1,10 @@
 from tkinter import *
 from PIL import Image 
+import ttkbootstrap as ttk
+from louise import Louise
+from louise_v_01 import Louise_v_01
+from util.util import Util
+from view.janelaNormalidade import JanelaNormalidade
 
 splash = Tk()
 altura = 500
@@ -52,6 +57,34 @@ count = 0
 
 showAnimation = None
 
+
+gif_Label = Label(splash, image="")
+gif_Label.place(x=200, y=220, width=100, height=100)
+
+
+
+
+
+def main_window():
+
+    splash.withdraw()
+    
+    louise = Louise_v_01()
+    #app = ttk.Window()
+    #Louise(app)
+    #app.mainloop()
+    
+    #app = ttk.Window()
+    #Louise(app)
+    #app.mainloop()
+    #mainloop()
+    
+    #def ExitWindow():
+    #    app.quit()
+
+    #app.protocol("WM_DELETE_WINDOW", ExitWindow)
+
+
 def animation(count):
     global showAnimation
     newImage = imageObject[count]
@@ -63,35 +96,9 @@ def animation(count):
     showAnimation = splash.after(50, lambda: animation(count))
 
 
-gif_Label = Label(splash, image="")
-gif_Label.place(x=200, y=220, width=100, height=100)
+splash.after(1000,lambda : main_window())
 
 
-
-
-def main_window():
-
-    splash.withdraw()
-
-    window = Tk()
-    window.configure(bg="#525561")
-    window.geometry("1240x650")
-
-    altura = 1240
-    largura = 650
-
-    x = (window.winfo_screenwidth()//2)-(largura//2)
-    y = (window.winfo_screenheight()//2)-(altura//2)
-
-    window.geometry('{}x{}+{}+{}'.format(largura,altura,x,y))
-
-    def ExitWindow():
-        window.quit()
-    window.protocol("WM_DELETE_WINDOW", ExitWindow)
-
-
-splash.after(3000,main_window)
-
-animation(count)
+#animation(count)
 
 splash.mainloop()

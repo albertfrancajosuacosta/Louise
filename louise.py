@@ -1,7 +1,3 @@
-from datetime import datetime
-import os
-from random import choices
-from tkinter import Label
 import ttkbootstrap as ttk
 from ttkbootstrap.style import Bootstyle
 from ttkbootstrap.dialogs import Messagebox
@@ -16,25 +12,35 @@ from view.janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grup
 CAMINHO_IMAGEM = Path(__file__).parent / 'img'
 
 
-class Louise_v0_05(ttk.Frame):
+class Louise(ttk.Frame):
 
     def __init__(self, *args, **kwargs):
         
         super().__init__(*args, **kwargs)
-
-        
-        self.pack(fill=BOTH, expand=YES)
         self.util = Util()
-        self.master.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,0,0))
+        self.criarJanela()
+
+
+    def criarJanela(self):
+
+
+        x = (self.winfo_screenwidth()//2)-(self.util.larguraTela//2)
+        y = (self.winfo_screenheight()//2)-(self.util.alturaTela//2)
+
+
+        self.pack(fill=BOTH, expand=YES)
+        
+        self.master.geometry("{}x{}+{}+{}".format(self.util.larguraTela,self.util.alturaTela,x,y))
         self.master.title("Louise - Teste de Hipótese - Versão "+str(self.util.versao_0_5))
         self.master.iconbitmap(CAMINHO_IMAGEM.__str__()+"\\lamed.ico")
       
         self.photoimages = []
         imgpath = Path(__file__).parent / 'img'
+
+ 
         for key, val in self.util.arquivo_imagem.items():
             _path = imgpath / val
             self.photoimages.append(ttk.PhotoImage(name=key, file=_path))
-
 
 
         # buttonbar
@@ -125,7 +131,6 @@ class Louise_v0_05(ttk.Frame):
         botaoTesteHipoteseNaoParametrico2Grupos.place(x=50,y=230)
         
         self.frameSelecioneTeste.pack_forget()
-      
 
     def openJanelaNormalidade(self):
          
@@ -147,11 +152,8 @@ class Louise_v0_05(ttk.Frame):
                 Messagebox.show_info(mensagem, title='Sobre', alert=True, parent=self)
                
                   
-
+#def openJanelaLouise():
 if __name__ == '__main__':
-
-
     app = ttk.Window()
-    Louise_v0_05(app)
-   
+    Louise(app)
     app.mainloop()

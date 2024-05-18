@@ -1,0 +1,13 @@
+Resultado - Anderson Nível de Significância 5.0
+Hipóteses: 
+• H0: Normalmente distribuído 
+• H1: Não normalmente distribuído 
+Estatística do teste
+1.4006332218332318
+Valor Crítico
+0.786
+Nível de Significância
+5.0
+
+
+Reijeita H0 
