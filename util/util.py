@@ -13,9 +13,10 @@ class Util:
          self.corLetra = "#ffffff"
          self.corBorda = "#b4cffa"
          self.corFundoResultado = "#D9DDDC"
-         self.versao_0_1 = 0.1
-         self.versao_0_5 = 0.5
-         self.versao_1_0 = 1.0
+         self.versao_0_1 = '0.1'
+         self.versao_0_5 = '0.5'
+         self.versao_1_0 = '1.0'
+         self.versao_1_0_1 = '1.0.1'
 
          self.CAMINHO_IMAGEM = Path(__file__).parent.parent / 'img'
 
