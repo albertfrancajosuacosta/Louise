@@ -27,7 +27,7 @@ class Louise(ttk.Frame):
         self.pack(fill=BOTH, expand=YES)
 
         self.master.geometry("{}x{}+{}+{}".format(self.util.larguraTela, self.util.alturaTela, x, y))
-        self.master.title("Louise - Teste de Hipótese - Versão " + str(self.util.versao_0_5))
+        self.master.title("Louise - Teste de Hipótese - Versão " + str(self.util.versao_1_0))
         self.master.iconbitmap(CAMINHO_IMAGEM.__str__() + "\\lamed.ico")
 
         self.photoimages = []
