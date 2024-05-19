@@ -1,5 +1,7 @@
 # Louise
 
+![Pagina inicial ](/screenshot/012-18052024.png "Pagina inicial")
+
 ## Início
 
 Louise tem como objetivo fornecer uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.
@@ -72,10 +74,6 @@ Louise é construído utilizada as seguintes bibliotecas:
     - louise (exe).
 4. Execute o arquivo louise.exe.
     - Por se tratar de um arquivo executável (.exe), o antivírus pode alertar, mas não há risco em permitir a execução do arquivo.
-
-
-![Pagina inicial ](/screenshot/012-18052024.png "Pagina inicial")
-
 
 ## Licença BSD-3-Clause 
 
