@@ -1,7 +1,5 @@
 # Louise
 
-![Pagina inicial ](/screenshot/012-18052024.png "Pagina inicial")
-
 ## Início
 
 Louise tem como objetivo fornecer uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.
