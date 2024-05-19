@@ -52,14 +52,15 @@ Louise é construído utilizada as seguintes bibliotecas:
 7. Funcionalidade de salvar o resultado em arquivo .txt.
     - <b><s>Início: 16/05/2024 -Fim: 16/05/2024.</s></b>
 
-8. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
+8. Teste de hipótese paramétrico > 2  grupos (Kruskall-Wallis) - Não iniciado.
+    - <b>Início: 18/05/2024-Fim: dd/MM/yyyy.</b>
+
+9. Teste de hipótese paramétrico > 2  grupos (Friedman) - Não iniciado.
     - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
-9. Teste de hipótese paramétrico > 2  grupos (Kruskall-Wallis) - Não iniciado.
+10. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
     - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
-10. Teste de hipótese paramétrico > 2  grupos (Friedman) - Não iniciado.
-    - <b>Início: dd/MM/yyyy-Fim: dd/MM/yyyy.</b>
 
 
 ## Instruções de uso:

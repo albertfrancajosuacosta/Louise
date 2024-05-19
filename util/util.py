@@ -34,7 +34,20 @@ class Util:
          #   self.fotoimagens.append(ttk.PhotoImage(name=key, file=_path))
 
 
-    
+
+    def formatarCabecalho2MaisGrupos(self, qtdGrupos):
+        cabecalho = ""
+        for c in range(1, qtdGrupos + 1):
+            cabecalho += '#\t\tGrupo ' + str(c) + '\t\t'
+        cabecalho += '\n'
+        return cabecalho
+
+    def formatarLinha2MaisGrupos(self, qtdGrupos, index, row):
+        linha = ""
+        for c in range(1, qtdGrupos + 1):
+            linha += str(index + 1) + '\t' + str(row.values[c-1]) + '\t\t\t'
+        linha += '\n'
+        return linha
 
     def salvarResultadosInTxt(self,resultados):
         dataHoraString = str(datetime.now())

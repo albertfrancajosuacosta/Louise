@@ -4,6 +4,7 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.dialogs import Messagebox
 from util.util import Util
 from view.janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
+from view.janelaHipoteseNaoParametricoMais2Grupos import JanelaHipoteseNaoParametricoMais2Grupos
 from view.janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
 from view.janelaNormalidade import JanelaNormalidade
 
@@ -106,6 +107,16 @@ class Louise(ttk.Frame):
         )
         botaoTesteHipoteseParametrico2Grupos.place(x=50, y=180)
 
+        botaoTesteHipoteseParametricoMais2Grupos = ttk.Button(
+            master=self.frameTestesNormalidadeHipoteses,
+            text="Paramétrico > 2 Grupos",
+            #command=lambda: self.openJanelaHipoteseParametrico2Grupos(),
+            command=lambda: print('Paramétrico > 2 grupos'),
+            bootstyle=PRIMARY,
+            width=25
+        )
+        botaoTesteHipoteseParametricoMais2Grupos.place(x=250, y=180)
+
         botaoTesteHipoteseNaoParametrico2Grupos = ttk.Button(
             master=self.frameTestesNormalidadeHipoteses,
             text="Não Paramétrico 2 Grupos",
@@ -115,7 +126,19 @@ class Louise(ttk.Frame):
         )
         botaoTesteHipoteseNaoParametrico2Grupos.place(x=50, y=230)
 
+        botaoTesteHipoteseNaoParametricoMais2Grupos = ttk.Button(
+            master=self.frameTestesNormalidadeHipoteses,
+            text="Não Paramétrico > 2 Grupos",
+             command=lambda: self.openJanelaHipoteseNaoParametricoMais2Grupos(),
+            bootstyle=PRIMARY,
+            width=25
+        )
+        botaoTesteHipoteseNaoParametricoMais2Grupos.place(x=250, y=230)
+
         self.frameSelecioneTeste.pack_forget()
+
+    def openJanelaHipoteseNaoParametricoMais2Grupos(self):
+        JanelaHipoteseNaoParametricoMais2Grupos()
 
     def openJanelaNormalidade(self):
         JanelaNormalidade()
