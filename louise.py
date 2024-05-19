@@ -6,6 +6,7 @@ from util.util import Util
 from view.janelaHipoteseNaoParametrico2Grupos import JanelaHipoteseNaoParametrico2Grupos
 from view.janelaHipoteseNaoParametricoMais2Grupos import JanelaHipoteseNaoParametricoMais2Grupos
 from view.janelaHipoteseParametrico2Grupos import JanelaHipoteseParametrico2Grupos
+from view.janelaHipoteseParametricoMais2Grupos import JanelaHipoteseParametricoMais2Grupos
 from view.janelaNormalidade import JanelaNormalidade
 
 CAMINHO_IMAGEM = Path(__file__).parent / 'img'
@@ -110,8 +111,7 @@ class Louise(ttk.Frame):
         botaoTesteHipoteseParametricoMais2Grupos = ttk.Button(
             master=self.frameTestesNormalidadeHipoteses,
             text="Paramétrico > 2 Grupos",
-            #command=lambda: self.openJanelaHipoteseParametrico2Grupos(),
-            command=lambda: print('Paramétrico > 2 grupos'),
+            command=lambda: self.openJanelaHipoteseParametricoMais2Grupos(),
             bootstyle=PRIMARY,
             width=25
         )
@@ -136,6 +136,9 @@ class Louise(ttk.Frame):
         botaoTesteHipoteseNaoParametricoMais2Grupos.place(x=250, y=230)
 
         self.frameSelecioneTeste.pack_forget()
+
+    def openJanelaHipoteseParametricoMais2Grupos(self):
+        JanelaHipoteseParametricoMais2Grupos()
 
     def openJanelaHipoteseNaoParametricoMais2Grupos(self):
         JanelaHipoteseNaoParametricoMais2Grupos()

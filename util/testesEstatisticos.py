@@ -1,4 +1,4 @@
-from scipy.stats import shapiro, anderson, ttest_ind, mannwhitneyu, wilcoxon, kruskal, friedmanchisquare
+from scipy.stats import shapiro, anderson, ttest_ind, mannwhitneyu, wilcoxon, kruskal, friedmanchisquare, f_oneway
 import numpy as np
 
 
@@ -94,3 +94,31 @@ class TesteEstatistico():
             return kruskal(gruposLista[0], gruposLista[1], gruposLista[2],gruposLista[3],gruposLista[4],gruposLista[5],gruposLista[6],gruposLista[7],gruposLista[8])
         if qtdGrupos == 10:
             return kruskal(gruposLista[0], gruposLista[1], gruposLista[2],gruposLista[3],gruposLista[4],gruposLista[5],gruposLista[6],gruposLista[7],gruposLista[8],gruposLista[9])
+
+    def anova(self, dados, qtdGrupos):
+        gruposLista = []
+        for c in range(0, qtdGrupos):
+            _grupo = dados.iloc[:, c:c + 1]
+            gruposLista.append(_grupo)
+
+        if qtdGrupos == 3:
+            return f_oneway(gruposLista[0], gruposLista[1], gruposLista[2])
+        if qtdGrupos == 4:
+            return f_oneway(gruposLista[0], gruposLista[1], gruposLista[2], gruposLista[3])
+        if qtdGrupos == 5:
+            return f_oneway(gruposLista[0], gruposLista[1], gruposLista[2], gruposLista[3], gruposLista[4])
+        if qtdGrupos == 6:
+            return f_oneway(gruposLista[0], gruposLista[1], gruposLista[2], gruposLista[3], gruposLista[4],
+                           gruposLista[5])
+        if qtdGrupos == 7:
+            return f_oneway(gruposLista[0], gruposLista[1], gruposLista[2], gruposLista[3], gruposLista[4],
+                           gruposLista[5], gruposLista[6])
+        if qtdGrupos == 8:
+            return f_oneway(gruposLista[0], gruposLista[1], gruposLista[2], gruposLista[3], gruposLista[4],
+                           gruposLista[5], gruposLista[6], gruposLista[7])
+        if qtdGrupos == 9:
+            return f_oneway(gruposLista[0], gruposLista[1], gruposLista[2], gruposLista[3], gruposLista[4],
+                           gruposLista[5], gruposLista[6], gruposLista[7], gruposLista[8])
+        if qtdGrupos == 10:
+            return f_oneway(gruposLista[0], gruposLista[1], gruposLista[2], gruposLista[3], gruposLista[4],
+                           gruposLista[5], gruposLista[6], gruposLista[7], gruposLista[8], gruposLista[9])
