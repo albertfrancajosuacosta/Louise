@@ -73,6 +73,10 @@ Louise é construído utilizada as seguintes bibliotecas:
 4. Execute o arquivo louise.exe.
     - Por se tratar de um arquivo executável (.exe), o antivírus pode alertar, mas não há risco em permitir a execução do arquivo.
 
+
+![Pagina inicial ](/screenshot/012-18052024.png "Pagina inicial")
+
+
 ## Licença BSD-3-Clause 
 
 BSD 3-Clause License
