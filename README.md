@@ -16,6 +16,7 @@ Louise é construído utilizada as seguintes bibliotecas:
 
     - Tkinter: <https://docs.python.org/pt-br/3/library/tkinter.html> (Versão 0.1)
     - Tkinter bootstrap: <https://ttkbootstrap.readthedocs.io> (Versão 0.5)
+    - Tkinter bootstrap: <https://ttkbootstrap.readthedocs.io> (Versão 1.0)
 
 3.  Manipulação de dados
 
@@ -25,8 +26,8 @@ Louise é construído utilizada as seguintes bibliotecas:
 ## Considerações:
 
 -   <s>A interface gráfica com o usuário da versão inicial (0.1) requer melhorias que serão atendidas na próxima versão da ferramenta. Entretanto, a ferramenta é funcional na presente versão.</s>
-
--   Disponibilizada a versão 0.5 em 17/05/2024 contendo as melhorias na interface gráfica com o usuário pendentes na versão 0.1. Todas as funcionalidades da versão 0.1 estão mantidas e foi acrescida a funcionalidade de salvar o resultado em arquivo.
+-   <s>Disponibilizada a versão 0.5 em 17/05/2024 contendo as melhorias na interface gráfica com o usuário pendentes na versão 0.1. Todas as funcionalidades da versão 0.1 estão mantidas e foi acrescida a funcionalidade de salvar o resultado em arquivo.</s>
+-   Disponibilizada a versão 1.0 em 18/05/2024 com a adição dos teste de hipóteses paramétricos e não paramétricos para mais de 2 grupos.
 
 
 ## Funcionalidades em implantação:
@@ -61,8 +62,7 @@ Louise é construído utilizada as seguintes bibliotecas:
 10. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
     - <b><s>Início: 18/05/2024-Fim: 18/05/2024.</s></b>
 
-
-
+   
 ## Instruções de uso:
 
 1. No repositório do GitHub, procure a pasta dist.
