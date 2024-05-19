@@ -59,7 +59,7 @@ Louise é construído utilizada as seguintes bibliotecas:
     - <b><s>Início: 18/05/2024-Fim: 18/05/2024.</s></b>
 
 10. Teste de hipótese paramétrico > 2  grupos (Anova unifator) - Não iniciado.
-    - <b>Início: 18/05/2024-Fim: dd/MM/yyyy.</b>
+    - <b><s>Início: 18/05/2024-Fim: 18/05/2024.</s></b>
 
 
 
