@@ -157,8 +157,11 @@ class Main_Louise(ttk.Frame):
 
     def showSobre(self):
         mensagem = "Louise tem como objetivo fornecer uma ferramenta livre com suporte à interface gráfica para a realização de teste de hipótese.\n Contato: albertfrancajosuacosta@gmail.com"
-        Messagebox.show_info(mensagem, title='Sobre', alert=True, parent=self)
+        percentagemLargura = int((self.util.larguraTela // 2) * 0.50)
+        #Messagebox.show_info(mensagem, title='Sobre', alert=True, parent=self)
 
+        Messagebox.show_info(mensagem, title='Sobre', alert=True, parent=self,
+                             position=((self.util.larguraTela // 2) + percentagemLargura, self.util.alturaTela // 2))
 
 #if __name__ == '__main__':
 #    app = ttk.Window()
