@@ -34,6 +34,7 @@ class JanelaHipoteseParametricoMais2Grupos(Toplevel):
         self.arquivoCarregado = False
 
         self.enderecoArquivoSelecionado = StringVar()
+        self.planilha = None
 
         self.tipoTesteEscolhido = StringVar()
       
@@ -230,13 +231,19 @@ class JanelaHipoteseParametricoMais2Grupos(Toplevel):
              if self.enderecoArquivoSelecionado.get() == "":
                 Messagebox.show_warning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
                 self.botaoProcurarArquivo.focus_set()
-        else:
-            if self.tipoTesteEscolhido.get() == "":
-                Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
-                self.comboBoxTipoTeste.focus_set()
-            elif self.tipoTesteEscolhido.get() == "Anova":
-                self.testeAnova()
-                self.comboBoxTipoTeste.focus_set()
+                return
+
+        if not hasattr(self, "planilha") or self.planilha is None:
+            Messagebox.show_warning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
+            self.botaoProcurarArquivo.focus_set()
+            return
+
+        if self.tipoTesteEscolhido.get() == "":
+            Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
+            self.comboBoxTipoTeste.focus_set()
+        elif self.tipoTesteEscolhido.get() == "Anova":
+            self.testeAnova()
+            self.comboBoxTipoTeste.focus_set()
 
             
                 
@@ -246,16 +253,25 @@ class JanelaHipoteseParametricoMais2Grupos(Toplevel):
     def procurarArquivo(self):
        
         caminhoArquivo = tkinter.filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
-        self.enderecoArquivoSelecionado = caminhoArquivo
-        self.setvar('scroll-message', self.enderecoArquivoSelecionado.split("/")[-1])
-        
+
         if caminhoArquivo:
+            self.enderecoArquivoSelecionado = caminhoArquivo
+            self.setvar('scroll-message', self.enderecoArquivoSelecionado.split("/")[-1])
             self.enderecoArquivo.config(text=self.enderecoArquivoSelecionado)
-          
+
             self.file_entry.config(state=NORMAL)
+            self.file_entry.delete(0, END)
             self.file_entry.insert(END, self.enderecoArquivoSelecionado)
             self.file_entry.config(state=DISABLED)
             self.processarArquivo(caminhoArquivo)
+        else:
+            self.enderecoArquivoSelecionado = StringVar()
+            self.setvar('scroll-message', '')
+            self.enderecoArquivo.config(text="")
+            self.file_entry.config(state=NORMAL)
+            self.file_entry.delete(0, END)
+            self.file_entry.config(state=DISABLED)
+            self.planilha = None
 
         self.focus_set()
 

@@ -32,6 +32,7 @@ class JanelaNormalidade(Toplevel):
         self.arquivoCarregado = False
 
         self.enderecoArquivoSelecionado = StringVar()
+        self.planilha = None
 
         self.tipoTesteNormalidadeEscolhido = StringVar()
 
@@ -205,30 +206,45 @@ class JanelaNormalidade(Toplevel):
             if self.enderecoArquivoSelecionado.get() == "":
                 Messagebox.show_warning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
                 self.botaoProcurarArquivo.focus_set()
-        else:
-            if self.tipoTesteNormalidadeEscolhido.get() == "":
-                Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
-                self.comboBoxTipoTesteNormalidade.focus_set()
-            elif self.tipoTesteNormalidadeEscolhido.get() == "Shapiro-Wilk":
-                self.shapiroWilk()
-            elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
-                self.anderson()
+                return
+
+        if not hasattr(self, "planilha") or self.planilha is None:
+            Messagebox.show_warning(title="Aviso", message="É necessário selecionar o arquivo primeiro.")
+            self.botaoProcurarArquivo.focus_set()
+            return
+
+        if self.tipoTesteNormalidadeEscolhido.get() == "":
+            Messagebox.show_warning(title="Aviso", message="É necessário selecionar o teste primeiro.")
+            self.comboBoxTipoTesteNormalidade.focus_set()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Shapiro-Wilk":
+            self.shapiroWilk()
+        elif self.tipoTesteNormalidadeEscolhido.get() == "Anderson":
+            self.anderson()
 
         self.botaoSalvarResultado.grid(row=0, column=0, pady=2)
 
     def procurarArquivo(self):
 
         caminhoArquivo = filedialog.askopenfilename(title="Selecione o arquivo", filetypes=[("Excel files", "*.xlsx")])
-        self.enderecoArquivoSelecionado = caminhoArquivo
-        self.setvar('scroll-message', self.enderecoArquivoSelecionado.split("/")[-1])
 
         if caminhoArquivo:
+            self.enderecoArquivoSelecionado = caminhoArquivo
+            self.setvar('scroll-message', self.enderecoArquivoSelecionado.split("/")[-1])
             self.enderecoArquivo.config(text=self.enderecoArquivoSelecionado)
 
             self.file_entry.config(state=NORMAL)
+            self.file_entry.delete(0, END)
             self.file_entry.insert(END, self.enderecoArquivoSelecionado)
             self.file_entry.config(state=DISABLED)
             self.processarArquivo(caminhoArquivo)
+        else:
+            self.enderecoArquivoSelecionado = StringVar()
+            self.setvar('scroll-message', '')
+            self.enderecoArquivo.config(text="")
+            self.file_entry.config(state=NORMAL)
+            self.file_entry.delete(0, END)
+            self.file_entry.config(state=DISABLED)
+            self.planilha = None
 
         self.focus_set()
 
