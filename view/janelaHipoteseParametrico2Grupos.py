@@ -314,7 +314,9 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
     def testeT2grupos(self):
         self.textoResultado.limpar()
         te = TesteEstatistico(signi=self.sig)
-        estatistica, p_value = te.testeT2grupos(self.planilha)
+        result = te.testeT2grupos(self.planilha)
+        estatistica = float(result.statistic)
+        p_value = float(result.pvalue)
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Resultado - "+self.tipoTesteEscolhido.get()+" Nível de Significância "+str(te.nivelSignificancia)+"\n", "h1")
         self.textoResultado.habitarDesabilitar("disabled")
@@ -327,12 +329,12 @@ class JanelaHipoteseParametrico2Grupos(Toplevel):
 
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "Estatística do teste\n", "bold")
-        self.textoResultado.insert("end", str(estatistica[0])+"\n")
+        self.textoResultado.insert("end", str(estatistica)+"\n")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
         self.textoResultado.insert("end", "p-valor\n", "bold")
-        self.textoResultado.insert("end", str(p_value[0])+"\n")
+        self.textoResultado.insert("end", str(p_value)+"\n")
         self.textoResultado.habitarDesabilitar("disabled")
 
         self.textoResultado.habitarDesabilitar("normal")
